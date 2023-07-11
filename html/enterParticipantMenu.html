@@ -12,6 +12,7 @@
     <h2>Ingresar Participantes</h2>
 
     <form action="../php/enterParticipant.php" method="post">
+        <input type="number" placeholder="C.I." name="ci" required>
         <input type="text" placeholder="Nombre" name="name" required>
         <input type="text" placeholder="Apellido" name="lastName" required>
         <input type="number" min='1' max='102' placeholder="Kata" name="kata" required>
@@ -19,11 +20,11 @@
             <option value="12-13">12-13</option>
             <option value="14-15">14-15</option>
             <option value="16-17">16-17</option>
-            <option value="adults">Mayores</option>
+            <option value="mayor">Mayor</option>
         </select>
         <select name="gender" required>
-            <option value="male">Masculino</option>
-            <option value="female">Femenino</option>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
         </select>
         <input type="submit" value="Ingresar">
     </form>

@@ -32,10 +32,6 @@ class KatasArray
 
     public function getKata($id)
     {
-        foreach ($this->_katas as $kata) {
-            if ($kata->getId() == $id) {
-                return $kata;
-            }
-        }
+        return $this->_katas[$id];
     }
 }
