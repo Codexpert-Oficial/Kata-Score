@@ -54,6 +54,7 @@ class ParticipantsArray
         if (!$this->exists($participant->getCi())) {
             $this->_participants[] = $participant;
             $this->saveParticipant($participant);
+            return "Participante ingresado";
         } else {
             return "Participante ya registrado";
         }
@@ -80,5 +81,29 @@ class ParticipantsArray
         $file = fopen("../txt/participants.txt", "w");
         fwrite($file, "");
         $this->_participants = array();
+    }
+
+    public function removeParticipant($ci)
+    {
+        foreach ($this->_participants as $key => $participant) {
+            if ($participant->getCi() == $ci) {
+                $x = $key;
+            }
+        }
+        if (isset($x)) {
+            unset($this->_participants[$x]);
+
+            $file = fopen("../txt/participants.txt", "w");
+            fwrite($file, "");
+
+            foreach ($this->_participants as $participant) {
+                $line = implode(":", (array)$participant);
+                fputs($file, $line);
+            }
+
+            return "Participante eliminado con exito";
+        }
+
+        return "Participante no registrado";
     }
 }

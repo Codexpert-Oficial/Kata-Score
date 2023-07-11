@@ -1,7 +1,6 @@
 <?php
 
-include 'ParticipantsArray.php';
-include 'KatasArray.php';
+include './Objects/ParticipantsArray.php';
 
 if (isset($_POST["ci"]) && isset($_POST["name"]) && isset($_POST["lastName"]) && isset($_POST["kata"]) && isset($_POST["ageRange"]) && isset($_POST["gender"])) {
 

@@ -1,6 +1,6 @@
 <?php
 
-require_once("Kata.php");
+require_once("KatasArray.php");
 
 class Participant
 {
@@ -82,8 +82,15 @@ class Participant
         $this->_gender = $gender;
     }
 
+    public function getKataName()
+    {
+        $katas = new KatasArray();
+        $kata = $katas->getKata($this->_kata - 1);
+        return $kata->getName();
+    }
+
     public function __toString()
     {
-        return "<tr><td>" . $this->_ci . "</td><td>" . $this->_name . "</td><td>" . $this->_lastName . "</td><td>" . $this->_ageRange . "</td><td>" . $this->_gender . "</td><td>" . $this->_kata . "</td></tr>";
+        return "<tr><td>" . $this->_ci . "</td><td>" . $this->_name . "</td><td>" . $this->_lastName . "</td><td>" . $this->_ageRange . "</td><td>" . $this->_gender . "</td><td>" . $this->_kata . "</td><td>" . $this->getKataName() . "</td></tr>";
     }
 }

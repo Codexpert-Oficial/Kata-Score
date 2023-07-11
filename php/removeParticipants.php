@@ -1,6 +1,6 @@
 <?php
 
-include "ParticipantsArray.php";
+include "./Objects/ParticipantsArray.php";
 
 $participants = new ParticipantsArray();
 

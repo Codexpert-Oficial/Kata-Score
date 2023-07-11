@@ -14,7 +14,7 @@ class KatasArray
         while (!feof($file)) {
             $line = fgets($file, 256);
             $values = explode(":", $line);
-            $this->_katas[$values[0]] = new Kata($values[0], $values[1]);
+            $this->_katas[] = new Kata($values[0], $values[1]);
         }
 
         fclose($file);
