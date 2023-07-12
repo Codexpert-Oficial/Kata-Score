@@ -10,7 +10,11 @@ if (isset($_POST["ci"])) {
     $ci = $_POST["ci"];
 
     $participant =  $participants->getParticipant($ci);
-    $_SESSION["currentParticipant"] = serialize($participant);
+    if (isset($participant)) {
+        $_SESSION["currentParticipant"] = serialize($participant);
+    } else {
+        echo "Usuario no registrado";
+    }
 } else {
     echo "Ingrese los datos";
 }
