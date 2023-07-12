@@ -27,8 +27,9 @@
 
         echo "<p>" . $lastName . ", " . $name . " Juez N° " . $number . "</p>";
 
-        echo "<form action=''>
-        <input type='number' min=5 max=10 step=0.1>
+        echo "<form action='scoreParticipant.php' method='post'>
+        <input type='number' min=5 max=10 step=0.1 name='score'>
+        <input type='hidden' value='" . $number . "' name='number'>
         <input type='submit' value='Enviar'>
         </form>
         <a href=''>Reset</a>";
