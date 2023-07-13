@@ -11,6 +11,7 @@ class Participant
     private $_ageRange;
     private $_gender;
     private $_kata;
+    private $_pool;
 
     public function __construct($ci, $name, $lastName, $ageRange, $gender, $kata)
     {
@@ -80,6 +81,16 @@ class Participant
     public function setGender($gender)
     {
         $this->_gender = $gender;
+    }
+
+    public function getPool()
+    {
+        return $this->_pool;
+    }
+
+    public function setPool($pool)
+    {
+        $this->_pool = $pool;
     }
 
     public function getKataName()

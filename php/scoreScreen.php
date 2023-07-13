@@ -16,6 +16,13 @@ if (isset($_SESSION["displayParticipant"])) {
         }
 
         echo "<p> Categoria: " . $participant->getAgeRange() . " - " . $participant->getGender() . "</p>";
+        if (isset($_SESSION['round'])) {
+            echo "<p> Ronda " . $_SESSION['round'] . "</p>";
+        } else {
+            echo "<p> Ronda 1</p>";
+            $_SESSION['round'] = 1;
+        }
+
         echo "<p>" . $participant->getLastName() . ", " . $participant->getName() . "</p>";
         echo "<p>" . $participant->getKataName() . "</p>";
     }

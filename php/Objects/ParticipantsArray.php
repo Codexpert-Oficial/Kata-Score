@@ -65,7 +65,16 @@ class ParticipantsArray
         $file = fopen("../txt/participants.txt", "a");
         $line = implode(":", (array)$participant);
         fputs($file, $line);
+        fclose($file);
+    }
 
+    public function saveParticipants()
+    {
+        $file = fopen("../txt/participants.txt", "w");
+        foreach ($this->_participants as $participant) {
+            $line = implode(":", (array)$participant) . PHP_EOL;
+            fwrite($file, $line);
+        }
         fclose($file);
     }
 
@@ -105,5 +114,71 @@ class ParticipantsArray
         }
 
         return "Participante no registrado";
+    }
+
+    /* public function getParticipantsOfCategory($ageRange, $gender){
+        $participantsArray = array();
+
+        foreach($this->_participants as $participant){
+            if($participant->getAgeRange() == $ageRange && $participant->getGender() == $gender){
+                $participantsArray[] = $participant;
+            }
+        }
+
+        return $participantsArray;
+    } */
+
+    public function sortParticipants()
+    {
+        if (count($this->_participants) <= 3) {
+            foreach ($this->_participants as $participant) {
+                $participant->setPool(1);
+            }
+        } else if (count($this->_participants) <= 4) {
+            shuffle($this->_participants);
+            $this->_participants[0]->setPool(1);
+            $this->_participants[1]->setPool(1);
+            $this->_participants[2]->setPool(2);
+            $this->_participants[3]->setPool(2);
+        } else if (count($this->_participants) <= 10) {
+            shuffle($this->_participants);
+            if (count($this->_participants) % 2 == 0) {
+                $finalPosition = count($this->_participants) / 2;
+            } else {
+                $finalPosition = (count($this->_participants) / 2) + 0.5;
+            }
+
+            for ($i = 0; $i < count($this->_participants); $i++) {
+                if ($i < $finalPosition) {
+                    $this->_participants[$i]->setPool(1);
+                } else {
+                    $this->_participants[$i]->setPool(2);
+                }
+            }
+        } else if (count($this->_participants) <= 96) {
+            $x = 1;
+            for ($i = 0; $i < count($this->_participants); $i++) {
+                if ($i < 8 * $x) {
+                    $this->_participants[$i]->setPool($x);
+                } else {
+                    $x++;
+                    $this->_participants[$i]->setPool($x);
+                }
+            }
+        }
+
+        $this->saveParticipants();
+    }
+
+    public function showParticipantsPool()
+    {
+        foreach ($this->_participants as $participant) {
+            if ($participant->getPool() % 2 == 0) {
+                echo "<p class='blue'>";
+            } else {
+                echo "<p class='red'>";
+            }
+            echo $participant->getName() . " " . $participant->getLastName() . " - Pool: " . $participant->getPool() . "</p>";
+        }
     }
 }
