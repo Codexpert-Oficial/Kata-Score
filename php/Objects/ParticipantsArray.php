@@ -1,6 +1,7 @@
 <?php
 
 require_once("Participant.php");
+require_once("ScoresArray.php");
 
 class ParticipantsArray
 {
@@ -15,7 +16,7 @@ class ParticipantsArray
             $line = fgets($file, 256);
             if ($line != "") {
                 $values = explode(":", $line);
-                $this->_participants[] = new Participant($values[0], $values[1], $values[2], $values[3], $values[4], $values[5]);
+                $this->_participants[] = new Participant($values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6]);
             }
         }
     }
@@ -72,7 +73,7 @@ class ParticipantsArray
     {
         $file = fopen("../txt/participants.txt", "w");
         foreach ($this->_participants as $participant) {
-            $line = implode(":", (array)$participant) . PHP_EOL;
+            $line = implode(":", (array)$participant);
             fwrite($file, $line);
         }
         fclose($file);
@@ -130,18 +131,17 @@ class ParticipantsArray
 
     public function sortParticipants()
     {
+        shuffle($this->_participants);
         if (count($this->_participants) <= 3) {
             foreach ($this->_participants as $participant) {
-                $participant->setPool(1);
+                $participant->setPool(1 . PHP_EOL);
             }
         } else if (count($this->_participants) <= 4) {
-            shuffle($this->_participants);
-            $this->_participants[0]->setPool(1);
-            $this->_participants[1]->setPool(1);
-            $this->_participants[2]->setPool(2);
-            $this->_participants[3]->setPool(2);
+            $this->_participants[0]->setPool(1 . PHP_EOL);
+            $this->_participants[1]->setPool(1 . PHP_EOL);
+            $this->_participants[2]->setPool(2 . PHP_EOL);
+            $this->_participants[3]->setPool(2 . PHP_EOL);
         } else if (count($this->_participants) <= 10) {
-            shuffle($this->_participants);
             if (count($this->_participants) % 2 == 0) {
                 $finalPosition = count($this->_participants) / 2;
             } else {
@@ -150,19 +150,19 @@ class ParticipantsArray
 
             for ($i = 0; $i < count($this->_participants); $i++) {
                 if ($i < $finalPosition) {
-                    $this->_participants[$i]->setPool(1);
+                    $this->_participants[$i]->setPool(1 . PHP_EOL);
                 } else {
-                    $this->_participants[$i]->setPool(2);
+                    $this->_participants[$i]->setPool(2 . PHP_EOL);
                 }
             }
         } else if (count($this->_participants) <= 96) {
             $x = 1;
             for ($i = 0; $i < count($this->_participants); $i++) {
                 if ($i < 8 * $x) {
-                    $this->_participants[$i]->setPool($x);
+                    $this->_participants[$i]->setPool($x . PHP_EOL);
                 } else {
                     $x++;
-                    $this->_participants[$i]->setPool($x);
+                    $this->_participants[$i]->setPool($x . PHP_EOL);
                 }
             }
         }
@@ -179,6 +179,65 @@ class ParticipantsArray
                 echo "<p class='red'>";
             }
             echo $participant->getName() . " " . $participant->getLastName() . " - Pool: " . $participant->getPool() . "</p>";
+        }
+    }
+
+    public function orderByScore()
+    {
+        for ($i = 0; $i < count($this->_participants); $i++) {
+            for ($a = 0; $a < count($this->_participants) - 1; $a++) {
+                $participant1 = $this->_participants[$a];
+                $participant2 = $this->_participants[$a + 1];
+
+                $scores1 = new ScoresArray($participant1->getCi());
+                $totalScore1 = $scores1->calcTotal();
+
+                $scores2 = new ScoresArray($participant2->getCi());
+                $totalScore2 = $scores2->calcTotal();
+                if ($totalScore1 < $totalScore2) {
+                    $temp = $this->_participants[$a];
+                    $this->_participants[$a] = $this->_participants[$a + 1];
+                    $this->_participants[$a + 1] = $temp;
+                }
+            }
+        }
+        $this->saveParticipants();
+    }
+
+    public function showParticipantsScore()
+    {
+        foreach ($this->_participants as $participant) {
+            $scores = new ScoresArray($participant->getCi());
+            $totalScore = $scores->calcTotal();
+            echo $participant->getName() . " " . $participant->getLastName() . " - Puntaje: " . $totalScore . "<br>";
+        }
+    }
+
+    public function showParticipantScore($ci)
+    {
+        foreach ($this->_participants as $participant) {
+            if ($participant->getCi() == $ci) {
+                $scores = new ScoresArray($participant->getCi());
+                $totalScore = $scores->calcTotal();
+                echo $participant->getName() . " " . $participant->getLastName() . " - Puntaje: " . $totalScore . "<br>";
+            }
+        }
+    }
+
+    public function classifiedParticipants($pool)
+    {
+        $participantsOfPool = array();
+        if (count($this->_participants) >= 11) {
+            foreach ($this->_participants as $participant) {
+                if ($participant->getPool() == $pool) {
+                    $participantsOfPool[] = $participant;
+                }
+            }
+            foreach ($participantsOfPool as $key => $participant) {
+                if ($key < 4) {
+                    $this->showParticipantScore($participant->getCi());
+                }
+            }
         }
     }
 }

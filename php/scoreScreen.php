@@ -27,3 +27,16 @@ if (isset($_SESSION["displayParticipant"])) {
         echo "<p>" . $participant->getKataName() . "</p>";
     }
 }
+
+if (isset($_SESSION["displayClassified"])) {
+
+    if ($_SESSION["displayClassified"]) {
+
+        $participants = new ParticipantsArray();
+        $pool = $_SESSION["poolDisplay"];
+
+        echo "<h1> Clasificados </h1>";
+
+        $participants->classifiedParticipants($pool);
+    }
+}

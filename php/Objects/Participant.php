@@ -13,7 +13,7 @@ class Participant
     private $_kata;
     private $_pool;
 
-    public function __construct($ci, $name, $lastName, $ageRange, $gender, $kata)
+    public function __construct($ci, $name, $lastName, $ageRange, $gender, $kata, $pool)
     {
         $this->_ci = $ci;
         $this->_name = $name;
@@ -21,6 +21,7 @@ class Participant
         $this->_ageRange = $ageRange;
         $this->_gender = $gender;
         $this->_kata = $kata;
+        $this->_pool = $pool;
     }
 
     public function getCi()

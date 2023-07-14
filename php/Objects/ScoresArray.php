@@ -103,4 +103,11 @@ class ScoresArray
 
         return $total;
     }
+
+    public function removeScores()
+    {
+        $file = fopen("../txt/scores.txt", "w");
+        fwrite($file, "");
+        $this->_scores = array();
+    }
 }

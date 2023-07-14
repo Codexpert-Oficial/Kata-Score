@@ -11,7 +11,7 @@ if (isset($_POST["ci"]) && isset($_POST["name"]) && isset($_POST["lastName"]) &&
     $ageRange = $_POST["ageRange"];
     $gender = $_POST["gender"];
 
-    $participant = new Participant($ci, $name, $lastName, $ageRange, $gender, $idKata . PHP_EOL);
+    $participant = new Participant($ci, $name, $lastName, $ageRange, $gender, $idKata, 0 . PHP_EOL);
     $participants = new ParticipantsArray();
     echo $participants->enterParticipant($participant);
 } else {
