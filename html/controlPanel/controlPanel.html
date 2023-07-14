@@ -5,29 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kata Score</title>
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/controlPanel.css">
 </head>
 
 <body>
+    <main>
 
-    <h1>Panel de Control</h1>
+        <article class="controlPanel">
 
-    <h2>Controles de Participantes</h2>
+            <h1 class="title">Panel de Control</h1>
 
-    <a href="enterParticipantMenu.html">Ingresar Participantes</a>
-    <a href="../../php/listParticipants.php">Listar Participantes</a>
-    <a href="removeParticipantsByCiMenu.html">Eliminar Participantes por CI</a>
-    <a href="../../php/removeParticipants.php">Eliminar Participantes</a>
-    <a href="currentParticipantMenu.html">Cambiar participante actual</a>
-    <a href="../../php/sortParticipants.php">Sortear Participantes</a>
+            <div class="controlPanel__line"></div>
 
-    <h2>Controles del tanteador</h2>
+            <section class="controlPanel__container">
 
-    <a href="../../php/callCurrentParticipant.php">Llamar a participante actual</a>
-    <a href="../../php/scoreCurrentParticipant.php">Mostrar puntaje de participante actual</a>
-    <a href="../../php/nextRound.php">Pasar a siguiente ronda</a>
-    <a href="./classifiedParticipantsMenu.html">Mostrar clasificados a la siguiente ronda</a>
+                <h2 class="controlPanel__container__title">Controles de Participantes</h2>
 
-    <a href="../../php/removeData.php">Eliminar todos los datos</a>
+                <a href="enterParticipantMenu.html" class="button">Ingresar Participantes</a>
+                <a href="../../php/listParticipants.php" class="button">Listar Participantes</a>
+                <a href="currentParticipantMenu.html" class="button">Cambiar participante actual</a>
+                <a href="../../php/sortParticipants.php" class="button">Sortear Participantes</a>
+                <a href="removeParticipantsByCiMenu.html" class="button remove__button">Eliminar
+                    Participantes por CI</a>
+                <a href="../../php/removeParticipants.php" class="button remove__button">Eliminar
+                    Participantes</a>
+
+            </section>
+
+            <section class="controlPanel__container">
+
+                <h2 class="controlPanel__container__title">Controles del tanteador</h2>
+
+                <a href="../../php/callCurrentParticipant.php" class="button">Llamar a participante
+                    actual</a>
+                <a href="../../php/scoreCurrentParticipant.php" class="button">Mostrar puntaje de
+                    participante actual</a>
+                <a href="../../php/nextRound.php" class="button">Pasar a siguiente ronda</a>
+                <a href="./classifiedParticipantsMenu.html" class="button">Mostrar clasificados</a>
+
+            </section>
+
+            <a href="../../php/removeData.php" class="button remove__button">Eliminar
+                todos los datos</a>
+
+        </article>
+
+    </main>
+
+    <footer>
+        <div class="footer__line"></div>
+        <p>Desarrollado por Codexpert</p>
+    </footer>
 
 </body>
 

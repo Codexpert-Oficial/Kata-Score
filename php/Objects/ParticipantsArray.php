@@ -55,9 +55,9 @@ class ParticipantsArray
         if (!$this->exists($participant->getCi())) {
             $this->_participants[] = $participant;
             $this->saveParticipant($participant);
-            return "Participante ingresado";
+            return "<p>Participante ingresado</p>";
         } else {
-            return "Participante ya registrado";
+            return "<p>Participante ya registrado</p>";
         }
     }
 
@@ -174,11 +174,11 @@ class ParticipantsArray
     {
         foreach ($this->_participants as $participant) {
             if ($participant->getPool() % 2 == 0) {
-                echo "<p class='blue'>";
+                $class = "blue";
             } else {
-                echo "<p class='red'>";
+                $class = "red";
             }
-            echo $participant->getName() . " " . $participant->getLastName() . " - Pool: " . $participant->getPool() . "</p>";
+            echo "<tr><td> " . $participant->getName() . "</td><td> " . $participant->getLastName() . "</td><td class='" . $class . "'> " . $participant->getPool() . "</td></tr> ";
         }
     }
 
@@ -209,7 +209,7 @@ class ParticipantsArray
         foreach ($this->_participants as $participant) {
             $scores = new ScoresArray($participant->getCi());
             $totalScore = $scores->calcTotal();
-            echo $participant->getName() . " " . $participant->getLastName() . " - Puntaje: " . $totalScore . "<br>";
+            echo $participant->getName() . " " . $participant->getLastName() . " - Puntaje: " . $totalScore;
         }
     }
 
@@ -219,7 +219,7 @@ class ParticipantsArray
             if ($participant->getCi() == $ci) {
                 $scores = new ScoresArray($participant->getCi());
                 $totalScore = $scores->calcTotal();
-                echo $participant->getName() . " " . $participant->getLastName() . " - Puntaje: " . $totalScore . "<br>";
+                return "<td>" . $participant->getName() . "</td> <td>"  . $participant->getLastName() . "</td> <td>" . $totalScore . "</td>";
             }
         }
     }
@@ -235,7 +235,13 @@ class ParticipantsArray
             }
             foreach ($participantsOfPool as $key => $participant) {
                 if ($key < 4) {
-                    $this->showParticipantScore($participant->getCi());
+                    echo "<tr><td>" . $key + 1 . "</td>" . $this->showParticipantScore($participant->getCi()) . "</tr>";
+                }
+            }
+        } else {
+            foreach ($this->_participants as $key => $participant) {
+                if ($key < 4) {
+                    echo "<tr><td>" . $key + 1 . "</td>" . $this->showParticipantScore($participant->getCi()) . "</tr>";
                 }
             }
         }

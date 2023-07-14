@@ -1,9 +1,26 @@
-<?php
+<!DOCTYPE html>
+<html lang="es">
 
-include "./Objects/ParticipantsArray.php";
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
 
-$participants = new ParticipantsArray();
+<body>
+    <main>
+        <?php
 
-$participants->removeParticipants();
+        include "./Objects/ParticipantsArray.php";
 
-echo "Participantes eliminados";
+        $participants = new ParticipantsArray();
+
+        $participants->removeParticipants();
+
+        echo "Participantes eliminados";
+        ?>
+    </main>
+</body>
+
+</html>

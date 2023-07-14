@@ -5,14 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar Participante</title>
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/main.css">
 </head>
 
 <body>
 
-    <form action="../../php/removeParticipantsByCi.php" method="post">
-        <input type="number" placeholder="C.I." name="ci" required>
-        <input type="submit" value="Eliminar">
-    </form>
+    <main>
+
+        <form action="../../php/removeParticipantsByCi.php" method="post" class="form">
+            <input type="number" placeholder="C.I." name="ci" required class="input input__ci">
+            <input type="submit" value="Eliminar" class="button remove__button">
+        </form>
+
+    </main>
+
+    <footer>
+        <div class="footer__line"></div>
+        <p>Desarrollado por Codexpert</p>
+    </footer>
 
 </body>
 

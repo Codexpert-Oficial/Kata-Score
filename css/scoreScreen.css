@@ -1,0 +1,69 @@
+header {
+  font-family: system-ui;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: 35px;
+  padding: 40px 40px 0 40px;
+  box-sizing: border-box;
+  font-weight: 600;
+}
+
+.header__container {
+  background-color: rgb(198, 215, 230);
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.321);
+  display: flex;
+  gap: 30px;
+  padding: 0 40px;
+  border-radius: 20px;
+}
+
+.scoreScreen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+}
+
+.blueBox,
+.redBox {
+  height: 500px;
+  width: 500px;
+  border-radius: 50px;
+  box-shadow: inset -10px -10px 20px 1px rgba(0, 0, 0, 0.297),
+    inset 10px 10px 20px 1px rgba(255, 255, 255, 0.297),
+    0 0 20px 1px rgba(0, 0, 0, 0.297);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 120px;
+  font-weight: 600;
+  color: rgb(220, 224, 227);
+}
+
+.redBox {
+  background-color: rgb(249, 79, 79);
+}
+
+.blueBox {
+  background-color: rgb(30, 143, 241);
+}
+
+.scoreScreen__content {
+  font-size: 70px;
+  font-weight: 600;
+}
+
+.title {
+  font-size: 200px;
+}
+
+.classified {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table {
+  font-size: 50px;
+}

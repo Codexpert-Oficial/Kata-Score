@@ -1,14 +1,31 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-include "./Objects/ParticipantsArray.php";
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
 
-$participants = new ParticipantsArray();
+<body>
+    <main>
+        <?php
 
-if (isset($_POST["ci"])) {
+        include "./Objects/ParticipantsArray.php";
 
-    $ci = $_POST["ci"];
+        $participants = new ParticipantsArray();
 
-    echo $participants->removeParticipant($ci);
-} else {
-    echo "Ingrese los datos";
-}
+        if (isset($_POST["ci"])) {
+
+            $ci = $_POST["ci"];
+
+            echo $participants->removeParticipant($ci);
+        } else {
+            echo "Ingrese los datos";
+        }
+        ?>
+    </main>
+</body>
+
+</html>

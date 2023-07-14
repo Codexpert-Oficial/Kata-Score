@@ -5,14 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Participante actual</title>
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/main.css">
 </head>
 
 <body>
 
-    <form action="../../php/currentParticipant.php" method="post">
-        <input type="number" name="ci" placeholder="C.I.">
-        <input type="submit" value="Enviar">
-    </form>
+    <main>
+
+        <section class="currentParticipant">
+
+            <form action="../../php/currentParticipant.php" method="post" class="form">
+                <input type="number" name="ci" placeholder="C.I." class="input input__ci">
+                <input type="submit" value="Enviar" class="input">
+            </form>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer__line"></div>
+        <p>Desarrollado por Codexpert</p>
+    </footer>
 </body>
 
 </html>

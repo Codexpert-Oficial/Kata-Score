@@ -103,6 +103,11 @@ class Participant
 
     public function __toString()
     {
-        return "<tr><td>" . $this->_ci . "</td><td>" . $this->_name . "</td><td>" . $this->_lastName . "</td><td>" . $this->_ageRange . "</td><td>" . $this->_gender . "</td><td>" . $this->_kata . "</td><td>" . $this->getKataName() . "</td></tr>";
+        if ($this->_pool % 2 == 0) {
+            $class = "blue";
+        } else {
+            $class = "red";
+        }
+        return "<tr><td>" . $this->_ci . "</td><td>" . $this->_name . "</td><td>" . $this->_lastName . "</td><td>" . $this->_ageRange . "</td><td>" . $this->_gender . "</td><td>" . $this->_kata . "</td><td>" . $this->getKataName() . "</td><td class='" . $class . "'>" . $this->_pool . "</td></tr>";
     }
 }

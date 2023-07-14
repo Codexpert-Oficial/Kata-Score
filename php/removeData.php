@@ -1,18 +1,41 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-session_start();
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
 
-include './Objects/ParticipantsArray.php';
+<body>
 
-$participants = new ParticipantsArray();
-$scores = new ScoresArray(0);
+    <main>
+        <?php
 
-$participants->removeParticipants();
+        session_start();
 
-$scores->removeScores();
+        include './Objects/ParticipantsArray.php';
 
-unset($_SESSION["currentParticipant"]);
+        $participants = new ParticipantsArray();
+        $scores = new ScoresArray(0);
 
-unset($_SESSION["poolDisplay"]);
+        $participants->removeParticipants();
 
-$_SESSION["round"] = 1;
+        $scores->removeScores();
+
+        unset($_SESSION["currentParticipant"]);
+
+        unset($_SESSION["poolDisplay"]);
+
+        $_SESSION["round"] = 1;
+
+        echo "Informacion eliminada con exito";
+
+        ?>
+
+    </main>
+
+</body>
+
+</html>

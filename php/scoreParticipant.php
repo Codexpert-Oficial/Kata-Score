@@ -1,16 +1,36 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-session_start();
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
 
-include './Objects/ParticipantsArray.php';
-include './Objects/ScoresArray.php';
+<body>
+    <main>
+        <?php
 
-$currentParticipant = unserialize($_SESSION["currentParticipant"]);
-$judgeNumber = $_POST["number"];
-$scoreValue = $_POST["score"];
-$participantCi = $currentParticipant->getCi();
-$scores = new ScoresArray($participantCi);
+        session_start();
 
-$score = new Score($scoreValue, $participantCi, $judgeNumber . PHP_EOL);
+        include './Objects/ParticipantsArray.php';
 
-echo $scores->enterScore($score);
+        $currentParticipant = unserialize($_SESSION["currentParticipant"]);
+        if (isset($_POST["score"]) && isset($_POST["number"])) {
+            $judgeNumber = $_POST["number"];
+            $scoreValue = $_POST["score"];
+            $participantCi = $currentParticipant->getCi();
+            $scores = new ScoresArray($participantCi);
+
+            $score = new Score($scoreValue, $participantCi, $judgeNumber . PHP_EOL);
+
+            echo $scores->enterScore($score);
+        } else {
+            echo "ingrese los datos";
+        }
+        ?>
+    </main>
+</body>
+
+</html>

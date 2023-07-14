@@ -1,39 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Participantes</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 
 <body>
 
-    <style>
-        .red {
-            background-color: red;
-            color: white;
-        }
+    <main>
 
-        .blue {
-            background-color: blue;
-            color: white;
-        }
-    </style>
+        <table class="table">
 
-    <?php
+            <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Pool</th>
+            </tr>
 
-    session_start();
+            <?php
 
-    include "./Objects/ParticipantsArray.php";
+            session_start();
 
-    $participants = new ParticipantsArray();
+            include "./Objects/ParticipantsArray.php";
 
-    $participants->sortParticipants();
+            $participants = new ParticipantsArray();
 
-    $participants->showParticipantsPool();
+            $participants->sortParticipants();
 
-    ?>
+            $participants->showParticipantsPool();
+
+            ?>
+
+        </table>
+
+    </main>
+
+    <footer>
+        <div class="footer__line"></div>
+        <p>Desarrollado por Codexpert</p>
+    </footer>
 
 </body>
 

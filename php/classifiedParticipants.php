@@ -1,30 +1,54 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-session_start();
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <link rel="stylesheet" href="../css/estilo.css">
+</head>
 
-include './Objects/ParticipantsArray.php';
+<body>
 
-if (isset($_POST["pool"])) {
-    $_SESSION["poolDisplay"] = $_POST["pool"];
-    $_SESSION["displayClassified"] = true;
-    $_SESSION["displayParticipant"] = false;
+    <main>
+        <?php
 
-    $participants = new ParticipantsArray();
+        session_start();
 
-    $cont = 0;
+        include './Objects/ParticipantsArray.php';
 
-    foreach ($participants->getParticipants() as $participant) {
-        $scores = new ScoresArray($participant->getCi());
-        if (count($scores->getScores()) == 5) {
-            $cont++;
+        if (isset($_POST["pool"])) {
+            $_SESSION["poolDisplay"] = $_POST["pool"];
+            $_SESSION["displayClassified"] = true;
+            $_SESSION["displayParticipant"] = false;
+
+            $participants = new ParticipantsArray();
+
+            $cont = 0;
+            $contPool = 0;
+
+            foreach ($participants->getParticipants() as $participant) {
+                $scores = new ScoresArray($participant->getCi());
+                if ($participant->getPool() == $_POST["pool"]) {
+                    $contPool++;
+                    if (count($scores->getScores()) == 5) {
+                        $cont++;
+                    }
+                }
+            }
+
+            if ($cont == $contPool) {
+                $participants->orderByScore();
+                echo "Accion realizada con exito";
+            } else {
+                echo "No todos los participantes fueron calificados";
+            }
+        } else {
+            echo "Ingrese los datos";
         }
-    }
+        ?>
+    </main>
 
-    if ($cont == count($participants->getParticipants())) {
-        $participants->orderByScore();
-    } else {
-        echo "No todos los participantes fueron ingresados";
-    }
-} else {
-    echo "Ingrese los datos";
-}
+</body>
+
+</html>

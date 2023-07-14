@@ -5,29 +5,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ingresar Usuarios</title>
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/enterParticipant.css">
 </head>
 
 <body>
 
-    <h1>Ingresar Participantes</h1>
+    <main>
 
-    <form action="../../php/enterParticipant.php" method="post">
-        <input type="number" placeholder="C.I." name="ci" required>
-        <input type="text" placeholder="Nombre" name="name" required>
-        <input type="text" placeholder="Apellido" name="lastName" required>
-        <input type="number" min='1' max='102' placeholder="Kata" name="kata" required>
-        <select name="ageRange">
-            <option value="12-13">12-13</option>
-            <option value="14-15">14-15</option>
-            <option value="16-17">16-17</option>
-            <option value="mayor">Mayor</option>
-        </select>
-        <select name="gender" required>
-            <option value="masculino">Masculino</option>
-            <option value="femenino">Femenino</option>
-        </select>
-        <input type="submit" value="Ingresar">
-    </form>
+        <article class="enterParticipant">
+
+            <h1 class="title">Ingresar Participantes</h1>
+
+            <section class="enterParticipant__container">
+
+                <form action="../../php/enterParticipant.php" method="post">
+                    <input type="number" placeholder="C.I." name="ci" required class="input input__ci">
+                    <input type="text" placeholder="Nombre" name="name" required class="input">
+                    <input type="text" placeholder="Apellido" name="lastName" required class="input">
+                    <input type="number" min='1' max='102' placeholder="Kata" name="kata" required class="input">
+                    <div class="enterParticipant__selects__container">
+                        <select name="ageRange" class="select">
+                            <option value="12-13" class="firstOption">12-13</option>
+                            <option value="14-15">14-15</option>
+                            <option value="16-17">16-17</option>
+                            <option value="mayor">Mayor</option>
+                        </select>
+                        <select name="gender" required class="select">
+                            <option value="masculino" class="firstOption">Masculino</option>
+                            <option value="femenino">Femenino</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="Ingresar" class="button">
+                </form>
+
+            </section>
+
+        </article>
+
+    </main>
+
+    <footer>
+        <div class="footer__line"></div>
+        <p>Desarrollado por Codexpert</p>
+    </footer>
 
 </body>
 
