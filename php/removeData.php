@@ -30,7 +30,7 @@
 
         $_SESSION["round"] = 1;
 
-        echo "Informacion eliminada con exito";
+        echo "Información eliminada con éxito";
 
         ?>
 

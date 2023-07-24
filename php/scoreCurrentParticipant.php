@@ -27,12 +27,12 @@
                 $_SESSION["displayClassified"] = false;
                 $total = $scores->calcTotal();
                 $_SESSION["total"] = $total;
-                echo "Accion realizada con exito";
+                echo "Acción realizada con éxito";
             } else {
                 echo "No todos los jueces han puntuado al participante";
             }
         } else {
-            echo "Establesca un participante actual";
+            echo "Establezca un participante actual";
         }
         ?>
     </main>

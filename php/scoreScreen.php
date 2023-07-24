@@ -23,7 +23,7 @@
             $participant = unserialize($_SESSION["currentParticipant"]);
 
             echo "<header> <section class='header__container'>";
-            echo "<p> Categoria: " . $participant->getAgeRange() . " - " . $participant->getGender() . "</p>";
+            echo "<p> Categoría: " . $participant->getAgeRange() . " - " . $participant->getGender() . "</p>";
             if (isset($_SESSION['round'])) {
                 echo "<p> Ronda " . $_SESSION['round'] . "</p>";
             } else {
@@ -66,7 +66,7 @@
 
             echo "<table class='table'>";
 
-            echo "<tr><th>Posicion</th><th>Nombre</th><th>Apellido</th><th>Puntaje</th></tr>";
+            echo "<tr><th>Posición</th><th>Nombre</th><th>Apellido</th><th>Puntaje</th></tr>";
 
             $participants->classifiedParticipants($pool);
             echo "</table>";

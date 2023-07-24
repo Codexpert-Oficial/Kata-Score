@@ -25,7 +25,7 @@
             $participant =  $participants->getParticipant($ci);
             if (isset($participant)) {
                 $_SESSION["currentParticipant"] = serialize($participant);
-                echo "Accion realizada con exito";
+                echo "Acción realizada con éxito";
             } else {
                 echo "Usuario no registrado";
             }

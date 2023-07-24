@@ -39,7 +39,7 @@
 
             if ($cont == $contPool) {
                 $participants->orderByScore();
-                echo "Accion realizada con exito";
+                echo "Acción realizada con éxito";
             } else {
                 echo "No todos los participantes fueron calificados";
             }

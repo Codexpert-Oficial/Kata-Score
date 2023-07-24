@@ -18,9 +18,9 @@
             $_SESSION["displayParticipant"] = true;
             $_SESSION["displayParticipantScore"] = false;
             $_SESSION["displayClassified"] = false;
-            echo "Accion realizada con exito";
+            echo "Acción realizada con éxito";
         } else {
-            echo "Establesca un participante actual";
+            echo "Establezca un participante actual";
         }
         ?>
     </main>
