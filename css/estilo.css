@@ -46,7 +46,7 @@ footer {
   margin: 15px;
   padding: 10px;
   box-sizing: border-box;
-  color: rgb(24, 24, 24);
+  color: #181818;
   transition: all 0.2s ease-in-out;
 }
 
@@ -81,7 +81,7 @@ footer {
   margin: 15px;
   padding: 10px;
   box-sizing: border-box;
-  color: rgb(24, 24, 24);
+  color: #181818;
   transition: all 0.2s ease-in-out;
 }
 

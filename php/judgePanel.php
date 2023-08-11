@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="../css/estilo.css">
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/judgePanel.css">
+    <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -27,9 +28,11 @@
         $lastName = $_POST["lastName"];
         $number = $_POST["number"];
 
+        echo "<header>";
+
         if (isset($_SESSION["currentParticipant"])) {
             $participant = unserialize($_SESSION["currentParticipant"]);
-            echo "<header> <section class='header__container'>";
+            echo "<section class='header__container'>";
             echo "<p class='header__text'> Categoría: " . $participant->getAgeRange() . " " . $participant->getGender() . "</p>";
             echo "<p class='header__text'> Kata: " . $participant->getKataName() . "</p>";
             echo "</section>";

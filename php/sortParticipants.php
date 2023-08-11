@@ -7,6 +7,7 @@
     <title>Participantes</title>
     <link rel="stylesheet" href="../css/estilo.css">
     <link rel="stylesheet" href="../css/main.css">
+    <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
 </head>
 
 <body>
