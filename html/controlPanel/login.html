@@ -4,33 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingresar Usuarios</title>
+    <title>Login</title>
     <link rel="stylesheet" href="../../css/estilo.css">
-    <link rel="stylesheet" href="../../css/enterParticipant.css">
+    <link rel="stylesheet" href="../../css/main.css">
     <link rel="shortcut icon" href="../../imgs/katascore-isologotipo.ico" type="image/x-icon">
 </head>
 
 <body>
-
     <main>
-
-        <article class="enterParticipant">
-
-            <h1 class="title">Ingresar Participantes</h1>
-
-            <section class="enterParticipant__container">
-
-                <form class="form">
-                    <input type="number" placeholder="C.I." name="ci" required class="input input__ci">
-                    <input type="text" placeholder="Nombre" name="name" required class="input">
-                    <input type="text" placeholder="Apellido" name="lastName" required class="input">
-                    <input type="number" min='1' max='102' placeholder="Kata" name="kata" required class="input">
-
-                    <input type="submit" value="Ingresar" class="button">
-                </form>
-
-            </section>
-
+        <article>
+            <h1 class="title">Login Tecnico</h1>
+            <form method='post' action='../../php/loginTechnician.php' class="form">
+                <input type="text" placeholder="Usuario" name="user" class="input" required>
+                <input type="password" placeholder="Contraseña" name="password" class="input" required>
+                <input type="submit" value="Ingresar" class="button">
+            </form>
         </article>
 
         <article class="msg msg__hidden">
@@ -53,14 +41,10 @@
         </article>
     </main>
 
-    <footer>
-        <div class="footer__line"></div>
-        <p>Desarrollado por Codexpert</p>
-    </footer>
 
     <script src="../../js/messages.js"></script>
     <script src="../../js/verifyData.js"></script>
-    <script src="../../js/enterParticipant.js"></script>
+    <script src="../../js/loginTechnician.js"></script>
 </body>
 
 </html>

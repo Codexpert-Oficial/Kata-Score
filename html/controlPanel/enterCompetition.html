@@ -4,33 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ingresar Usuarios</title>
-    <link rel="stylesheet" href="../../css/estilo.css">
-    <link rel="stylesheet" href="../../css/enterParticipant.css">
+    <title>Ingresar Competicion</title>
     <link rel="shortcut icon" href="../../imgs/katascore-isologotipo.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/main.css">
 </head>
 
 <body>
-
     <main>
-
-        <article class="enterParticipant">
-
-            <h1 class="title">Ingresar Participantes</h1>
-
-            <section class="enterParticipant__container">
-
-                <form class="form">
-                    <input type="number" placeholder="C.I." name="ci" required class="input input__ci">
-                    <input type="text" placeholder="Nombre" name="name" required class="input">
-                    <input type="text" placeholder="Apellido" name="lastName" required class="input">
-                    <input type="number" min='1' max='102' placeholder="Kata" name="kata" required class="input">
-
-                    <input type="submit" value="Ingresar" class="button">
-                </form>
-
-            </section>
-
+        <article>
+            <form class="form">
+                <input type="text" name="name" class="input" placeholder="Nombre (opcional)">
+                <select name="teamType" class="select select__enter__competition">
+                    <option value="individual">Individual</option>
+                    <option value="grupo">Por grupos</option>
+                </select>
+                <div class="enter__competition__selects__container">
+                    <select name="ageRange" class="select">
+                        <option value="12-13" class="firstOption">12-13</option>
+                        <option value="14-15">14-15</option>
+                        <option value="16-17">16-17</option>
+                        <option value="mayor">Mayor</option>
+                    </select>
+                    <select name="gender" required class="select">
+                        <option value="masculino" class="firstOption">Masculino</option>
+                        <option value="femenino">Femenino</option>
+                    </select>
+                </div>
+                <input type="submit" value="Ingresar" class="button">
+            </form>
         </article>
 
         <article class="msg msg__hidden">
@@ -60,7 +62,7 @@
 
     <script src="../../js/messages.js"></script>
     <script src="../../js/verifyData.js"></script>
-    <script src="../../js/enterParticipant.js"></script>
+    <script src="../../js/enterCompetition.js"></script>
 </body>
 
 </html>

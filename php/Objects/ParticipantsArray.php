@@ -3,6 +3,10 @@
 require_once("Participant.php");
 require_once("ScoresArray.php");
 
+define('SERVER', '127.0.0.1');
+define('USER', 'root');
+define('PASS', 'root');
+define('DB', 'kata_score');
 class ParticipantsArray
 {
 
@@ -55,18 +59,36 @@ class ParticipantsArray
         if (!$this->exists($participant->getCi())) {
             $this->_participants[] = $participant;
             $this->saveParticipant($participant);
-            return "<p>Participante ingresado</p>";
+            return "Participante ingresado";
         } else {
-            return "<p>Participante ya registrado</p>";
+            http_response_code(400);
+            echo json_encode(array("error" => "Participante ya registrado"));
         }
     }
 
     public function saveParticipant($participant)
     {
-        $file = fopen("../txt/participants.txt", "a");
-        $line = implode(":", (array)$participant);
-        fputs($file, $line);
-        fclose($file);
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            die();
+        }
+        $ci = $participant->getCi();
+        $name = $participant->getName();
+        $lastName = $participant->getLastName();
+        $ageRange  = $participant->getAgeRange();
+        $gender = $participant->getGender();
+
+        $stmt = $connection->prepare(
+            "INSERT INTO competidor (ci, rango_etario, sexo, nombre_competidor, apellido_competidor) 
+            VALUES(?,?,?,?,?)"
+        );
+
+        $stmt->bind_param("issss", $ci, $ageRange, $gender, $name, $lastName);
+        $stmt->execute();
+        $stmt->close();
     }
 
     public function saveParticipants()
