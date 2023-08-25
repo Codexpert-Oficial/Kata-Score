@@ -44,7 +44,7 @@
             while ($competition = $result->fetch_assoc()) {
                 if ($competition["estado"] == "activa") {
                     echo "<section class='competition__element competition__element-active'>
-                    <a href='../html/controlPanel/controlPanel.html' class='competition__info'>";
+                    <a href='controlPanel.php?competition=" . $competition["id_competencia"] . "' class='competition__info'>";
                 } else {
                     echo "<section class='competition__element competition__element-closed'>
                     <a href='' class='competition__info'>";

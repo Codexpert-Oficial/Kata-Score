@@ -1,5 +1,10 @@
 <?php
 
+define('SERVER', '127.0.0.1');
+define('USER', 'root');
+define('PASS', 'root');
+define('DB', 'kata_score');
+
 class Judge
 {
     private $_name;
@@ -53,5 +58,54 @@ class Judge
     public function setPassword($password)
     {
         $this->_password = $password;
+    }
+
+    public function enterJudge()
+    {
+        if (!$this->exists()) {
+            $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+            if (!$connection) {
+                http_response_code(500);
+                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            }
+
+            $stmt = $connection->prepare(
+                "INSERT INTO juez (apellido_juez, clave_juez, nombre_juez, usuario_juez) VALUES (?,?,?,?)"
+            );
+
+            $stmt->bind_param("ssss", $this->_lastName, $this->_password, $this->_name, $this->_user);
+            $stmt->execute();
+            $stmt->close();
+
+            echo "Juez registrado con exito";
+        }
+    }
+
+    public function exists()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT * FROM juez WHERE usuario_juez = '$this->_user'";
+
+        $response = mysqli_query($connection, $stmt);
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+        } else {
+            if ($response->num_rows <= 0) {
+                return false;
+            } else {
+                http_response_code(400);
+                echo json_encode(array("error" => "Usuario ya registrado"));
+                return true;
+            }
+        }
     }
 }
