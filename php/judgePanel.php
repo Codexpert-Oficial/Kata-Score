@@ -13,57 +13,66 @@
 
 <body>
 
-
-
-
-
     <?php
     session_start();
 
     include './Objects/ParticipantsArray.php';
 
-    if (isset($_POST["name"]) && isset($_POST["lastName"]) && isset($_POST["number"])) {
+    if (isset($_SESSION["judgeUser"])) {
 
-        $name = $_POST["name"];
-        $lastName = $_POST["lastName"];
-        $number = $_POST["number"];
+        $user = $_SESSION["judgeUser"];
 
-        echo "<header>";
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
 
-        if (isset($_SESSION["currentParticipant"])) {
-            $participant = unserialize($_SESSION["currentParticipant"]);
-            echo "<section class='header__container'>";
-            echo "<p class='header__text'> Categoría: " . $participant->getAgeRange() . " " . $participant->getGender() . "</p>";
-            echo "<p class='header__text'> Kata: " . $participant->getKataName() . "</p>";
-            echo "</section>";
+        if (!$connection) {
+            echo "Error de conexion: " . mysqli_connect_error();
         }
 
-        echo " <section class='header__container'> <p class='header__text'>" . $lastName . ", " . $name . " Juez N° " . $number . "</p> </section>";
+        $stmt = "SELECT * FROM juez WHERE usuario_juez = '$user'";
+        $response = mysqli_query($connection, $stmt);
 
-        echo "</header>
+        if (!$response) {
+            echo "Error al ingresar: " . $stmt;
+        } else {
+            if ($response->num_rows <= 0) {
+                echo "Usuario no registrado";
+            } else {
 
-        <main>
-            
-        <article class='jugePanel'>";
+                $judge = $response->fetch_assoc();
 
-        echo "<form action='scoreParticipant.php' method='post' class='form'>
-        <input type='number' min=5 max=10 step=0.1 name='score' class='input' required placeholder='Puntaje'>
-        <input type='hidden' value='" . $number . "' name='number'>
-        <input type='submit' value='Enviar' class='button'>
-        </form>
-        <form action='judgePanel.php' method='post'>
-        <input type='hidden' value='" . $name . "' name='name'>
-        <input type='hidden' value='" . $lastName . "' name='lastName'>
-        <input type='hidden' value='" . $number . "' name='number'>
-        <input type='submit' value='Reset' class='button remove__button'>
-        </form>";
+                $lastName = $judge['apellido_juez'];
+                $name = $judge['nombre_juez'];
+
+                echo "<header>";
+
+                if (isset($_SESSION["currentParticipant"])) {
+                    $participant = unserialize($_SESSION["currentParticipant"]);
+                    echo "<section class='header__container'>";
+                    echo "<p class='header__text'> Categoría: " . $participant->getAgeRange() . " " . $participant->getGender() . "</p>";
+                    echo "<p class='header__text'> Kata: " . $participant->getKataName() . "</p>";
+                    echo "</section>";
+                }
+
+                echo " <section class='header__container'> <p class='header__text'>" . $lastName . ", " . $name . " Juez N° </p> </section>";
+
+                echo "</header>
+                <main>
+                <article class='jugePanel'>
+                <form action='scoreParticipant.php' method='post' class='form'>
+                <input type='number' min=5 max=10 step=0.1 name='score' class='input' required placeholder='Puntaje'>
+                <input type='hidden' value='' name='number'>
+                <input type='submit' value='Enviar' class='button'>
+                <a href='' class='button remove__button'>Reset</a>
+                </form>
+                
+                </article>
+                </main>";
+            }
+        }
     } else {
         echo "Ingrese los datos";
     }
     ?>
-    </article>
-
-    </main>
 
     <footer>
         <div class="footer__line"></div>

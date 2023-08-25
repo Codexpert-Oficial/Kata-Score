@@ -4,13 +4,15 @@ class Judge
 {
     private $_name;
     private $_lastName;
-    private $_number;
+    private $_user;
+    private $_password;
 
-    public function __construct($name, $lastName, $number)
+    public function __construct($name, $lastName, $user, $password)
     {
         $this->_name = $name;
         $this->_lastName = $lastName;
-        $this->_number = $number;
+        $this->_user = $user;
+        $this->_password = $password;
     }
 
     public function getName()
@@ -33,13 +35,23 @@ class Judge
         $this->_lastName = $lastName;
     }
 
-    public function getNumber()
+    public function getUser()
     {
-        return $this->_number;
+        return $this->_user;
     }
 
-    public function setNumber($number)
+    public function setUser($user)
     {
-        $this->_number = $number;
+        $this->_user = $user;
+    }
+
+    public function getPassword()
+    {
+        return $this->_password;
+    }
+
+    public function setPassword($password)
+    {
+        $this->_password = $password;
     }
 }

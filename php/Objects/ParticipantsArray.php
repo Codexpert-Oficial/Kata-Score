@@ -73,7 +73,6 @@ class ParticipantsArray
         if (!$connection) {
             http_response_code(500);
             echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
-            die();
         }
         $ci = $participant->getCi();
         $name = $participant->getName();

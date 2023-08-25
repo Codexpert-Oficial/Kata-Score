@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 define('SERVER', '127.0.0.1');
 define('USER', 'root');
 define('PASS', 'root');
@@ -17,7 +19,7 @@ if (isset($_POST['user']) && isset($_POST['password'])) {
         echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
     }
 
-    $stmt = "SELECT * FROM tecnico WHERE usuario_tecnico = '$user' AND clave_tecnico = '$password'";
+    $stmt = "SELECT * FROM juez WHERE usuario_juez = '$user' AND clave_juez = '$password'";
     $response = mysqli_query($connection, $stmt);
 
     if (!$response) {
@@ -27,6 +29,8 @@ if (isset($_POST['user']) && isset($_POST['password'])) {
         if ($response->num_rows <= 0) {
             http_response_code(400);
             echo json_encode(array("error" => "Usuario no registrado"));
+        } else {
+            $_SESSION['judgeUser'] = $user;
         }
     }
 } else {
