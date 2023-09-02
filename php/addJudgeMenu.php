@@ -17,9 +17,9 @@
             <input type="text" placeholder="Usuario" name='user' class="input" required>
             <input type="number" min='1' max='5' placeholder="Numero" name="number" class="input" required>
             <?php
-            if (isset($_GET['competition'])) {
-                echo "<input type='hidden' name='competition' value='" . $_GET["competition"] . "'>
-                <input type='submit' value='Añadir' class='button'>";
+            session_start();
+            if (isset($_SESSION['competition'])) {
+                echo "<input type='submit' value='Añadir' class='button'>";
             } else {
                 echo "Seleccione una competencia";
             }

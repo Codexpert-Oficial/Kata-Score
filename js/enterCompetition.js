@@ -6,7 +6,7 @@ form.addEventListener('submit', (e) => {
     const formData = new FormData(form);
 
     if (formData.get('name') == '') {
-        formData.set('name', 'Competicion');
+        formData.set('name', 'Competencia');
     }
 
     if (isCompleted(formData)) {

@@ -1,10 +1,5 @@
 <?php
 
-define('SERVER', '127.0.0.1');
-define('USER', 'root');
-define('PASS', 'root');
-define('DB', 'kata_score');
-
 class Competition
 {
     private $_id;
@@ -114,6 +109,30 @@ class Competition
         $stmt->execute();
         $stmt->close();
 
-        echo "Competicion creada con exito";
+        $stmt = "SELECT id_competencia FROM competencia ORDER BY id_competencia DESC LIMIT 1";
+        $response = mysqli_query($connection, $stmt);
+        $response = $response->fetch_assoc();
+
+        $this->_id = $response['id_competencia'];
+
+        return "Competencia creada con exito";
+    }
+
+    public function getLastRound()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT * FROM ronda WHERE id_competencia = $this->_id ORDER BY num_ronda DESC LIMIT 1";
+
+        $response = mysqli_query($connection, $stmt);
+
+        $round = $response->fetch_assoc();
+
+        return $round['num_ronda'];
     }
 }

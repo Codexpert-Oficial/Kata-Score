@@ -1,10 +1,5 @@
 <?php
 
-define('SERVER', '127.0.0.1');
-define('USER', 'root');
-define('PASS', 'root');
-define('DB', 'kata_score');
-
 class Judge
 {
     private $_name;
@@ -78,7 +73,7 @@ class Judge
             $stmt->execute();
             $stmt->close();
 
-            echo "Juez registrado con exito";
+            return "Juez registrado con exito";
         }
     }
 

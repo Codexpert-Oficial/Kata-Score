@@ -1,52 +1,38 @@
 <?php
 
-require_once("KatasArray.php");
-
-class Participant
+class Round
 {
 
-    private $_ci;
-    private $_name;
-    private $_lastName;
+    private $_number;
+    private $_competitionID;
 
-    public function __construct($ci, $name, $lastName)
+    public function __construct($number, $competitionID)
     {
-        $this->_ci = $ci;
-        $this->_name = $name;
-        $this->_lastName = $lastName;
+        $this->_number = $number;
+        $this->_competitionID = $competitionID;
     }
 
-    public function getCi()
+    public function getNumber()
     {
-        return $this->_ci;
+        return $this->_number;
     }
 
-    public function setCi($ci)
+    public function setNumber($number)
     {
-        $this->_ci = $ci;
+        $this->_number = $number;
     }
 
-    public function getName()
+    public function getCompetitionID()
     {
-        return $this->_name;
+        return $this->_competitionID;
     }
 
-    public function setName($name)
+    public function setCompetitionID($competitionID)
     {
-        $this->_name = $name;
+        $this->_competitionID = $competitionID;
     }
 
-    public function getLastName()
-    {
-        return $this->_lastName;
-    }
-
-    public function setLastName($lastName)
-    {
-        $this->_lastName = $lastName;
-    }
-
-    public function enterParticipant()
+    public function enterRound()
     {
         if (!$this->exists()) {
             $connection = mysqli_connect(SERVER, USER, PASS, DB);
@@ -54,18 +40,20 @@ class Participant
             if (!$connection) {
                 http_response_code(500);
                 echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                die();
             }
 
             $stmt = $connection->prepare(
-                "INSERT INTO competidor (ci, nombre_competidor, apellido_competidor) VALUES (?,?,?)"
+                "INSERT INTO ronda (num_ronda, id_competencia) VALUES (?,?)"
             );
 
-            $stmt->bind_param("iss", $this->_ci, $this->_name, $this->_lastName);
+            $stmt->bind_param("ii", $this->_number, $this->_competitionID);
             if ($stmt->execute()) {
-                return "Participante registrado con exito";
+                return "Ronda registrada con exito";
             } else {
                 http_response_code(500);
                 echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+                die();
             }
             $stmt->close();
         }
@@ -80,24 +68,22 @@ class Participant
             echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
         }
 
-        $stmt = "SELECT * FROM competidor WHERE ci = $this->_ci";
+        $stmt = "SELECT * FROM ronda WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID";
 
         $response = mysqli_query($connection, $stmt);
 
         if (!$response) {
             http_response_code(500);
             echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            die();
         } else {
             if ($response->num_rows <= 0) {
                 return false;
             } else {
+                http_response_code(400);
+                echo json_encode(array("error" => "Ronda ya registrada"));
                 return true;
             }
         }
-    }
-
-    public function __toString()
-    {
-        return "<tr><td>" . $this->_ci . "</td><td>" . $this->_name . "</td><td>" . $this->_lastName . "</td></tr>";
     }
 }

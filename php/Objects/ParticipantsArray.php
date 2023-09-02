@@ -3,10 +3,7 @@
 require_once("Participant.php");
 require_once("ScoresArray.php");
 
-define('SERVER', '127.0.0.1');
-define('USER', 'root');
-define('PASS', 'root');
-define('DB', 'kata_score');
+
 class ParticipantsArray
 {
 
@@ -14,15 +11,9 @@ class ParticipantsArray
 
     public function __construct()
     {
-        $file = fopen("../txt/participants.txt", "r");
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
 
-        while (!feof($file)) {
-            $line = fgets($file, 256);
-            if ($line != "") {
-                $values = explode(":", $line);
-                $this->_participants[] = new Participant($values[0], $values[1], $values[2], $values[3], $values[4], $values[5], $values[6]);
-            }
-        }
+        $stmt = "SELECT * FROM competidor";
     }
 
     public function getParticipants()
@@ -35,16 +26,6 @@ class ParticipantsArray
         $this->_participants = $participants;
     }
 
-    public function exists($ci)
-    {
-        foreach ($this->_participants as $participant) {
-            if ($participant->getCi() == $ci) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public function getParticipant($ci)
     {
         foreach ($this->_participants as $participant) {
@@ -54,51 +35,6 @@ class ParticipantsArray
         }
     }
 
-    public function enterParticipant($participant)
-    {
-        if (!$this->exists($participant->getCi())) {
-            $this->_participants[] = $participant;
-            $this->saveParticipant($participant);
-            return "Participante ingresado";
-        } else {
-            http_response_code(400);
-            echo json_encode(array("error" => "Participante ya registrado"));
-        }
-    }
-
-    public function saveParticipant($participant)
-    {
-        $connection = mysqli_connect(SERVER, USER, PASS, DB);
-
-        if (!$connection) {
-            http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
-        }
-        $ci = $participant->getCi();
-        $name = $participant->getName();
-        $lastName = $participant->getLastName();
-        $ageRange  = $participant->getAgeRange();
-        $gender = $participant->getGender();
-
-        $stmt = $connection->prepare(
-            "INSERT INTO competidor (ci, rango_etario, sexo, nombre_competidor, apellido_competidor) 
-            VALUES(?,?,?,?,?)"
-        );
-
-        $stmt->bind_param("issss", $ci, $ageRange, $gender, $name, $lastName);
-        $stmt->execute();
-        $stmt->close();
-    }
-
-    public function saveParticipants()
-    {
-        $file = fopen("../txt/participants.txt", "w");
-        foreach ($this->_participants as $participant) {
-            $line = implode(":", (array)$participant);
-            fwrite($file, $line);
-        }
-        fclose($file);
-    }
 
     public function listParticipants()
     {
@@ -150,7 +86,7 @@ class ParticipantsArray
         return $participantsArray;
     } */
 
-    public function sortParticipants()
+    /* public function sortParticipants()
     {
         shuffle($this->_participants);
         if (count($this->_participants) <= 3) {
@@ -266,5 +202,5 @@ class ParticipantsArray
                 }
             }
         }
-    }
+    } */
 }

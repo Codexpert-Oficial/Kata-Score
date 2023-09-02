@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 define('SERVER', '127.0.0.1');
 define('USER', 'root');
@@ -7,10 +8,10 @@ define('DB', 'kata_score');
 
 include './Objects/Participates.php';
 
-if (isset($_POST['user']) && isset($_POST['number']) && isset($_POST['competition'])) {
+if (isset($_POST['user']) && isset($_POST['number']) && isset($_SESSION['competition'])) {
     $user = $_POST['user'];
     $number = $_POST['number'];
-    $competition = $_POST['competition'];
+    $competition = $_SESSION['competition'];
 
     $participates = new Participates($user, $competition, $number);
     echo $participates->enterParticipates();

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Competiciones</title>
+    <title>Competencias</title>
     <link rel="stylesheet" href="../css/estilo.css">
     <link rel="stylesheet" href="../css/competitions.css">
     <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
@@ -13,7 +13,7 @@
 <body>
 
     <main>
-        <h1 class="competition__title">Competiciones</h1>
+        <h1 class="competition__title">Competencias</h1>
         <article class="competition__menu">
             <a href="../html/controlPanel/enterCompetition.html" class="competition__element competition__element-add">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
@@ -33,7 +33,7 @@
 
             $connection = mysqli_connect(SERVER, USER, PASS, DB);
 
-            $stmt = "SELECT * FROM competencia ORDER BY estado ASC";
+            $stmt = "SELECT * FROM competencia ORDER BY id_competencia DESC";
 
             $result = mysqli_query($connection, $stmt);
 

@@ -7,7 +7,6 @@ const msgText = document.querySelector('.msg__text');
 const msgIcon = document.querySelector('.msg__icon');
 
 const openMsgSuccess = () => {
-    msg.classList.remove('msg__hidden');
     closeMsgTab.classList.remove('msg__close-error', 'msg__close-warning');
     closeMsgTab.classList.add('msg__close-success');
     msgTitle.innerHTML = 'Accion exitosa';
@@ -15,10 +14,10 @@ const openMsgSuccess = () => {
     msgText.classList.add('msg__text-success');
     msgIcon.removeAttribute('src');
     msgIcon.src = '/kata-score/imgs/icons/success.svg';
+    msg.classList.remove('msg__hidden');
 }
 
 const openMsgError = () => {
-    msg.classList.remove('msg__hidden');
     closeMsgTab.classList.remove('msg__close-success', 'msg__close-warning');
     closeMsgTab.classList.add('msg__close-error');
     msgTitle.innerHTML = 'Error';
@@ -26,10 +25,10 @@ const openMsgError = () => {
     msgText.classList.add('msg__text-error');
     msgIcon.removeAttribute('src');
     msgIcon.src = '/kata-score/imgs/icons/error.svg';
+    msg.classList.remove('msg__hidden');
 }
 
 const openMsgWarning = () => {
-    msg.classList.remove('msg__hidden');
     closeMsgTab.classList.remove('msg__close-error', 'msg__close-warning');
     closeMsgTab.classList.add('msg__close-success');
     msgTitle.innerHTML = 'Atencion';
@@ -37,6 +36,7 @@ const openMsgWarning = () => {
     msgText.classList.add('msg__text-success');
     msgIcon.removeAttribute('src');
     msgIcon.src = '/kata-score/imgs/icons/success.svg';
+    msg.classList.remove('msg__hidden');
 }
 
 const changeMsg = (text) => {

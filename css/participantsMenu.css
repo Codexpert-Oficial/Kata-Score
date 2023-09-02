@@ -1,0 +1,126 @@
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.title {
+  margin-top: 100px;
+}
+
+.participants__menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 100px 0;
+  max-width: 600px;
+  width: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.participant__element {
+  background-color: #f0f8ff;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(
+    20deg,
+    rgba(227, 233, 240, 0.208),
+    rgba(248, 251, 255, 0.811)
+  );
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  box-shadow: 10px 10px 25px 2px rgba(0, 0, 0, 0.107);
+  transition: all 0.2s ease-in-out;
+}
+
+.participant__element:hover {
+  box-shadow: 10px 10px 25px 2px rgba(0, 0, 0, 0.048);
+  transform: scale(1.03);
+  background: linear-gradient(
+    20deg,
+    rgba(227, 233, 240, 0.402),
+    rgb(248, 251, 255)
+  );
+}
+
+.participant__info,
+.participant__kata__container {
+  display: flex;
+  gap: 7px;
+}
+
+.participant__info p,
+.participant__kata__container p,
+.edit__kata {
+  text-transform: capitalize;
+  margin: 0;
+  background-color: rgb(236, 241, 244);
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 25px;
+  box-shadow: 3px 3px 15px 1px rgba(0, 0, 0, 0.107);
+}
+
+.edit__kata {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease-in-out;
+  border: none;
+}
+
+.edit__kata:hover {
+  color: rgb(47, 134, 247);
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.assign__kata {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.374);
+  backdrop-filter: blur(2px);
+}
+
+.assign__kata__hidden {
+  display: none;
+}
+
+.form {
+  padding: 20px;
+  border-radius: 20px;
+  background: linear-gradient(20deg, rgb(216, 223, 234), rgb(248, 251, 255));
+  box-shadow: 10px 10px 25px 2px rgba(0, 0, 0, 0.107);
+}
+
+.close__assign__container {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.close__assign {
+  color: black;
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+  height: 45px;
+}
+
+.close__assign:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(255, 90, 90);
+}
