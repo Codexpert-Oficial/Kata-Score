@@ -86,4 +86,32 @@ class Round
             }
         }
     }
+
+    public function participantExists($ci)
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT * FROM compite WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID AND ci = $ci";
+
+        $response = mysqli_query($connection, $stmt);
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            die();
+        } else {
+            if ($response->num_rows <= 0) {
+                http_response_code(400);
+                echo json_encode(array("error" => "Participante no esta registrado en esta ronda"));
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
 }

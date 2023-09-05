@@ -35,7 +35,6 @@
                 <a href="listParticipants.php" class="button">Listar Participantes</a>
                 <a href="../html/controlPanel/currentParticipantMenu.html" class="button">Cambiar participante actual</a>
                 <a href="sortParticipants.php" class="button">Sortear Participantes</a>
-                <a href="../html/kataAssign" class="button">Asignar kata a participante</a>
                 <a href="../html/controlPanel/removeParticipantsByCiMenu.html" class="button remove__button">Eliminar
                     Participantes por CI</a>
 
