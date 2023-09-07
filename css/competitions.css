@@ -159,6 +159,19 @@ main {
   margin: 0;
 }
 
+.competition__id {
+  background-color: rgb(250, 250, 250);
+  border-radius: 15px;
+  height: 100%;
+  width: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.053);
+  transition: all 0.2s ease-in-out;
+  margin: 0;
+}
+
 .competition__icons__container {
   display: flex;
   align-items: center;

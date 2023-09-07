@@ -2,10 +2,11 @@ const form = document.querySelector('.form');
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
+
     const formData = new FormData(form);
 
     if (isCompleted(formData)) {
-        fetch("/kata-score/php/loginJudge.php", {
+        fetch("/kata-score/php/currentParticipant.php", {
             method: "POST",
             body: formData
         })
@@ -18,9 +19,10 @@ form.addEventListener('submit', (e) => {
                     });
                 }
             })
-            .then(() =>
-                window.location.href = '/kata-score/php/judgeCompetitions.php'
-            )
+            .then(data => {
+                changeMsg(data);
+                openMsgSuccess();
+            })
             .catch(error => {
                 changeMsg(error.message);
                 openMsgError();

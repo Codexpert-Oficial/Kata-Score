@@ -40,7 +40,6 @@ class Round
             if (!$connection) {
                 http_response_code(500);
                 echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
-                die();
             }
 
             $stmt = $connection->prepare(
@@ -53,7 +52,6 @@ class Round
             } else {
                 http_response_code(500);
                 echo json_encode(array("error" => "Error en la consulta: " . $stmt));
-                die();
             }
             $stmt->close();
         }
@@ -75,7 +73,6 @@ class Round
         if (!$response) {
             http_response_code(500);
             echo json_encode(array("error" => "Error al ingresar: " . $stmt));
-            die();
         } else {
             if ($response->num_rows <= 0) {
                 return false;
@@ -103,7 +100,6 @@ class Round
         if (!$response) {
             http_response_code(500);
             echo json_encode(array("error" => "Error al ingresar: " . $stmt));
-            die();
         } else {
             if ($response->num_rows <= 0) {
                 http_response_code(400);
@@ -112,6 +108,58 @@ class Round
             } else {
                 return true;
             }
+        }
+    }
+
+    public function setActiveParticipant($ci)
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = $connection->prepare("UPDATE compite SET activo = FALSE WHERE num_ronda = ? AND id_competencia = ?");
+
+        $stmt->bind_param("ii", $this->_number, $this->_competitionID);
+        if (!$stmt->execute()) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+        }
+        $stmt->close();
+
+        $stmt = $connection->prepare("UPDATE compite SET activo = TRUE WHERE ci = ? AND num_ronda = ? AND id_competencia = ?");
+
+        $stmt->bind_param("iii", $ci, $this->_number, $this->_competitionID);
+        if ($stmt->execute()) {
+            return "Accion realizada con exito";
+        } else {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+        }
+        $stmt->close();
+    }
+
+    public function getActiveParticipant()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT * FROM competidor JOIN compite ON competidor.ci = compite.ci WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID AND activo = TRUE";
+
+        $response = mysqli_query($connection, $stmt);
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+        } else {
+            $participant = $response->fetch_assoc();
+            return $participant;
         }
     }
 }

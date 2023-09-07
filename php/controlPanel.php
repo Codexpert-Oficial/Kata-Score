@@ -54,6 +54,7 @@
             </section>
 
             <section class="controlPanel__container">
+                <h2 class="controlPanel__container__title">Controles de jueces</h2>
                 <a href="../html/controlPanel/enterJudge.html" class="button">Registrar juez</a>
                 <a href='addJudgeMenu.php' class='button'>Añadir juez a la competencia</a>
             </section>
