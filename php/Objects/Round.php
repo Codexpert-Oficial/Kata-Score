@@ -1,5 +1,6 @@
 <?php
 
+require_once('Pool.php');
 class Round
 {
 
@@ -160,6 +161,95 @@ class Round
         } else {
             $participant = $response->fetch_assoc();
             return $participant;
+        }
+    }
+
+    public function getParticipants()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT * FROM competidor JOIN compite ON competidor.ci = compite.ci WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID";
+
+        $response = mysqli_query($connection, $stmt);
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+        } else {
+            return $response;
+        }
+    }
+
+    public function createPools()
+    {
+        $participants = $this->getParticipants();
+
+        $participantsCount = $participants->num_rows;
+
+        while ($participant = $participants->fetch_assoc()) {
+            $participantsCi[] = $participant['ci'];
+        }
+
+        shuffle($participantsCi);
+
+        if ($participantsCount <= 3) {
+
+            $pool = new Pool(1, 'AKA', $this->_competitionID, $this->_number);
+            if (!$pool->exists()) {
+                $pool->enterPool();
+            }
+
+            foreach ($participantsCi as $participantCi) {
+                $pool->removeParticipant($participantCi);
+                $pool->addParticipant($participantCi);
+            }
+        } else if ($participantsCount <= 96) {
+
+            if ($participantsCount <= 24) {
+                $poolsCant = 2;
+            } else if ($participantsCount <= 48) {
+                $poolsCant = 4;
+            } else {
+                $poolsCant = 8;
+            }
+
+            $finalPosition = intdiv($participantsCount, $poolsCant);
+
+            if ($participantsCount % $poolsCant != 0) {
+                $finalPosition++;
+            }
+
+            for ($i = 1; $i <= $poolsCant; $i++) {
+                if ($i % 2 == 0) {
+                    $pools[$i] = new Pool($i, 'AO', $this->_competitionID, $this->_number);
+                } else {
+                    $pools[$i] = new Pool($i, 'AKA', $this->_competitionID, $this->_number);
+                }
+                if (!$pools[$i]->exists()) {
+                    $pools[$i]->enterPool();
+                }
+            }
+
+            $cont = 1;
+
+            foreach ($participantsCi as $key => $participantCi) {
+                if ($key < $finalPosition) {
+                    $pools[$cont]->removeParticipant($participantCi);
+                    $pools[$cont]->addParticipant($participantCi);
+                } else if ($key < ($participantsCount / 4) * $cont) {
+                    $pools[$cont]->removeParticipant($participantCi);
+                    $pools[$cont]->addParticipant($participantCi);
+                } else {
+                    $cont++;
+                    $pools[$cont]->removeParticipant($participantCi);
+                    $pools[$cont]->addParticipant($participantCi);
+                }
+            }
         }
     }
 }

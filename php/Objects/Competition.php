@@ -130,9 +130,12 @@ class Competition
         $stmt = "SELECT * FROM ronda WHERE id_competencia = $this->_id ORDER BY num_ronda DESC LIMIT 1";
 
         $response = mysqli_query($connection, $stmt);
-
-        $round = $response->fetch_assoc();
-
-        return $round['num_ronda'];
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+        } else {
+            $round = $response->fetch_assoc();
+            return $round['num_ronda'];
+        }
     }
 }
