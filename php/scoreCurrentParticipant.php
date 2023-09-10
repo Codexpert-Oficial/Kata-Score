@@ -1,43 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resultado</title>
-    <link rel="stylesheet" href="../css/estilo.css">
-    <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
-</head>
-
-<body>
-
-    <main>
         <?php
 
         session_start();
 
-        include './Objects/ScoresArray.php';
-        include './Objects/ParticipantsArray.php';
+        include './Objects/Competition.php';
+        include './Objects/Round.php';
 
-        if (isset($_SESSION["currentParticipant"])) {
-            $participant = unserialize($_SESSION["currentParticipant"]);
-            $scores = new ScoresArray($participant->getCi());
-            if (count($scores->getScores()) == 5) {
-                $_SESSION["displayParticipant"] = true;
-                $_SESSION["displayParticipantScore"] = true;
-                $_SESSION["displayClassified"] = false;
-                $total = $scores->calcTotal();
-                $_SESSION["total"] = $total;
-                echo "Acción realizada con éxito";
-            } else {
-                echo "No todos los jueces han puntuado al participante";
+        define('SERVER', '127.0.0.1');
+        define('USER', 'root');
+        define('PASS', 'root');
+        define('DB', 'kata_score');
+
+        if (isset($_SESSION['competition'])) {
+            $competitionID = $_SESSION['competition'];
+
+            $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+            if (!$connection) {
+                http_response_code(500);
+                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            }
+            $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
+
+            $response = mysqli_query($connection, $stmt);
+
+            $competitionInfo = $response->fetch_assoc();
+
+            $competition = new Competition($competitionInfo['estado'], $competitionInfo['fecha'], $competitionInfo['tipo_equipos'], $competitionInfo['nombre'], $competitionInfo['rango_etario'], $competitionInfo['sexo']);
+            $competition->setId($competitionID);
+
+            $numRound = $competition->getLastRound();
+
+            $round = new Round($numRound, $competitionID);
+
+            $participant = $round->getActiveParticipant();
+
+            if ($participant != false) {
+                if ($round->isScored($participant['ci'])) {
+                    $_SESSION["displayParticipant"] = true;
+                    $_SESSION["displayParticipantScore"] = true;
+                    $_SESSION["displayClassified"] = false;
+                    echo "Acción realizada con éxito";
+                } else {
+                    http_response_code(400);
+                    echo json_encode(array("error" => "No todos los jueces puntuaron al participante"));
+                }
             }
         } else {
-            echo "Establezca un participante actual";
+            http_response_code(400);
+            echo json_encode(array("error" => "Seleccione una competencia"));
         }
         ?>
-    </main>
-
-</body>
-
-</html>

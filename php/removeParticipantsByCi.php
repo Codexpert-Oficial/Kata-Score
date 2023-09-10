@@ -43,6 +43,23 @@ if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
             echo json_encode(array("error" => "Error: " . $stmt->error));
         }
         $stmt->close();
+
+        $stmt = $connection->prepare("DELETE FROM puntua WHERE ci = ? AND num_ronda = ? AND id_competencia = ?");
+        $stmt->bind_param("iii", $ci, $numRound, $competitionID);
+        if (!$stmt->execute()) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt->error));
+        }
+        $stmt->close();
+
+        $stmt = $connection->prepare("DELETE FROM pertenece WHERE ci = ? AND num_ronda = ? AND id_competencia = ?");
+        $stmt->bind_param("iii", $ci, $numRound, $competitionID);
+        if (!$stmt->execute()) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt->error));
+        }
+        $stmt->close();
+
         $connection->query("SET FOREIGN_KEY_CHECKS=0");
         $stmt = $connection->prepare("DELETE FROM compite WHERE ci = ? AND num_ronda = ? AND id_competencia = ?");
         $stmt->bind_param("iii", $ci, $numRound, $competitionID);
@@ -53,6 +70,7 @@ if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
             echo json_encode(array("error" => "Error: " . $stmt->error));
         }
         $stmt->close();
+
         $connection->query("SET FOREIGN_KEY_CHECKS=1");
     }
 } else {

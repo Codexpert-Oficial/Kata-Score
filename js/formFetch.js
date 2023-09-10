@@ -3,10 +3,12 @@ const form = document.querySelector('.form');
 form.addEventListener('submit', (e) => {
     e.preventDefault();
 
-    const formData = new FormData(form);
+    let formData = new FormData(form);
+
+    let url = form.getAttribute('action');
 
     if (isCompleted(formData)) {
-        fetch("/kata-score/php/addJudge.php", {
+        fetch(url, {
             method: "POST",
             body: formData
         })

@@ -31,6 +31,50 @@ if (isset($_POST['id']) && isset($_POST['action'])) {
             }
             $stmt->close();
 
+            $stmt = $connection->prepare("DELETE FROM puntua WHERE id_competencia = ?");
+            $stmt->bind_param("i", $id);
+            $response = $stmt->execute();
+            if (!$response) {
+                http_response_code(500);
+                echo json_encode(array("error" => "Error: " . $stmt->error));
+            } else {
+                echo $message;
+            }
+            $stmt->close();
+
+            $stmt = $connection->prepare("DELETE FROM compite WHERE id_competencia = ?");
+            $stmt->bind_param("i", $id);
+            $response = $stmt->execute();
+            if (!$response) {
+                http_response_code(500);
+                echo json_encode(array("error" => "Error: " . $stmt->error));
+            } else {
+                echo $message;
+            }
+            $stmt->close();
+
+            $stmt = $connection->prepare("DELETE FROM pertenece WHERE id_competencia = ?");
+            $stmt->bind_param("i", $id);
+            $response = $stmt->execute();
+            if (!$response) {
+                http_response_code(500);
+                echo json_encode(array("error" => "Error: " . $stmt->error));
+            } else {
+                echo $message;
+            }
+            $stmt->close();
+
+            $stmt = $connection->prepare("DELETE FROM pool WHERE id_competencia = ?");
+            $stmt->bind_param("i", $id);
+            $response = $stmt->execute();
+            if (!$response) {
+                http_response_code(500);
+                echo json_encode(array("error" => "Error: " . $stmt->error));
+            } else {
+                echo $message;
+            }
+            $stmt->close();
+
             $stmt = $connection->prepare("DELETE FROM ronda WHERE id_competencia = ?");
             $stmt->bind_param("i", $id);
             $response = $stmt->execute();

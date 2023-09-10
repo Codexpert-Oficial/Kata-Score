@@ -13,7 +13,7 @@
 <body>
 
     <main>
-        <form class="form">
+        <form class="form" action="addJudge.php" method="post">
             <input type="text" placeholder="Usuario" name='user' class="input" required>
             <input type="number" min='1' max='5' placeholder="Numero" name="number" class="input" required>
             <?php
@@ -53,7 +53,7 @@
 
     <script src="../js/messages.js"></script>
     <script src="../js/verifyData.js"></script>
-    <script src="../js/addJudge.js"></script>
+    <script src="../js/formFetch.js"></script>
 
 </body>
 

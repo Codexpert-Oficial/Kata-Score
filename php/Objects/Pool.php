@@ -1,5 +1,7 @@
 <?php
 
+require_once('Round.php');
+
 class Pool
 {
     private $_id;
@@ -141,5 +143,40 @@ class Pool
             echo json_encode(array("error" => "Error en la consulta: " . $stmt));
         }
         $stmt->close();
+    }
+
+    public function allScored()
+    {
+        $round = new Round($this->_round, $this->_competitionID);
+
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT * FROM pertenece WHERE id_pool = $this->_id AND id_competencia = $this->_competitionID AND num_ronda = $this->_round";
+
+        $response = mysqli_query($connection, $stmt);
+
+        $cont = 0;
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            return false;
+        }
+        while ($participant = $response->fetch_assoc()) {
+            if ($round->isScored($participant['ci'])) {
+                $cont++;
+            }
+        }
+
+        if ($cont == $response->num_rows) {
+            return true;
+        }
+
+        return false;
     }
 }

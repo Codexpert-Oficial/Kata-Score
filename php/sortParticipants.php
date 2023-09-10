@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Participantes</title>
     <link rel="stylesheet" href="../css/estilo.css">
-    <link rel="stylesheet" href="../css/main.css">
     <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
 </head>
 
@@ -15,12 +14,15 @@
     <main>
 
         <table class="table">
+            <thead>
 
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Pool</th>
-            </tr>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Pool</th>
+                </tr>
+
+            </thead>
 
             <?php
 
@@ -57,6 +59,20 @@
                 $round = new Round($numRound, $competitionID);
 
                 $round->createPools();
+
+                $participants = $round->getParticipantsPools();
+                echo "<tbody>";
+                while ($participant = $participants->fetch_assoc()) {
+                    echo "<tr>
+                    <td>" . $participant['nombre_competidor'] . "</td>
+                    <td>" . $participant['apellido_competidor'] . "</td>";
+                    if ($participant['id_pool'] % 2 == 0) {
+                        echo "<td class='blue'>" . $participant['id_pool'] . "</td></tr>";
+                    } else {
+                        echo "<td class='red'>" . $participant['id_pool'] . "</td></tr>";
+                    }
+                }
+                echo "</tbody>";
             } else {
                 echo ("Seleccione una competencia");
             }

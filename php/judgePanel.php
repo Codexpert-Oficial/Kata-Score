@@ -137,7 +137,7 @@
 
     <script src="../js/messages.js"></script>
     <script src="../js/verifyData.js"></script>
-    <script src="../js/scoreParticipant.js"></script>
+    <script src="../js/formFetch.js"></script>
 </body>
 
 </html>
