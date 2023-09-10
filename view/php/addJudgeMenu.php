@@ -13,7 +13,7 @@
 <body>
 
     <main>
-        <form class="form" action="addJudge.php" method="post">
+        <form class="form" action="../../model/addJudge.php" method="post">
             <input type="text" placeholder="Usuario" name='user' class="input" required>
             <input type="number" min='1' max='5' placeholder="Numero" name="number" class="input" required>
             <?php
