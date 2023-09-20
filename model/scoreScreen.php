@@ -1,35 +1,21 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tanteador</title>
-    <link rel="stylesheet" href="../css/estilo.css">
-    <link rel="stylesheet" href="../css/main.css">
-    <link rel="stylesheet" href="../css/scoreScreen.css">
-    <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
-</head>
-
-<body>
 
     <?php
 
     session_start();
 
-    error_reporting(0);
+    /* error_reporting(0); */
 
     define('SERVER', '127.0.0.1');
     define('USER', 'root');
     define('PASS', 'root');
     define('DB', 'kata_score');
 
-    include '../../model/Objects/Competition.php';
-    include '../../model/Objects/Round.php';
+    include './Objects/Competition.php';
+    include './Objects/Round.php';
 
-    if (isset($_GET['competition'])) {
+    if (isset($_SESSION['scoreCompetition'])) {
 
-        $competitionID = $_GET['competition'];
+        $competitionID = $_SESSION['scoreCompetition'];
 
         $connection = mysqli_connect(SERVER, USER, PASS, DB);
 
@@ -120,7 +106,8 @@
 
                     echo "<h1 class='title'> Clasificados </h1>";
 
-                    echo "<table class='table'>";
+                    echo "<section class='table__container'>
+                    <table class='table'>";
 
                     echo "<tr><th>Posición</th><th>Nombre</th><th>Apellido</th><th>Puntaje</th></tr>";
                     $cont = 1;
@@ -128,15 +115,12 @@
                         echo "<tr><td>" . $cont . "</td><td>" . $participant['nombre_competidor'] . "</td><td>" . $participant['apellido_competidor'] . "</td><td>" . $participant['puntaje_final'] . "</td></tr>";
                         $cont++;
                     }
-                    echo "</table>";
+                    echo "</table>
+                    </section>
+                    </article>
+                    </main>";
                 }
             }
         }
     }
     ?>
-    </article>
-    </main>
-
-</body>
-
-</html>

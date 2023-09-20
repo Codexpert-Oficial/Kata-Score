@@ -93,9 +93,4 @@ class Participant
             }
         }
     }
-
-    public function __toString()
-    {
-        return "<tr><td>" . $this->_ci . "</td><td>" . $this->_name . "</td><td>" . $this->_lastName . "</td></tr>";
-    }
 }

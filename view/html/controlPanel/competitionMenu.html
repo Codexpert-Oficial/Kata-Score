@@ -4,21 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Competencias</title>
     <link rel="stylesheet" href="../../css/estilo.css">
-    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/competitions.css">
     <link rel="shortcut icon" href="../../imgs/katascore-isologotipo.ico" type="image/x-icon">
 </head>
 
 <body>
+
     <main>
-        <article>
-            <h1 class="title">Login Tecnico</h1>
-            <form method='post' action='../../../model/loginTechnician.php' class="form">
-                <input type="text" placeholder="Usuario" name="user" class="input" required>
-                <input type="password" placeholder="Contraseña" name="password" class="input" required>
-                <input type="submit" value="Ingresar" class="button">
-            </form>
+        <h1 class="competition__title">Competencias</h1>
+        <article class="competition__menu">
+            <a href="enterCompetition.html" class="competition__element competition__element-add">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                    class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                </svg>
+                Agregar Competencia
+            </a>
         </article>
 
         <article class="msg msg__hidden">
@@ -39,6 +43,8 @@
                 </div>
             </section>
         </article>
+
+
     </main>
 
     <footer>
@@ -46,10 +52,8 @@
         <p>Desarrollado por Codexpert</p>
     </footer>
 
+    <script src="../../../controller/competitionMenu.js"></script>
     <script src="../../../controller/messages.js"></script>
-    <script src="../../../controller/verifyData.js"></script>
-    <script src="../../../controller/loginTechnician.js"></script>
-
 </body>
 
 </html>

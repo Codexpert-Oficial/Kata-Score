@@ -1,37 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participantes</title>
-    <link rel="stylesheet" href="../css/estilo.css">
-    <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
-</head>
-
-<body>
-
-    <main>
-
-        <h1 class="title">Participantes</h1>
-
-        <table class="table">
-            <thead>
-
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Pool</th>
-                </tr>
-
-            </thead>
 
             <?php
 
             session_start();
 
-            include '../../model/Objects/Round.php';
-            include '../../model/Objects/Competition.php';
+            include './Objects/Round.php';
+            include './Objects/Competition.php';
 
             define('SERVER', '127.0.0.1');
             define('USER', 'root');
@@ -81,16 +54,3 @@
 
 
             ?>
-
-        </table>
-
-    </main>
-
-    <footer>
-        <div class="footer__line"></div>
-        <p>Desarrollado por Codexpert</p>
-    </footer>
-
-</body>
-
-</html>

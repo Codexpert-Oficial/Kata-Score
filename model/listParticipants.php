@@ -1,26 +1,10 @@
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participantes</title>
-    <link rel="stylesheet" href="../css/estilo.css">
-    <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
-</head>
-
-<body>
-
-    <main>
-
-        <h1 class="title">Participantes</h1>
 
         <?php
 
         session_start();
 
-        include '../../model/Objects/Competition.php';
-        include '../../model/Objects/Round.php';
+        include './Objects/Competition.php';
+        include './Objects/Round.php';
 
         error_reporting(0);
 
@@ -29,7 +13,8 @@
         define('PASS', 'root');
         define('DB', 'kata_score');
 
-        echo "<table class='table'>";
+        echo "<section class='table__container'>
+        <table class='table'>";
         echo "<tr><th>C.I.</th><th>Nombre</th><th>Apellido</th><th colspan=2>Kata</th><th>Pool</th></tr>";
 
         if (isset($_SESSION['competition'])) {
@@ -89,17 +74,7 @@
             }
         }
 
-        echo "</table>";
+        echo "</table>
+        </section>";
 
         ?>
-
-    </main>
-
-    <footer>
-        <div class="footer__line"></div>
-        <p>Desarrollado por Codexpert</p>
-    </footer>
-
-</body>
-
-</html>

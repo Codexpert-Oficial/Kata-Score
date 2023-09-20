@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participantes</title>
-    <link rel="stylesheet" href="../css/estilo.css">
-    <link rel="stylesheet" href="../css/participantsMenu.css">
-    <link rel="shortcut icon" href="../imgs/katascore-isologotipo.ico" type="image/x-icon">
-</head>
-
-<body>
-
-    <main>
-        <h1 class="title">Participantes</h1>
-        <article class="participants__menu">
 
             <?php
 
@@ -22,7 +6,7 @@
 
             error_reporting(0);
 
-            include '../../model/Objects/Competition.php';
+            include './Objects/Competition.php';
 
             if (isset($_SESSION['competition'])) {
                 $competitionID = $_SESSION['competition'];
@@ -96,57 +80,21 @@
                 </section>";
             }
 
+            echo "</article>
+
+            <article class='assign__kata assign__kata__hidden'>
+    
+                <form class='form'>
+                    <div class='close__assign__container'>
+                        <a href='' class='close__assign'>
+                            <svg xmlns='http://www.w3.org/2000/svg' width='45' height='45' fill='currentColor' class='bi bi-x' viewBox='0 0 16 16'>
+                                <path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z' />
+                            </svg>
+                        </a>
+                    </div>
+                    <input type='hidden' name='round' value=$round>
+                    <input type='number' min=1 max=102 name='kata' class='input' placeholder='Kata' required>
+                    <input type='submit' value='Ingresar' class='button'>
+                </form>";
+
             ?>
-        </article>
-
-        <article class="assign__kata assign__kata__hidden">
-
-            <form class="form">
-                <div class="close__assign__container">
-                    <a href="" class="close__assign">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                        </svg>
-                    </a>
-                </div>
-                <?php
-                echo "<input type='hidden' name='round' value=$round>";
-                ?>
-                <input type="number" min=1 max=102 name='kata' class="input" placeholder="Kata" required>
-                <input type="submit" value="Ingresar" class="button">
-            </form>
-
-        </article>
-
-        <article class="msg msg__hidden">
-            <section class="msg__info">
-                <div class="msg__close msg__close-error">
-                    <p class="msg__title">Error</p>
-                    <button class="msg__close__button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="msg__content">
-                    <img src="../imgs/icons/error.svg" class="msg__icon">
-                    <p class="msg__text msg__text-error">No deberias de estar viendo este mensaje</p>
-                </div>
-            </section>
-        </article>
-
-    </main>
-
-    <footer>
-        <div class="footer__line"></div>
-        <p>Desarrollado por Codexpert</p>
-    </footer>
-
-
-
-    <script src="../../controller/messages.js"></script>
-    <script src="../../controller/verifyData.js"></script>
-    <script src="../../controller/assignKata.js"></script>
-</body>
-
-</html>
