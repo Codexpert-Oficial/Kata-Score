@@ -7,8 +7,8 @@ define('DB', 'kata_score');
 
 error_reporting(0);
 
-include './Objects/Score.php';
-include './Objects/Round.php';
+include_once './Objects/Score.php';
+include_once './Objects/Round.php';
 
 if (isset($_POST['score']) && isset($_POST['judge']) && isset($_POST['competition']) && isset($_POST['round'])) {
 

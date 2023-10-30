@@ -8,8 +8,9 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
-include 'Objects/Competition.php';
-include 'Objects/Round.php';
+include_once 'Objects/Competition.php';
+include_once 'Objects/Round.php';
+
 if (isset($_SESSION["judgeUser"]) && isset($_SESSION["judgeCompetition"])) {
     $competitionID = $_SESSION['judgeCompetition'];
     $user = $_SESSION["judgeUser"];
@@ -58,7 +59,7 @@ if (isset($_SESSION["judgeUser"]) && isset($_SESSION["judgeCompetition"])) {
 
             $participant = $round->getActiveParticipant();
 
-            if ($participant['ci'] == "") {
+            if (!$participant) {
                 echo "No hay ningun particpante activo";
             } else {
                 $stmt = "SELECT * FROM realiza JOIN kata ON realiza.id_kata = kata.id_kata WHERE ci = " . $participant['ci'] . " AND num_ronda = $numRound AND id_competencia = $competitionID";
@@ -118,8 +119,10 @@ if (isset($_SESSION["judgeUser"]) && isset($_SESSION["judgeCompetition"])) {
                 <p>Desarrollado por Codexpert</p>
             </footer>
             
+            
             <script src='../../../controller/messages.js'></script>
-            <script src='../../../controller/verifyData.js'></script>";
+    <script src='../../../controller/verifyData.js'></script>
+    <script src='../../../controller/formFetch.js'></script>";
         }
     }
 } else {

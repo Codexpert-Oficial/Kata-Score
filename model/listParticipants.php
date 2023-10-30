@@ -3,8 +3,8 @@
 
         session_start();
 
-        include './Objects/Competition.php';
-        include './Objects/Round.php';
+        include_once './Objects/Competition.php';
+        include_once './Objects/Round.php';
 
         error_reporting(0);
 
@@ -40,37 +40,45 @@
 
             $participants = $round->getParticipantsPools();
 
-            while ($participant = $participants->fetch_assoc()) {
+            if ($participants->num_rows <= 0) {
 
                 echo "<tr>
-                <td>" . $participant['ci'] . "</td>
-                <td>" . $participant['nombre_competidor'] . "</td>
-                <td>" . $participant['apellido_competidor'] . "</td>";
+                <td colspan=6> No hay participantes registrados </td>
+                </tr>";
+            } else {
 
-                $stmt = "SELECT * FROM realiza JOIN kata on realiza.id_kata = kata.id_kata WHERE ci = " . $participant['ci'] . " AND id_competencia = $competitionID AND num_ronda = $numRound";
+                while ($participant = $participants->fetch_assoc()) {
 
-                $response = mysqli_query($connection, $stmt);
-                if (!$response) {
-                    echo "Error al ingresar: " . $stmt;
-                } else if ($response->num_rows <= 0) {
-                    echo "<td colspan=2>Sin Kata</td>";
-                } else {
-                    $kata = $response->fetch_assoc();
-                    echo "<td>" . $kata['id_kata'] . "</td>
-                    <td>" . $kata['nombre_kata'] . "</td>";
-                }
+                    echo "<tr>
+                    <td>" . $participant['ci'] . "</td>
+                    <td>" . $participant['nombre_competidor'] . "</td>
+                    <td>" . $participant['apellido_competidor'] . "</td>";
 
-                if ($participant['id_pool'] == "") {
-                    echo "<td>Sin Pool</td>";
-                } else {
-                    if ($participant['id_pool'] % 2 == 0) {
-                        echo "<td class='blue'>";
+                    $stmt = "SELECT * FROM realiza JOIN kata on realiza.id_kata = kata.id_kata WHERE ci = " . $participant['ci'] . " AND id_competencia = $competitionID AND num_ronda = $numRound";
+
+                    $response = mysqli_query($connection, $stmt);
+                    if (!$response) {
+                        echo "Error al ingresar: " . $stmt;
+                    } else if ($response->num_rows <= 0) {
+                        echo "<td colspan=2>Sin Kata</td>";
                     } else {
-                        echo "<td class='red'>";
+                        $kata = $response->fetch_assoc();
+                        echo "<td>" . $kata['id_kata'] . "</td>
+                        <td>" . $kata['nombre_kata'] . "</td>";
                     }
-                    echo $participant['id_pool'] . "</td>";
+
+                    if ($participant['id_pool'] == "") {
+                        echo "<td>Sin Pool</td>";
+                    } else {
+                        if ($participant['id_pool'] % 2 == 0) {
+                            echo "<td class='blue'>";
+                        } else {
+                            echo "<td class='red'>";
+                        }
+                        echo $participant['id_pool'] . "</td>";
+                    }
+                    echo "</tr>";
                 }
-                echo "</tr>";
             }
         }
 

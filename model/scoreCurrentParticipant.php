@@ -5,8 +5,8 @@
 
         error_reporting(0);
 
-        include './Objects/Competition.php';
-        include './Objects/Round.php';
+        include_once './Objects/Competition.php';
+        include_once './Objects/Round.php';
 
         define('SERVER', '127.0.0.1');
         define('USER', 'root');

@@ -1,5 +1,9 @@
 <?php
 
+require_once("Round.php");
+require_once("Competes.php");
+require_once("Pool.php");
+
 class Competition
 {
     private $_id;
@@ -137,5 +141,140 @@ class Competition
             $round = $response->fetch_assoc();
             return $round['num_ronda'];
         }
+    }
+
+    public function passRound()
+    {
+
+        $prevRound = $this->getLastRound();
+        $round = new Round($prevRound, $this->_id);
+        $firstRound = new Round(1, $this->_id);
+        $poolsCount = $round->getPools()->num_rows;
+
+        if ($poolsCount <= 0 || !$round->allScored() || !$round->setPositions()) {
+            return false;
+        }
+
+        $participants = $firstRound->getParticipants();
+        $totalParticipants = $participants->num_rows;
+
+        $poolsInPool = 1;
+
+        if ($totalParticipants <= 3) {
+
+            return false;
+        } else if ($totalParticipants <= 4) {
+
+            if ($prevRound >= 2) {
+                return false;
+            }
+
+            $participantsPerPool = 2;
+        } else if ($totalParticipants <= 10) {
+
+            if ($prevRound >= 2) {
+                return false;
+            }
+
+            $participantsPerPool = 3;
+        } else if ($totalParticipants <= 24) {
+
+            switch ($prevRound) {
+                case 1:
+                    $participantsPerPool = 4;
+                    break;
+                case 2:
+                    $participantsPerPool = 3;
+                    break;
+                default:
+                    return false;
+            }
+        } else if ($totalParticipants <= 48) {
+
+            switch ($prevRound) {
+                case 1:
+                    $participantsPerPool = 4;
+                    $poolsInPool = 2;
+                    $poolsCount = $poolsCount / 2;
+                    break;
+                case 2:
+                    $participantsPerPool = 4;
+                    break;
+                case 3:
+                    $participantsPerPool = 3;
+                    break;
+                default:
+                    return false;
+            }
+        } else if ($totalParticipants <= 96) {
+
+            switch ($prevRound) {
+                case 1:
+                    $participantsPerPool = 4;
+                    $poolsInPool = 2;
+                    $poolsCount = $poolsCount / 2;
+                    break;
+                case 2:
+                    $participantsPerPool = 4;
+                    $poolsInPool = 2;
+                    $poolsCount = $poolsCount / 2;
+                    break;
+                case 3:
+                    $participantsPerPool = 4;
+                    break;
+                case 4:
+                    $participantsPerPool = 3;
+                    break;
+                default:
+                    return false;
+            }
+        } else {
+            return false;
+        }
+
+        $newRound = new Round($prevRound + 1, $this->_id);
+        $newRound->enterRound();
+
+        for ($x = 1; $x <= $poolsCount; $x++) {
+            if ($x % 2 == 0) {
+                $belt = 'AO';
+            } else {
+                $belt = 'AKA';
+            }
+
+            $pools[$x] = new Pool($x, $belt, $this->_id, $prevRound + 1);
+            $pools[$x]->enterPool();
+
+            $z = 0;
+
+            for ($y = 0; $y < $poolsInPool; $y++) {
+
+                $pool = new Pool($x + $y + $z, $belt, $this->_id, $prevRound);
+
+                $participants = $pool->getParticipantsByScore();
+
+                if (!$participants) {
+                    return false;
+                }
+
+                $i = 0;
+
+                while ($participant = $participants->fetch_assoc() && $i < $participantsPerPool) {
+
+                    $competes = new Competes($participant['ci'], $newRound->getNumber(), $this->_id);
+                    $competes->enterCompetes();
+
+                    $pools[$x]->addParticipant($participant['ci']);
+
+                    $i++;
+                }
+            }
+
+            if ($poolsInPool > 1) {
+                $z++;
+            }
+        }
+
+        return true;
     }
 }

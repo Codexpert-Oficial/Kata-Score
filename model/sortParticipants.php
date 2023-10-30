@@ -3,8 +3,8 @@
 
             session_start();
 
-            include './Objects/Round.php';
-            include './Objects/Competition.php';
+            include_once './Objects/Round.php';
+            include_once './Objects/Competition.php';
 
             define('SERVER', '127.0.0.1');
             define('USER', 'root');
@@ -32,21 +32,34 @@
                 $numRound = $competition->getLastRound();
 
                 $round = new Round($numRound, $competitionID);
+                $participants = $round->getParticipants();
 
-                $round->createPools();
-
-                $participants = $round->getParticipantsPools();
                 echo "<tbody>";
-                while ($participant = $participants->fetch_assoc()) {
+
+                if ($participants->num_rows <= 0) {
+
                     echo "<tr>
-                    <td>" . $participant['nombre_competidor'] . "</td>
-                    <td>" . $participant['apellido_competidor'] . "</td>";
-                    if ($participant['id_pool'] % 2 == 0) {
-                        echo "<td class='blue'>" . $participant['id_pool'] . "</td></tr>";
-                    } else {
-                        echo "<td class='red'>" . $participant['id_pool'] . "</td></tr>";
+                    <td colspan=3> No hay participantes registrados </td>
+                    </tr>";
+                } else {
+
+                    $round->createPools();
+
+                    $participants = $round->getParticipantsPools();
+
+                    while ($participant = $participants->fetch_assoc()) {
+                        echo "<tr>
+                        <td>" . $participant['nombre_competidor'] . "</td>
+                        <td>" . $participant['apellido_competidor'] . "</td>";
+                        if ($participant['id_pool'] % 2 == 0) {
+                            echo "<td class='blue'>" . $participant['id_pool'] . "</td></tr>";
+                        } else {
+                            echo "<td class='red'>" . $participant['id_pool'] . "</td></tr>";
+                        }
                     }
                 }
+
+
                 echo "</tbody>";
             } else {
                 echo ("Seleccione una competencia");

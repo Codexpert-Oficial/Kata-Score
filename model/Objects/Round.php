@@ -1,6 +1,7 @@
 <?php
 
 require_once('Pool.php');
+require_once('Competes.php');
 
 class Round
 {
@@ -127,7 +128,7 @@ class Round
         $stmt->bind_param("ii", $this->_number, $this->_competitionID);
         if (!$stmt->execute()) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
         }
         $stmt->close();
 
@@ -138,7 +139,7 @@ class Round
             return "Accion realizada con exito";
         } else {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
         }
         $stmt->close();
     }
@@ -256,6 +257,27 @@ class Round
         }
     }
 
+    public function getPools()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT * FROM pool WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID";
+
+        $response = mysqli_query($connection, $stmt);
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+        } else {
+            return $response;
+        }
+    }
+
     public function getParticipantsPools()
     {
         $connection = mysqli_connect(SERVER, USER, PASS, DB);
@@ -265,7 +287,7 @@ class Round
             echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
         }
 
-        $stmt = "SELECT competidor.*, pertenece.id_pool FROM competidor JOIN compite ON competidor.ci = compite.ci LEFT JOIN pertenece ON competidor.ci = pertenece.ci AND compite.num_ronda = pertenece.num_ronda  WHERE compite.num_ronda = $this->_number AND compite.id_competencia = $this->_competitionID ORDER BY id_pool ASC";
+        $stmt = "SELECT competidor.*, pertenece.id_pool FROM competidor JOIN compite ON competidor.ci = compite.ci LEFT JOIN pertenece ON competidor.ci = pertenece.ci AND compite.num_ronda = pertenece.num_ronda AND compite.id_competencia = pertenece.id_competencia  WHERE compite.num_ronda = $this->_number AND compite.id_competencia = $this->_competitionID ORDER BY id_pool ASC";
 
         $response = mysqli_query($connection, $stmt);
 
@@ -299,6 +321,45 @@ class Round
         } else {
             return true;
         }
+    }
+
+    public function allScored()
+    {
+
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT * FROM compite WHERE id_competencia = $this->_competitionID AND num_ronda = $this->_number";
+
+        $response = mysqli_query($connection, $stmt);
+
+        $cont = 0;
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            return false;
+        }
+
+        if ($response->num_rows === 0) {
+            return false;
+        }
+
+        while ($participant = $response->fetch_assoc()) {
+            if ($this->isScored($participant['ci'])) {
+                $cont++;
+            }
+        }
+
+        if ($cont == $response->num_rows) {
+            return true;
+        }
+
+        return false;
     }
 
     public function totalScore($ci)
@@ -335,5 +396,76 @@ class Round
 
             return $total;
         }
+    }
+
+    public function getPoolScores($pool)
+    {
+
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            return false;
+        }
+
+        $stmt = "SELECT puntua.ci ,SUM(puntaje) - MAX(puntaje) - MIN(puntaje) AS puntaje_final
+                    FROM puntua
+                    JOIN pertenece ON pertenece.ci = puntua.ci AND pertenece.id_competencia = puntua.id_competencia AND pertenece.num_ronda = puntua.num_ronda
+                    WHERE pertenece.id_pool = $pool
+                    AND puntua.id_competencia = $this->_competitionID
+                    AND puntua.num_ronda = $this->_number
+                    GROUP BY ci
+                    ORDER BY puntaje_final DESC";
+
+        $participants = mysqli_query($connection, $stmt);
+
+        if (!$participants) {
+            return false;
+        }
+
+        return $participants;
+    }
+
+    public function setPositions()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            return false;
+        }
+
+        $pools = $this->getPools();
+
+        while ($pool = $pools->fetch_assoc()) {
+
+            $idPool = $pool['id_pool'];
+
+            $stmt = "SELECT puntua.ci ,SUM(puntaje) - MAX(puntaje) - MIN(puntaje) AS puntaje_final
+                    FROM puntua
+                    JOIN pertenece ON pertenece.ci = puntua.ci AND pertenece.id_competencia = puntua.id_competencia AND pertenece.num_ronda = puntua.num_ronda
+                    WHERE pertenece.id_pool = $idPool
+                    AND puntua.id_competencia = $this->_competitionID
+                    AND puntua.num_ronda = $this->_number
+                    GROUP BY ci
+                    ORDER BY puntaje_final DESC";
+
+            $participants = mysqli_query($connection, $stmt);
+
+            if (!$participants) {
+                return false;
+            }
+
+            $cont = 0;
+
+            while ($participant = $participants->fetch_assoc()) {
+                $cont++;
+                $competes = new Competes($participant['ci'], $this->_competitionID, $this->_number);
+                $competes->setPosition($cont);
+
+                if (!$competes->enterPosition()) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

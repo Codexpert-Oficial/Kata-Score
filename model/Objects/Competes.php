@@ -107,4 +107,28 @@ class Competes
             }
         }
     }
+
+    public function enterPosition()
+    {
+
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        }
+
+        $stmt = $connection->prepare(
+            "UPDATE compite SET puesto = ? WHERE ci = ? AND id_competencia = ? AND num_ronda = ?"
+        );
+
+        $stmt->bind_param("iiii", $this->_position, $this->_ci, $this->_competitionID, $this->_numRound);
+
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
+        $stmt->close();
+    }
 }

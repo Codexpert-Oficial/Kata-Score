@@ -8,8 +8,8 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
-include './Objects/Competition.php';
-include './Objects/Round.php';
+include_once './Objects/Competition.php';
+include_once './Objects/Round.php';
 
 if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
 

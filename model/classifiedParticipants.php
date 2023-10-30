@@ -10,8 +10,8 @@
         define('PASS', 'root');
         define('DB', 'kata_score');
 
-        include './Objects/Pool.php';
-        include './Objects/Competition.php';
+        include_once './Objects/Pool.php';
+        include_once './Objects/Competition.php';
 
         if (isset($_POST["pool"]) && isset($_SESSION['competition'])) {
 

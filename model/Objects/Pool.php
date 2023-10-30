@@ -73,7 +73,7 @@ class Pool
         $stmt->bind_param("siii", $this->_belt, $this->_id, $this->_competitionID, $this->_round);
         if (!$stmt->execute()) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
         }
         $stmt->close();
     }
@@ -119,7 +119,7 @@ class Pool
         $stmt->bind_param("iiii", $this->_id, $ci, $this->_competitionID, $this->_round);
         if (!$stmt->execute()) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
         }
         $stmt->close();
     }
@@ -183,5 +183,28 @@ class Pool
         }
 
         return false;
+    }
+
+    public function getParticipantsByScore()
+    {
+
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            return false;
+        }
+
+        $stmt = "SELECT puntua.ci ,SUM(puntaje) - MAX(puntaje) - MIN(puntaje) AS puntaje_final
+                    FROM puntua
+                    JOIN pertenece ON pertenece.ci = puntua.ci AND pertenece.id_competencia = puntua.id_competencia AND pertenece.num_ronda = puntua.num_ronda
+                    WHERE pertenece.id_pool = $this->_id
+                    AND puntua.id_competencia = $this->_competitionID
+                    AND puntua.num_ronda = $this->_round
+                    GROUP BY ci
+                    ORDER BY puntaje_final DESC";
+
+        $response = mysqli_query($connection, $stmt);
+
+        return $response;
     }
 }

@@ -10,8 +10,8 @@
     define('PASS', 'root');
     define('DB', 'kata_score');
 
-    include './Objects/Competition.php';
-    include './Objects/Round.php';
+    include_once './Objects/Competition.php';
+    include_once './Objects/Round.php';
 
     if (isset($_SESSION['scoreCompetition'])) {
 
@@ -32,12 +32,13 @@
         $competition = new Competition($competitionInfo['estado'], $competitionInfo['fecha'], $competitionInfo['tipo_equipos'], $competitionInfo['nombre'], $competitionInfo['rango_etario'], $competitionInfo['sexo']);
         $competition->setId($competitionID);
 
+        $numRound = $competition->getLastRound();
+        $round = new Round($numRound, $competitionID);
+
         if (isset($_SESSION["displayParticipant"])) {
 
             if ($_SESSION["displayParticipant"]) {
 
-                $numRound = $competition->getLastRound();
-                $round = new Round($numRound, $competitionID);
                 $participant = $round->getActiveParticipant();
 
                 $stmt = "SELECT * FROM pertenece WHERE ci = " . $participant['ci'];
@@ -96,6 +97,8 @@
                     JOIN puntua ON competidor.ci = puntua.ci
                     JOIN pertenece ON competidor.ci = pertenece.ci
                     WHERE pertenece.id_pool = $pool
+                    AND pertenece.id_competencia = $competitionID
+                    AND pertenece.num_ronda = $numRound
                     GROUP BY competidor.ci
                     ORDER BY puntaje_final DESC
                     LIMIT 3";

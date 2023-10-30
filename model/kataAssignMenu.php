@@ -6,7 +6,7 @@
 
             error_reporting(0);
 
-            include './Objects/Competition.php';
+            include_once './Objects/Competition.php';
 
             if (isset($_SESSION['competition'])) {
                 $competitionID = $_SESSION['competition'];

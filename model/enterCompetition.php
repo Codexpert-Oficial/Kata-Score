@@ -7,8 +7,8 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
-include './Objects/Competition.php';
-include './Objects/Round.php';
+include_once './Objects/Competition.php';
+include_once './Objects/Round.php';
 
 if (isset($_POST["name"]) && isset($_POST["teamType"]) && isset($_POST["ageRange"]) && isset($_POST["gender"])) {
     $name = $_POST["name"];

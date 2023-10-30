@@ -4,7 +4,7 @@ session_start();
 
 error_reporting(0);
 
-include './Objects/Performs.php';
+include_once './Objects/Performs.php';
 
 define('SERVER', '127.0.0.1');
 define('USER', 'root');

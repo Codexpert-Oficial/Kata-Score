@@ -8,7 +8,7 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
-include './Objects/Participates.php';
+include_once './Objects/Participates.php';
 
 if (isset($_POST['user']) && isset($_POST['number']) && isset($_SESSION['competition'])) {
     $user = $_POST['user'];

@@ -31,6 +31,23 @@ footer {
   font-family: "Courier New";
 }
 
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f6f8fa;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c7d2d9;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a9b5bd;
+}
+
 .title {
   font-size: 80px;
   margin: 0;
@@ -187,6 +204,48 @@ th {
   align-items: center;
   justify-content: center;
   max-width: 550px;
+}
+
+.password__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password__eye {
+  position: absolute;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.password__eye .password__eye__img {
+  display: none;
+}
+
+.password__eye__hidden .password__eye-slash__img {
+  display: none;
+}
+
+.password__eye__hidden .password__eye__img {
+  display: block;
+}
+
+.password__eye__img,
+.password__eye-slash__img {
+  width: 35px;
+  height: 35px;
+  transition: 0.1s ease-in-out all;
+  color: #697995;
+}
+
+.password__eye__img:hover,
+.password__eye-slash__img:hover {
+  cursor: pointer;
+  color: #2c3647;
 }
 
 .msg {
