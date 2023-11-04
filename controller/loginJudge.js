@@ -21,7 +21,7 @@ if (form !== null) {
                     }
                 })
                 .then(() =>
-                    window.location.href = '/kata-score/view/html/judgePanel/judgeCompetitions.html'
+                    window.location.href = './judgeCompetitions.html'
                 )
                 .catch(error => {
                     changeMsg(error.message);
@@ -53,7 +53,7 @@ if (competitions !== null) {
                 })
                     .catch(error => console.log(error));
 
-                window.location.href = "/kata-score/view/html/judgePanel/judgePanel.html";
+                window.location.href = "./judgePanel.html";
             });
 
         });

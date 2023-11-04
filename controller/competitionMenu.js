@@ -56,7 +56,7 @@ const links = () => {
             })
                 .catch(error => console.log(error));
 
-            window.location.href = "/kata-score/view/html/controlPanel/controlPanel.html";
+            window.location.href = "./controlPanel.html";
         });
 
     });

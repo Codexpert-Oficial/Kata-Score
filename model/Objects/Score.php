@@ -74,7 +74,7 @@ class Score
             $connection = mysqli_connect(SERVER, USER, PASS, DB);
             if (!$connection) {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
             }
 
             $stmt = $connection->prepare("INSERT INTO puntua (ci, id_competencia, num_ronda, puntaje, usuario_juez) VALUES (?,?,?,?,?)");
@@ -82,10 +82,14 @@ class Score
             $stmt->bind_param("iiiis", $this->_ci, $this->_competitionID, $this->_round, $this->_scoreValue, $this->_judge);
 
             if ($stmt->execute()) {
-                return "Puntaje registrado con exito";
+                if ($_COOKIE['lang'] == "es") {
+                    return "Puntaje registrado con exito";
+                } else {
+                    return "Score registered successfully";
+                }
             } else {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
+                echo json_encode(array("error" => "Error: " . $stmt->error));
             }
             $stmt->close();
         }
@@ -97,7 +101,7 @@ class Score
         $connection = mysqli_connect(SERVER, USER, PASS, DB);
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM puntua WHERE ci = $this->_ci AND id_competencia = $this->_competitionID AND num_ronda = $this->_round AND usuario_juez = '$this->_judge'";
@@ -106,13 +110,17 @@ class Score
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             if ($response->num_rows <= 0) {
                 return false;
             } else {
                 http_response_code(400);
-                echo json_encode(array("error" => "Puntaje ya registrado"));
+                if ($_COOKIE['lang'] == "es") {
+                    echo json_encode(array("error" => "Puntaje ya registrado"));
+                } else {
+                    echo json_encode(array("error" => "Already registered score"));
+                }
                 return true;
             }
         }

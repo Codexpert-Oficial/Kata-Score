@@ -50,7 +50,7 @@ class Participates
 
             if (!$connection) {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
             }
 
             $stmt = $connection->prepare(
@@ -60,10 +60,14 @@ class Participates
             $stmt->bind_param("iis", $this->_competitionId, $this->_number, $this->_judgeUser);
 
             if ($stmt->execute()) {
-                echo "Juez añadido con exito";
+                if ($_COOKIE['lang'] == "es") {
+                    echo "Juez añadido con exito";
+                } else {
+                    echo "Judge added successfully";
+                }
             } else {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error al ejecutar la consulta: " . $stmt->error));
+                echo json_encode(array("error" => "Error: " . $stmt->error));
             }
 
             $stmt->close();
@@ -76,7 +80,7 @@ class Participates
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM participa WHERE id_competencia = '$this->_competitionId' AND num_juez = '$this->_number'";
@@ -85,13 +89,17 @@ class Participates
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             if ($response->num_rows <= 0) {
                 return false;
             } else {
                 http_response_code(400);
-                echo json_encode(array("error" => "Numero de juez ya asignado"));
+                if ($_COOKIE['lang'] == "es") {
+                    echo json_encode(array("error" => "Numero de juez ya asignado"));
+                } else {
+                    echo json_encode(array("error" => "Already assigned judge number"));
+                }
                 return true;
             }
         }

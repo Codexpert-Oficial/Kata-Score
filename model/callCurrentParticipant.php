@@ -13,6 +13,12 @@
         define('PASS', 'root');
         define('DB', 'kata_score');
 
+        if (isset($_COOKIE['lang'])) {
+            $lang = $_COOKIE['lang'];
+        } else {
+            $lang = 'es';
+        }
+
         if (isset($_SESSION['competition'])) {
             $competitionID = $_SESSION['competition'];
 
@@ -20,7 +26,7 @@
 
             if (!$connection) {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
             }
             $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
 
@@ -39,15 +45,27 @@
 
             if (!$participant) {
                 http_response_code(400);
-                echo json_encode(array("error" => "No hay ningun participante activo"));
+                if ($lang == "es") {
+                    echo json_encode(array("error" => "No hay ningun participante activo"));
+                } else {
+                    echo json_encode(array("error" => "There is not an active participant"));
+                }
             } else {
                 $_SESSION["displayParticipant"] = true;
                 $_SESSION["displayParticipantScore"] = false;
                 $_SESSION["displayClassified"] = false;
-                echo "Acción realizada con éxito";
+                if ($lang == "es") {
+                    echo "Acción realizada con éxito";
+                } else {
+                    echo "Action done successfully";
+                }
             }
         } else {
             http_response_code(400);
-            echo json_encode(array("error" => "Seleccione una competencia"));
+            if ($lang == "es") {
+                echo json_encode(array("error" => "Seleccione una competencia"));
+            } else {
+                echo json_encode(array("error" => "Select a competition"));
+            }
         }
         ?>

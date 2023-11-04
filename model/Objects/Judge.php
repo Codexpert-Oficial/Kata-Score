@@ -62,7 +62,7 @@ class Judge
 
             if (!$connection) {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
             }
 
             $stmt = $connection->prepare(
@@ -72,8 +72,11 @@ class Judge
             $stmt->bind_param("ssss", $this->_lastName, $this->_password, $this->_name, $this->_user);
             $stmt->execute();
             $stmt->close();
-
-            return "Juez registrado con exito";
+            if ($_COOKIE['lang'] == "es") {
+                return "Juez registrado con exito";
+            } else {
+                return "Judge registered successfully";
+            }
         }
     }
 
@@ -83,7 +86,7 @@ class Judge
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM juez WHERE usuario_juez = '$this->_user'";
@@ -92,13 +95,17 @@ class Judge
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             if ($response->num_rows <= 0) {
                 return false;
             } else {
                 http_response_code(400);
-                echo json_encode(array("error" => "Usuario ya registrado"));
+                if ($_COOKIE['lang'] == "es") {
+                    echo json_encode(array("error" => "Usuario ya registrado"));
+                } else {
+                    echo json_encode(array("error" => "Already registered user"));
+                }
                 return true;
             }
         }

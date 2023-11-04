@@ -51,7 +51,7 @@ class Participant
 
             if (!$connection) {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
             }
 
             $stmt = $connection->prepare(
@@ -60,10 +60,14 @@ class Participant
 
             $stmt->bind_param("iss", $this->_ci, $this->_name, $this->_lastName);
             if ($stmt->execute()) {
-                return "Participante registrado con exito";
+                if ($_COOKIE['lang'] == "es") {
+                    return "Participante registrado con exito";
+                } else {
+                    return "Participant registered successfully";
+                }
             } else {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+                echo json_encode(array("error" => "Error: " . $stmt->error));
             }
             $stmt->close();
         }
@@ -75,7 +79,7 @@ class Participant
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM competidor WHERE ci = $this->_ci";
@@ -84,7 +88,7 @@ class Participant
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             if ($response->num_rows <= 0) {
                 return false;

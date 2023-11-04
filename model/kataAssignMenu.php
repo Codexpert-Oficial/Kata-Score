@@ -19,10 +19,16 @@
             define('PASS', 'root');
             define('DB', 'kata_score');
 
+            if (isset($_COOKIE['lang'])) {
+                $lang = $_COOKIE['lang'];
+            } else {
+                $lang = 'es';
+            }
+
             $connection = mysqli_connect(SERVER, USER, PASS, DB);
 
             if (!$connection) {
-                die("Error de conexion: " . mysqli_connect_error());
+                die("Error: " . mysqli_connect_error());
             }
 
             $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
@@ -40,7 +46,7 @@
             $result = mysqli_query($connection, $stmt);
 
             if (!$result) {
-                die("Error en la consulta SQL: " . $stmt);
+                die("Error: " . $stmt);
             }
 
             while ($participant = $result->fetch_assoc()) {
@@ -50,7 +56,7 @@
                 $response = mysqli_query($connection, $stmt);
 
                 if (!$response) {
-                    die("Error en la consulta SQL: " . $stmt);
+                    die("Error: " . $stmt);
                 }
 
                 $data = $response->fetch_assoc();
@@ -67,7 +73,11 @@
                 if ($kata !== null) {
                     echo "<p class='participant__kata'>$kata</p>";
                 } else {
-                    echo "<p class='participant__kata'>Sin kata</p>";
+                    if ($lang == "es") {
+                        echo "<p class='participant__kata'>Sin kata</p>";
+                    } else {
+                        echo "<p class='participant__kata'>No kata</p>";
+                    }
                 }
 
                 echo "<button class='edit__kata' data-participant=" . $participant['ci'] . ">
@@ -93,8 +103,14 @@
                         </a>
                     </div>
                     <input type='hidden' name='round' value=$round>
-                    <input type='number' min=1 max=102 name='kata' class='input' placeholder='Kata' required>
-                    <input type='submit' value='Ingresar' class='button'>
+                    <input type='number' min=1 max=102 name='kata' class='input' placeholder='Kata' required>";
+            if ($lang == "es") {
+                echo "<input type='submit' value='Ingresar' class='button'>
                 </form>";
+            } else {
+                echo "<input type='submit' value='Submit' class='button'>
+                </form>";
+            }
+
 
             ?>

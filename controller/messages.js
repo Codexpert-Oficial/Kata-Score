@@ -6,10 +6,32 @@ const msgTitle = document.querySelector('.msg__title');
 const msgText = document.querySelector('.msg__text');
 const msgIcon = document.querySelector('.msg__icon');
 
+const getCookie = (cname) => {
+    let name = cname + "=";
+    let cookies = decodeURIComponent(document.cookie);
+    let cookieArray = cookies.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) == ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(name) == 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return "";
+}
+
+lang = getCookie("lang");
+
 const openMsgSuccess = () => {
     closeMsgTab.classList.remove('msg__close-error', 'msg__close-warning');
     closeMsgTab.classList.add('msg__close-success');
-    msgTitle.innerHTML = 'Accion exitosa';
+    if (lang == "es") {
+        msgTitle.innerHTML = 'Accion exitosa';
+    } else if (lang == "en") {
+        msgTitle.innerHTML = 'Successful action';
+    }
     msgText.classList.remove('msg__text-error', 'msg__text-warning');
     msgText.classList.add('msg__text-success');
     msgIcon.removeAttribute('src');
@@ -31,7 +53,11 @@ const openMsgError = () => {
 const openMsgWarning = () => {
     closeMsgTab.classList.remove('msg__close-error', 'msg__close-warning');
     closeMsgTab.classList.add('msg__close-success');
-    msgTitle.innerHTML = 'Atencion';
+    if (lang == "es") {
+        msgTitle.innerHTML = 'Atencion';
+    } else if (lang == "en") {
+        msgTitle.innerHTML = 'Warning';
+    }
     msgText.classList.remove('msg__text-error', 'msg__text-warning');
     msgText.classList.add('msg__text-success');
     msgIcon.removeAttribute('src');

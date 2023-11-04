@@ -13,9 +13,20 @@
         define('PASS', 'root');
         define('DB', 'kata_score');
 
+        if (isset($_COOKIE['lang'])) {
+            $lang = $_COOKIE['lang'];
+        } else {
+            $lang = 'es';
+        }
+
         echo "<section class='table__container'>
         <table class='table'>";
-        echo "<tr><th>C.I.</th><th>Nombre</th><th>Apellido</th><th colspan=2>Kata</th><th>Pool</th></tr>";
+        if ($lang == "es") {
+            echo "<tr><th>C.I.</th><th>Nombre</th><th>Apellido</th><th colspan=2>Kata</th><th>Pool</th></tr>";
+        } else {
+            echo "<tr><th>C.I.</th><th>Name</th><th>last Name</th><th colspan=2>Kata</th><th>Pool</th></tr>";
+        }
+
 
         if (isset($_SESSION['competition'])) {
             $competitionID = $_SESSION['competition'];
@@ -24,7 +35,7 @@
 
             if (!$connection) {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
             }
 
             $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
@@ -41,10 +52,15 @@
             $participants = $round->getParticipantsPools();
 
             if ($participants->num_rows <= 0) {
-
-                echo "<tr>
-                <td colspan=6> No hay participantes registrados </td>
-                </tr>";
+                if ($lang == "es") {
+                    echo "<tr>
+                    <td colspan=6> No hay participantes registrados </td>
+                    </tr>";
+                } else {
+                    echo "<tr>
+                    <td colspan=6> No participants registered </td>
+                    </tr>";
+                }
             } else {
 
                 while ($participant = $participants->fetch_assoc()) {
@@ -60,7 +76,11 @@
                     if (!$response) {
                         echo "Error al ingresar: " . $stmt;
                     } else if ($response->num_rows <= 0) {
-                        echo "<td colspan=2>Sin Kata</td>";
+                        if ($lang == "es") {
+                            echo "<td colspan=2>Sin Kata</td>";
+                        } else {
+                            echo "<td colspan=2>No Kata</td>";
+                        }
                     } else {
                         $kata = $response->fetch_assoc();
                         echo "<td>" . $kata['id_kata'] . "</td>
@@ -68,7 +88,11 @@
                     }
 
                     if ($participant['id_pool'] == "") {
-                        echo "<td>Sin Pool</td>";
+                        if ($lang == "es") {
+                            echo "<td>Sin Pool</td>";
+                        } else {
+                            echo "<td>No Pool</td>";
+                        }
                     } else {
                         if ($participant['id_pool'] % 2 == 0) {
                             echo "<td class='blue'>";

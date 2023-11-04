@@ -1,5 +1,7 @@
 <?php
 
+
+
 class Competes
 {
 
@@ -7,7 +9,6 @@ class Competes
     private $_competitionID;
     private $_numRound;
     private $_position;
-
 
     public function __construct($ci, $copmetitionID, $numRound)
     {
@@ -63,7 +64,7 @@ class Competes
 
             if (!$connection) {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
             }
 
             $stmt = $connection->prepare(
@@ -72,10 +73,14 @@ class Competes
 
             $stmt->bind_param("iii", $this->_ci, $this->_competitionID, $this->_numRound);
             if ($stmt->execute()) {
-                return "Informacion registrada con exito";
+                if ($_COOKIE['lang'] == "es") {
+                    return "Informacion registrada con exito";
+                } else {
+                    return "Data registered successfully";
+                }
             } else {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+                echo json_encode(array("error" => "Error: " . $stmt->error));
             }
             $stmt->close();
         }
@@ -87,7 +92,7 @@ class Competes
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM compite WHERE ci = $this->_ci AND id_competencia = $this->_competitionID AND num_ronda = $this->_numRound";
@@ -96,13 +101,17 @@ class Competes
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             if ($response->num_rows <= 0) {
                 return false;
             } else {
                 http_response_code(400);
-                echo json_encode(array("error" => "Participante ya registrado"));
+                if ($_COOKIE['lang'] == "es") {
+                    echo json_encode(array("error" => "Participante ya registrado"));
+                } else {
+                    echo json_encode(array("error" => "Already registered participant"));
+                }
                 return true;
             }
         }
@@ -115,7 +124,7 @@ class Competes
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = $connection->prepare(

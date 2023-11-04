@@ -10,6 +10,12 @@
         define('PASS', 'root');
         define('DB', 'kata_score');
 
+        if (isset($_COOKIE['lang'])) {
+            $lang = $_COOKIE['lang'];
+        } else {
+            $lang = 'es';
+        }
+
         include_once './Objects/Pool.php';
         include_once './Objects/Competition.php';
 
@@ -22,7 +28,7 @@
 
             if (!$connection) {
                 http_response_code(500);
-                echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
             }
             $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
 
@@ -41,13 +47,25 @@
                 $_SESSION["poolDisplay"] = $_POST["pool"];
                 $_SESSION["displayClassified"] = true;
                 $_SESSION["displayParticipant"] = false;
-                echo "Acción realizada con éxito";
+                if ($lang == "es") {
+                    echo "Acción realizada con éxito";
+                } else {
+                    echo "Action done successfully";
+                }
             } else {
                 http_response_code(400);
-                echo json_encode(array("error" => "No todos los participantes fueron calificados"));
+                if ($lang == "es") {
+                    echo json_encode(array("error" => "No todos los participantes fueron calificados"));
+                } else {
+                    echo json_encode(array("error" => "Not all the participants were rated"));
+                }
             }
         } else {
             http_response_code(400);
-            echo json_encode(array("error" => "Ingrese todos los datos"));
+            if ($lang == "es") {
+                echo json_encode(array("error" => "Ingrese los datos"));
+            } else {
+                echo json_encode(array("error" => "Enter the data"));
+            }
         }
         ?>

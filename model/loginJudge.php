@@ -18,7 +18,7 @@ if (isset($_POST['user']) && isset($_POST['password'])) {
 
     if (!$connection) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
     }
 
     $stmt = "SELECT * FROM juez WHERE usuario_juez = '$user' AND clave_juez = '$password'";
@@ -26,16 +26,24 @@ if (isset($_POST['user']) && isset($_POST['password'])) {
 
     if (!$response) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+        echo json_encode(array("error" => "Error: " . $stmt));
     } else {
         if ($response->num_rows <= 0) {
             http_response_code(400);
-            echo json_encode(array("error" => "Usuario no registrado"));
+            if ($lang == "es") {
+                echo json_encode(array("error" => "Usuario no registrado"));
+            } else {
+                echo json_encode(array("error" => "User not registered"));
+            }
         } else {
             $_SESSION['judgeUser'] = $user;
         }
     }
 } else {
     http_response_code(400);
-    echo json_encode(array("error" => "Ingrese los datos"));
+    if ($lang == "es") {
+        echo json_encode(array("error" => "Ingrese los datos"));
+    } else {
+        echo json_encode(array("error" => "Enter the data"));
+    }
 }

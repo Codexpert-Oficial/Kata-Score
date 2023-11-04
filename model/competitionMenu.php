@@ -7,6 +7,12 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
+if (isset($_COOKIE['lang'])) {
+    $lang = $_COOKIE['lang'];
+} else {
+    $lang = "es";
+}
+
 $connection = mysqli_connect(SERVER, USER, PASS, DB);
 
 $stmt = "SELECT * FROM competencia ORDER BY id_competencia DESC";
@@ -31,8 +37,17 @@ while ($competition = $result->fetch_assoc()) {
                     <h2 class='competition__name'>" . $competition["nombre"] . "</h2>
                 </div>
                 <div class='competition__info__container'>
-                    <p class='competition__category'>" . $competition["rango_etario"] . " - " . $competition["sexo"] . "</p>
-                    <p class='competition__date'>" . $competition["fecha"] . "</p>
+                    <p class='competition__category'>" . $competition["rango_etario"];
+    if ($lang == "es") {
+        echo " - " . $competition["sexo"] . "</p>";
+    } else {
+        if ($competition["sexo"] == "masculino") {
+            echo " - Male</p>";
+        } else {
+            echo " - Female</p>";
+        }
+    }
+    echo "           <p class='competition__date'>" . $competition["fecha"] . "</p>
                 </div>
                 </button>
                 <section class='competition__icons__container'>
@@ -55,5 +70,5 @@ while ($competition = $result->fetch_assoc()) {
                     </button>";
     }
     echo "</section>
-                </section>";
+    </section>";
 }

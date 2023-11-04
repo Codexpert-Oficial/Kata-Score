@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judge log in</title>
+    <link rel="stylesheet" href="../../../css/estilo.css">
+    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="shortcut icon" href="../../../imgs/katascore-isologotipo.ico" type="image/x-icon">
+</head>
+
+<body>
+    <main>
+        <article class="form__article">
+            <h1 class="title">Judge Log in</h1>
+            <form class="form">
+                <input type="text" placeholder="User" name="user" class="input" required>
+                <div class="password__container">
+                    <input type="password" placeholder="Password" name="password" class="input input-password" required>
+                    <a class="password__eye password__eye__hidden">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="password__eye__img" viewBox="0 0 16 16">
+                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                            <path
+                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="password__eye-slash__img" viewBox="0 0 16 16">
+                            <path
+                                d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 2.79-.588zM5.21 3.088A7.028 7.028 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474L5.21 3.089z" />
+                            <path
+                                d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829l-2.83-2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12-.708.708z" />
+                        </svg>
+                    </a>
+                </div>
+                <input type="submit" value="Ingresar" class="button">
+            </form>
+        </article>
+
+        <article class="msg msg__hidden">
+            <section class="msg__info">
+                <div class="msg__close msg__close-error">
+                    <p class="msg__title">Error</p>
+                    <button class="msg__close__button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="55" height="55" fill="currentColor"
+                            class="bi bi-x" viewBox="0 0 16 16">
+                            <path
+                                d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="msg__content">
+                    <img src="../../../imgs/icons/error.svg" class="msg__icon">
+                    <p class="msg__text msg__text-error">You shouldn't be seeing this message</p>
+                </div>
+            </section>
+        </article>
+    </main>
+
+    <footer>
+        <div class="footer__line"></div>
+        <p>Developed by Codexpert</p>
+    </footer>
+
+    <script src="../../../../controller/passwordEye.js"></script>
+    <script src="../../../../controller/messages.js"></script>
+    <script src="../../../../controller/verifyData.js"></script>
+    <script src="../../../../controller/loginJudge.js"></script>
+</body>
+
+</html>

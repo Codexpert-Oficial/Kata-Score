@@ -19,7 +19,7 @@ form.addEventListener('submit', (e) => {
                 }
             })
             .then(() => {
-                window.location.href = '/kata-score/view/html/controlPanel/competitionMenu.html';
+                window.location.href = './competitionMenu.html';
             })
             .catch(error => {
 

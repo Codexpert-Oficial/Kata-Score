@@ -5,6 +5,12 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
+if (isset($_COOKIE['lang'])) {
+    $lang = $_COOKIE['lang'];
+} else {
+    $lang = 'es';
+}
+
 error_reporting(0);
 
 if (isset($_POST['id']) && isset($_POST['action'])) {
@@ -15,7 +21,7 @@ if (isset($_POST['id']) && isset($_POST['action'])) {
 
     if (!$connection) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
     }
 
     switch ($action) {
@@ -90,19 +96,34 @@ if (isset($_POST['id']) && isset($_POST['action'])) {
             $connection->query("SET FOREIGN_KEY_CHECKS=1");
 
             $stmt = $connection->prepare("DELETE FROM competencia WHERE id_competencia = ?");
-            $message = "Competencia eliminada con exito";
+            if ($lang == "es") {
+                $message = "Competencia eliminada con exito";
+            } else {
+                $message = "Competition removed successfully";
+            }
+
             break;
 
         case 'activate':
 
             $stmt = $connection->prepare("UPDATE competencia SET estado = 'activa' WHERE id_competencia = ?");
-            $message = "Competencia activada con exito";
+            if ($lang == "es") {
+                $message = "Competencia activada con exito";
+            } else {
+                $message = "Competition activated successfully";
+            }
+
             break;
 
         case 'desactivate':
 
             $stmt = $connection->prepare("UPDATE competencia SET estado = 'cerrada' WHERE id_competencia = ?");
-            $message = "Competencia cerrada con exito";
+            if ($lang == "es") {
+                $message = "Competencia cerrada con exito";
+            } else {
+                $message = "Competition closed successfully";
+            }
+
             break;
     }
 
@@ -117,5 +138,9 @@ if (isset($_POST['id']) && isset($_POST['action'])) {
     $stmt->close();
 } else {
     http_response_code(400);
-    echo json_encode(array("error" => "Ingrese los datos"));
+    if ($lang == "es") {
+        echo json_encode(array("error" => "Ingrese los datos"));
+    } else {
+        echo json_encode(array("error" => "Enter the data"));
+    }
 }

@@ -1,10 +1,16 @@
+
+
 const isCompleted = (formData) => {
 
     let response = true;
 
     formData.forEach((data, index) => {
         if (data == '') {
-            changeMsg("rellena el campo " + index);
+            if (lang = "es") {
+                changeMsg("Rellena el campo " + index);
+            } else {
+                changeMsg("Fill in the field " + index);
+            }
             openMsgError();
             response = false;
         }
@@ -13,7 +19,11 @@ const isCompleted = (formData) => {
 
             if (data < 10000000 || data > 99999999) {
                 console.log(index + data);
-                changeMsg("Ingrese un ci valido");
+                if (lang = "es") {
+                    changeMsg("Ingrese un ci valido");
+                } else {
+                    changeMsg("Enter a valid ci");
+                }
                 openMsgError();
                 response = false;
             }
@@ -21,7 +31,11 @@ const isCompleted = (formData) => {
 
         if (index == 'pool' || index == 'ci' || index == 'number' || index == 'score' || index == 'kata') {
             if (isNaN(data)) {
-                changeMsg("Ingrese un " + index + " valido");
+                if (lang = "es") {
+                    changeMsg("Ingrese un " + index + " valido");
+                } else {
+                    changeMsg("Enter a valid " + index);
+                }
                 openMsgError();
                 response = false;
             }
@@ -29,7 +43,11 @@ const isCompleted = (formData) => {
 
         if (index == 'ageRange') {
             if (data != '12-13' && data != '14-15' && data != '16-17' && data != 'mayor') {
-                changeMsg("Ingrese una edad valida");
+                if (lang = "es") {
+                    changeMsg("Ingrese una edad valida");
+                } else {
+                    changeMsg("Enter a valid age");
+                }
                 openMsgError();
                 response = false;
             }
@@ -45,7 +63,11 @@ const isCompleted = (formData) => {
 
         if (index == 'gender') {
             if (data != 'masculino' && data != 'femenino') {
-                changeMsg("Ingrese un sexo valido");
+                if (lang = "es") {
+                    changeMsg("Ingrese un sexo valido");
+                } else {
+                    changeMsg("Enter a valid gender");
+                }
                 openMsgError();
                 response = false;
 
@@ -54,7 +76,11 @@ const isCompleted = (formData) => {
 
         if (index == 'score') {
             if (data < 5 || data > 10) {
-                changeMsg("Ingrese un puntaje valido");
+                if (lang = "es") {
+                    changeMsg("Ingrese un puntaje valido");
+                } else {
+                    changeMsg("Enter a valid score");
+                }
                 openMsgError();
                 response = false;
             }
@@ -62,7 +88,11 @@ const isCompleted = (formData) => {
 
         if (index == 'kata') {
             if (data < 1 || data > 102) {
-                changeMsg("Ingrese un kata valido");
+                if (lang = "es") {
+                    changeMsg("Ingrese un kata valido");
+                } else {
+                    changeMsg("Enter a valid kata");
+                }
                 openMsgError();
                 response = false;
             }

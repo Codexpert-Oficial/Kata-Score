@@ -8,6 +8,12 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
+if (isset($_COOKIE['lang'])) {
+    $lang = $_COOKIE['lang'];
+} else {
+    $lang = 'es';
+}
+
 include_once './Objects/Competition.php';
 include_once './Objects/Round.php';
 
@@ -19,7 +25,7 @@ if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
 
     if (!$connection) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
     }
 
     $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
@@ -39,5 +45,9 @@ if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
     }
 } else {
     http_response_code(400);
-    echo json_encode(array("error" => "Ingrese los datos"));
+    if ($lang == "es") {
+        echo json_encode(array("error" => "Ingrese los datos"));
+    } else {
+        echo json_encode(array("error" => "Enter the data"));
+    }
 }

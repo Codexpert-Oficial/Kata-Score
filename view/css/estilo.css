@@ -198,6 +198,12 @@ th {
   background-color: rgb(158, 207, 255);
 }
 
+.form__article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .form {
   display: flex;
   flex-direction: column;

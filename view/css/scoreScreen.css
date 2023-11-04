@@ -67,3 +67,38 @@ header {
 .table {
   font-size: 50px;
 }
+
+.scoreScreen__competition {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.scoreScreen__competition h1 {
+  font-size: 100px;
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.kata {
+  font-size: 70px;
+  margin: 0;
+}
+
+.scoreScreen__competition section {
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 20px;
+  background: linear-gradient(
+    70deg,
+    rgba(227, 233, 240, 0.312),
+    rgba(248, 251, 255, 0.811)
+  );
+  box-shadow: 10px 10px 25px 2px rgba(0, 0, 0, 0.107);
+}
+
+.scoreScreen__competition section p {
+  font-size: 40px;
+  margin: 0;
+}

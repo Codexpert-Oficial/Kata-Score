@@ -66,7 +66,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM ronda WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID";
@@ -75,13 +75,17 @@ class Round
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             if ($response->num_rows <= 0) {
                 return false;
             } else {
                 http_response_code(400);
-                echo json_encode(array("error" => "Ronda ya registrada"));
+                if ($_COOKIE['lang'] == "es") {
+                    echo json_encode(array("error" => "Ronda ya registrada"));
+                } else {
+                    echo json_encode(array("error" => "Already registered round"));
+                }
                 return true;
             }
         }
@@ -93,7 +97,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM compite WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID AND ci = $ci";
@@ -102,11 +106,15 @@ class Round
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             if ($response->num_rows <= 0) {
                 http_response_code(400);
-                echo json_encode(array("error" => "Participante no esta registrado en esta ronda"));
+                if ($_COOKIE['lang'] == "es") {
+                    echo json_encode(array("error" => "Participante no esta registrado en esta ronda"));
+                } else {
+                    echo json_encode(array("error" => "Participant is not registered in this round"));
+                }
                 return false;
             } else {
                 return true;
@@ -120,7 +128,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = $connection->prepare("UPDATE compite SET activo = FALSE WHERE num_ronda = ? AND id_competencia = ?");
@@ -128,7 +136,7 @@ class Round
         $stmt->bind_param("ii", $this->_number, $this->_competitionID);
         if (!$stmt->execute()) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
+            echo json_encode(array("error" => "Error: " . $stmt->error));
         }
         $stmt->close();
 
@@ -136,10 +144,14 @@ class Round
 
         $stmt->bind_param("iii", $ci, $this->_number, $this->_competitionID);
         if ($stmt->execute()) {
-            return "Accion realizada con exito";
+            if ($_COOKIE['lang'] == "es") {
+                return "Accion realizada con exito";
+            } else {
+                return "Action done successfully";
+            }
         } else {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
+            echo json_encode(array("error" => "Error: " . $stmt->error));
         }
         $stmt->close();
     }
@@ -150,7 +162,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM competidor JOIN compite ON competidor.ci = compite.ci WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID AND activo = TRUE";
@@ -159,7 +171,7 @@ class Round
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else if ($response->num_rows <= 0) {
             return false;
         } else {
@@ -174,7 +186,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM competidor JOIN compite ON competidor.ci = compite.ci WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID";
@@ -183,7 +195,7 @@ class Round
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             return $response;
         }
@@ -263,7 +275,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM pool WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID";
@@ -272,7 +284,7 @@ class Round
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             return $response;
         }
@@ -284,16 +296,19 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
-        $stmt = "SELECT competidor.*, pertenece.id_pool FROM competidor JOIN compite ON competidor.ci = compite.ci LEFT JOIN pertenece ON competidor.ci = pertenece.ci AND compite.num_ronda = pertenece.num_ronda AND compite.id_competencia = pertenece.id_competencia  WHERE compite.num_ronda = $this->_number AND compite.id_competencia = $this->_competitionID ORDER BY id_pool ASC";
+        $stmt = "SELECT competidor.*, pertenece.id_pool FROM competidor 
+        JOIN compite ON competidor.ci = compite.ci 
+        LEFT JOIN pertenece ON competidor.ci = pertenece.ci AND compite.num_ronda = pertenece.num_ronda AND compite.id_competencia = pertenece.id_competencia  
+        WHERE compite.num_ronda = $this->_number AND compite.id_competencia = $this->_competitionID ORDER BY id_pool ASC";
 
         $response = mysqli_query($connection, $stmt);
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             return $response;
         }
@@ -305,7 +320,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM puntua WHERE ci = $ci AND id_competencia = $this->_competitionID AND num_ronda = $this->_number";
@@ -315,7 +330,7 @@ class Round
         if (!$response) {
 
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else if ($response->num_rows < 5) {
             return false;
         } else {
@@ -330,7 +345,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM compite WHERE id_competencia = $this->_competitionID AND num_ronda = $this->_number";
@@ -341,7 +356,7 @@ class Round
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
             return false;
         }
 
@@ -369,7 +384,7 @@ class Round
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM puntua WHERE ci = $ci AND id_competencia = $this->_competitionID AND num_ronda = $this->_number ORDER BY puntaje DESC";
@@ -379,11 +394,15 @@ class Round
         if (!$response) {
 
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else if ($response->num_rows < 5) {
 
             http_response_code(400);
-            echo json_encode(array("error" => "No todos los jueces puntuaron al participante"));
+            if ($_COOKIE['lang'] == "es") {
+                echo json_encode(array("error" => "No todos los jueces puntuaron al participante"));
+            } else {
+                echo json_encode(array("error" => "Not all the judges rated the participant"));
+            }
         } else {
             $total = 0;
 
@@ -396,33 +415,6 @@ class Round
 
             return $total;
         }
-    }
-
-    public function getPoolScores($pool)
-    {
-
-        $connection = mysqli_connect(SERVER, USER, PASS, DB);
-
-        if (!$connection) {
-            return false;
-        }
-
-        $stmt = "SELECT puntua.ci ,SUM(puntaje) - MAX(puntaje) - MIN(puntaje) AS puntaje_final
-                    FROM puntua
-                    JOIN pertenece ON pertenece.ci = puntua.ci AND pertenece.id_competencia = puntua.id_competencia AND pertenece.num_ronda = puntua.num_ronda
-                    WHERE pertenece.id_pool = $pool
-                    AND puntua.id_competencia = $this->_competitionID
-                    AND puntua.num_ronda = $this->_number
-                    GROUP BY ci
-                    ORDER BY puntaje_final DESC";
-
-        $participants = mysqli_query($connection, $stmt);
-
-        if (!$participants) {
-            return false;
-        }
-
-        return $participants;
     }
 
     public function setPositions()

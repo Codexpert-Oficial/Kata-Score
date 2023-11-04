@@ -9,6 +9,12 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
+if (isset($_COOKIE['lang'])) {
+    $lang = $_COOKIE['lang'];
+} else {
+    $lang = 'es';
+}
+
 if (isset($_SESSION['judgeUser'])) {
 
     $user = $_SESSION['judgeUser'];
@@ -17,7 +23,7 @@ if (isset($_SESSION['judgeUser'])) {
 
     if (!$connection) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
     }
 
     $stmt = "SELECT * FROM competencia JOIN participa ON competencia.id_competencia = participa.id_competencia WHERE usuario_juez = '$user' AND estado = 'activa'";
@@ -26,7 +32,7 @@ if (isset($_SESSION['judgeUser'])) {
 
     if (!$response) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+        echo json_encode(array("error" => "Error: " . $stmt));
     } else {
 
         while ($competition = $response->fetch_assoc()) {
@@ -37,7 +43,18 @@ if (isset($_SESSION['judgeUser'])) {
                         <h2 class='competition__name'>" . $competition["nombre"] . "</h2>
                     </div>
                     <div class='competition__info__container'>
-                        <p class='competition__category'>" . $competition["rango_etario"] . " - " . $competition["sexo"] . "</p>
+                        <p class='competition__category'>" . $competition["rango_etario"] . " - ";
+            if ($lang == "es") {
+                echo $competition["sexo"];
+            } else {
+                if ($competition["sexo"] == "masculino") {
+                    echo "Male";
+                } else {
+                    echo "Female";
+                }
+            }
+
+            echo "</p>
                         <p class='competition__date'>" . $competition["fecha"] . "</p>
                     </div>
                     </button>
@@ -48,5 +65,9 @@ if (isset($_SESSION['judgeUser'])) {
     }
 } else {
     http_response_code(400);
-    echo json_encode(array("error" => "Ingrese los datos"));
+    if ($lang == "es") {
+        echo json_encode(array("error" => "Ingrese los datos"));
+    } else {
+        echo json_encode(array("error" => "Enter the participant"));
+    }
 }

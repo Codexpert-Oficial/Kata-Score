@@ -7,6 +7,12 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
+if (isset($_COOKIE['lang'])) {
+    $lang = $_COOKIE['lang'];
+} else {
+    $lang = "es";
+}
+
 if (isset($_POST['user']) && isset($_POST['password'])) {
 
     $user = $_POST['user'];
@@ -16,7 +22,7 @@ if (isset($_POST['user']) && isset($_POST['password'])) {
 
     if (!$connection) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
     }
 
     $stmt = "SELECT * FROM tecnico WHERE usuario_tecnico = '$user' AND clave_tecnico = '$password'";
@@ -24,14 +30,22 @@ if (isset($_POST['user']) && isset($_POST['password'])) {
 
     if (!$response) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+        echo json_encode(array("error" => "Error: " . $stmt));
     } else {
         if ($response->num_rows <= 0) {
             http_response_code(400);
-            echo json_encode(array("error" => "Usuario no registrado"));
+            if ($lang == "es") {
+                echo json_encode(array("error" => "Usuario no registrado"));
+            } else {
+                echo json_encode(array("error" => "User not registered"));
+            }
         }
     }
 } else {
     http_response_code(400);
-    echo json_encode(array("error" => "Ingrese los datos"));
+    if ($lang == "es") {
+        echo json_encode(array("error" => "Ingrese los datos"));
+    } else {
+        echo json_encode(array("error" => "Enter the data"));
+    }
 }

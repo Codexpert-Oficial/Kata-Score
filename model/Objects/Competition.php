@@ -101,7 +101,7 @@ class Competition
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = $connection->prepare(
@@ -118,8 +118,11 @@ class Competition
         $response = $response->fetch_assoc();
 
         $this->_id = $response['id_competencia'];
-
-        return "Competencia creada con exito";
+        if ($_COOKIE['lang'] == "es") {
+            return "Competencia creada con exito";
+        } else {
+            return "Competition created successfully";
+        }
     }
 
     public function getLastRound()
@@ -128,7 +131,7 @@ class Competition
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM ronda WHERE id_competencia = $this->_id ORDER BY num_ronda DESC LIMIT 1";
@@ -136,7 +139,7 @@ class Competition
         $response = mysqli_query($connection, $stmt);
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             $round = $response->fetch_assoc();
             return $round['num_ronda'];
@@ -235,7 +238,10 @@ class Competition
         $newRound = new Round($prevRound + 1, $this->_id);
         $newRound->enterRound();
 
+        $z = 0;
+
         for ($x = 1; $x <= $poolsCount; $x++) {
+
             if ($x % 2 == 0) {
                 $belt = 'AO';
             } else {
@@ -244,8 +250,6 @@ class Competition
 
             $pools[$x] = new Pool($x, $belt, $this->_id, $prevRound + 1);
             $pools[$x]->enterPool();
-
-            $z = 0;
 
             for ($y = 0; $y < $poolsInPool; $y++) {
 
@@ -259,13 +263,12 @@ class Competition
 
                 $i = 0;
 
-                while ($participant = $participants->fetch_assoc() && $i < $participantsPerPool) {
+                while ($i < $participantsPerPool && $participant = $participants->fetch_assoc()) {
 
-                    $competes = new Competes($participant['ci'], $newRound->getNumber(), $this->_id);
+                    $competes = new Competes($participant["ci"], $this->_id, $newRound->getNumber());
                     $competes->enterCompetes();
 
-                    $pools[$x]->addParticipant($participant['ci']);
-
+                    $pools[$x]->addParticipant($participant["ci"]);
                     $i++;
                 }
             }

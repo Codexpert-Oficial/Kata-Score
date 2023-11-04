@@ -63,7 +63,7 @@ class Pool
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = $connection->prepare(
@@ -73,7 +73,7 @@ class Pool
         $stmt->bind_param("siii", $this->_belt, $this->_id, $this->_competitionID, $this->_round);
         if (!$stmt->execute()) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
+            echo json_encode(array("error" => "Error: " . $stmt->error));
         }
         $stmt->close();
     }
@@ -84,7 +84,7 @@ class Pool
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM pool WHERE id_pool = $this->_id AND id_competencia = $this->_competitionID AND num_ronda = $this->_round";
@@ -93,7 +93,7 @@ class Pool
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error al ingresar: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         } else {
             if ($response->num_rows <= 0) {
                 return false;
@@ -109,7 +109,7 @@ class Pool
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = $connection->prepare(
@@ -119,7 +119,7 @@ class Pool
         $stmt->bind_param("iiii", $this->_id, $ci, $this->_competitionID, $this->_round);
         if (!$stmt->execute()) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt->error));
+            echo json_encode(array("error" => "Error: " . $stmt->error));
         }
         $stmt->close();
     }
@@ -130,7 +130,7 @@ class Pool
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = $connection->prepare(
@@ -140,7 +140,7 @@ class Pool
         $stmt->bind_param("iii", $ci, $this->_competitionID, $this->_round);
         if (!$stmt->execute()) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
         }
         $stmt->close();
     }
@@ -153,7 +153,7 @@ class Pool
 
         if (!$connection) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
         $stmt = "SELECT * FROM pertenece WHERE id_pool = $this->_id AND id_competencia = $this->_competitionID AND num_ronda = $this->_round";
@@ -164,7 +164,7 @@ class Pool
 
         if (!$response) {
             http_response_code(500);
-            echo json_encode(array("error" => "Error en la consulta: " . $stmt));
+            echo json_encode(array("error" => "Error: " . $stmt));
             return false;
         }
 

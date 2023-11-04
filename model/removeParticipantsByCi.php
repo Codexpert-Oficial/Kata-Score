@@ -11,6 +11,12 @@ define('USER', 'root');
 define('PASS', 'root');
 define('DB', 'kata_score');
 
+if (isset($_COOKIE['lang'])) {
+    $lang = $_COOKIE['lang'];
+} else {
+    $lang = 'es';
+}
+
 if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
 
     $ci = $_POST["ci"];
@@ -20,7 +26,7 @@ if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
 
     if (!$connection) {
         http_response_code(500);
-        echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+        echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
     }
     $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
 
@@ -64,7 +70,11 @@ if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
         $stmt = $connection->prepare("DELETE FROM compite WHERE ci = ? AND num_ronda = ? AND id_competencia = ?");
         $stmt->bind_param("iii", $ci, $numRound, $competitionID);
         if ($stmt->execute()) {
-            echo "Participante eliminado con exito";
+            if ($lang == "es") {
+                echo "Participante quitado con exito";
+            } else {
+                echo "Participant removed successfully";
+            }
         } else {
             http_response_code(500);
             echo json_encode(array("error" => "Error: " . $stmt->error));
@@ -75,5 +85,9 @@ if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
     }
 } else {
     http_response_code(400);
-    echo json_encode(array("error" => "Ingrese los datos"));
+    if ($lang == "es") {
+        echo json_encode(array("error" => "Ingrese los datos"));
+    } else {
+        echo json_encode(array("error" => "Enter the data"));
+    }
 }

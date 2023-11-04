@@ -11,6 +11,12 @@
             define('PASS', 'root');
             define('DB', 'kata_score');
 
+            if (isset($_COOKIE['lang'])) {
+                $lang = $_COOKIE['lang'];
+            } else {
+                $lang = 'es';
+            }
+
             if (isset($_SESSION['competition'])) {
                 $competitionID = $_SESSION['competition'];
 
@@ -18,7 +24,7 @@
 
                 if (!$connection) {
                     http_response_code(500);
-                    echo json_encode(array("error" => "Error de conexion: " . mysqli_connect_error()));
+                    echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
                 }
 
                 $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
@@ -37,10 +43,15 @@
                 echo "<tbody>";
 
                 if ($participants->num_rows <= 0) {
-
-                    echo "<tr>
-                    <td colspan=3> No hay participantes registrados </td>
-                    </tr>";
+                    if ($lang == "es") {
+                        echo "<tr>
+                        <td colspan=3> No hay participantes registrados </td>
+                        </tr>";
+                    } else {
+                        echo "<tr>
+                        <td colspan=3> No participants registered </td>
+                        </tr>";
+                    }
                 } else {
 
                     $round->createPools();
@@ -62,7 +73,11 @@
 
                 echo "</tbody>";
             } else {
-                echo ("Seleccione una competencia");
+                if ($lang == "es") {
+                    echo "Seleccione una competencia";
+                } else {
+                    echo "Select a competition";
+                }
             }
 
 
