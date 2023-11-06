@@ -46,7 +46,7 @@
                     echo json_encode(array("error" => "The action couldn't be completed"));
                 }
             } else {
-                if ($lang = +"es") {
+                if ($lang == "es") {
                     echo "Accion realizada con exito";
                 } else {
                     echo "Action done successfully";

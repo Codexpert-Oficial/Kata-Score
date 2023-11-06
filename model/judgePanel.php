@@ -171,5 +171,9 @@ if (isset($_SESSION["judgeUser"]) && isset($_SESSION["judgeCompetition"])) {
         }
     }
 } else {
-    echo "Ingrese los datos";
+    if ($lang == "es") {
+        echo "Ingrese los datos";
+    } else {
+        echo "Enter the data";
+    }
 }
