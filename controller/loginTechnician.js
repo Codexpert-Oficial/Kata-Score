@@ -19,7 +19,7 @@ form.addEventListener('submit', (e) => {
                 }
             })
             .then(() => {
-                window.location.href = './competitionMenu.html';
+                window.location.href = './eventsMenu.html';
             })
             .catch(error => {
 

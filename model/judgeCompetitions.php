@@ -4,15 +4,22 @@ session_start();
 
 error_reporting(0);
 
-define('SERVER', '127.0.0.1');
-define('USER', 'root');
-define('PASS', 'root');
-define('DB', 'kata_score');
+include_once "./Objects/DataBase.php";
 
 if (isset($_COOKIE['lang'])) {
     $lang = $_COOKIE['lang'];
 } else {
     $lang = 'es';
+}
+
+if (isset($_SESSION['event'])) {
+    $event = $_SESSION['event'];
+} else {
+    if ($lang == "es") {
+        die("Seleccione un evento");
+    } else {
+        die("Select an event");
+    }
 }
 
 if (isset($_SESSION['judgeUser'])) {
@@ -26,7 +33,7 @@ if (isset($_SESSION['judgeUser'])) {
         echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
     }
 
-    $stmt = "SELECT * FROM competencia JOIN participa ON competencia.id_competencia = participa.id_competencia WHERE usuario_juez = '$user' AND estado = 'activa'";
+    $stmt = "SELECT * FROM competencia JOIN participa ON competencia.id_competencia = participa.id_competencia WHERE usuario_juez = '$user' AND estado = 'activa' AND id_evento = $event";
 
     $response = mysqli_query($connection, $stmt);
 

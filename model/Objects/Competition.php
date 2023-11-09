@@ -9,19 +9,19 @@ class Competition
     private $_id;
     private $_state;
     private $_date;
-    private $_teamType;
     private $_name;
     private $_ageRange;
     private $_gender;
+    private $_eventID;
 
-    public function __construct($state, $date, $teamType, $name, $ageRange, $gender)
+    public function __construct($state, $date, $name, $ageRange, $gender, $eventID)
     {
         $this->_state = $state;
         $this->_date = $date;
         $this->_name = $name;
         $this->_ageRange = $ageRange;
         $this->_gender = $gender;
-        $this->_teamType = $teamType;
+        $this->_eventID = $eventID;
     }
 
     public function getId()
@@ -64,16 +64,6 @@ class Competition
         $this->_gender = $gender;
     }
 
-    public function getTeamType()
-    {
-        return $this->_teamType;
-    }
-
-    public function setTeamType($teamType)
-    {
-        $this->_teamType = $teamType;
-    }
-
     public function getState()
     {
         return $this->_state;
@@ -94,6 +84,16 @@ class Competition
         $this->_date = $date;
     }
 
+    public function getEventID()
+    {
+        return $this->_eventID;
+    }
+
+    public function setEventID($eventID)
+    {
+        $this->_eventID = $eventID;
+    }
+
 
     public function enterCompetition()
     {
@@ -105,12 +105,15 @@ class Competition
         }
 
         $stmt = $connection->prepare(
-            "INSERT INTO competencia (estado, fecha, tipo_equipos, nombre, rango_etario, sexo) 
+            "INSERT INTO competencia (estado, fecha, nombre, rango_etario, sexo, id_evento) 
             VALUES(?,?,?,?,?,?)"
         );
 
-        $stmt->bind_param("ssssss", $this->_state, $this->_date, $this->_teamType, $this->_name, $this->_ageRange, $this->_gender);
-        $stmt->execute();
+        $stmt->bind_param("sssssi", $this->_state, $this->_date, $this->_name, $this->_ageRange, $this->_gender, $this->_eventID);
+        if (!$stmt->execute()) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt->error));
+        }
         $stmt->close();
 
         $stmt = "SELECT id_competencia FROM competencia ORDER BY id_competencia DESC LIMIT 1";

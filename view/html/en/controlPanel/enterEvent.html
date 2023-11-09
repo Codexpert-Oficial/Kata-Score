@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Competencia</title>
+    <title>Enter event</title>
     <link rel="shortcut icon" href="../../../imgs/katascore-isologotipo.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../../css/estilo.css">
     <link rel="stylesheet" href="../../../css/main.css">
@@ -13,21 +13,9 @@
 <body>
     <main>
         <article>
-            <form class="form">
-                <input type="text" name="name" class="input" placeholder="Name (optional)">
-                <div class="enter__competition__selects__container">
-                    <select name="ageRange" class="select">
-                        <option value="12-13" class="firstOption">12-13</option>
-                        <option value="14-15">14-15</option>
-                        <option value="16-17">16-17</option>
-                        <option value="mayor">Adults</option>
-                    </select>
-                    <select name="gender" required class="select">
-                        <option value="masculino" class="firstOption">Male</option>
-                        <option value="femenino">Female</option>
-                    </select>
-                </div>
-                <input type="submit" value="Submit" class="button">
+            <form class="form" action="../../../../model/enterEvent.php">
+                <input type="text" name="name" class="input" placeholder="Name">
+                <input type="submit" value="Enter" class="button">
             </form>
         </article>
 
@@ -58,7 +46,7 @@
 
     <script src="../../../../controller/messages.js"></script>
     <script src="../../../../controller/verifyData.js"></script>
-    <script src="../../../../controller/enterCompetition.js"></script>
+    <script src="../../../../controller/formFetch.js"></script>
 </body>
 
 </html>

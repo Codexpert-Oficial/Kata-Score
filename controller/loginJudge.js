@@ -21,7 +21,7 @@ if (form !== null) {
                     }
                 })
                 .then(() =>
-                    window.location.href = './judgeCompetitions.html'
+                    window.location.href = './judgeEvents.html'
                 )
                 .catch(error => {
                     changeMsg(error.message);

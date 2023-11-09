@@ -6,10 +6,7 @@ error_reporting(0);
 
 include_once './Objects/Performs.php';
 
-define('SERVER', '127.0.0.1');
-define('USER', 'root');
-define('PASS', 'root');
-define('DB', 'kata_score');
+include_once "./Objects/DataBase.php";
 
 if (isset($_COOKIE['lang'])) {
     $lang = $_COOKIE['lang'];

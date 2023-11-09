@@ -1,11 +1,10 @@
 <?php
 
+session_start();
+
 error_reporting(0);
 
-define('SERVER', '127.0.0.1');
-define('USER', 'root');
-define('PASS', 'root');
-define('DB', 'kata_score');
+include_once "./Objects/DataBase.php";
 
 if (isset($_COOKIE['lang'])) {
     $lang = $_COOKIE['lang'];
@@ -15,12 +14,18 @@ if (isset($_COOKIE['lang'])) {
 
 $connection = mysqli_connect(SERVER, USER, PASS, DB);
 
-$stmt = "SELECT * FROM competencia ORDER BY id_competencia DESC";
+if (isset($_SESSION['event'])) {
+    $event = $_SESSION['event'];
+} else {
+    die("Ingrese un evento");
+}
+
+$stmt = "SELECT * FROM competencia WHERE id_evento = $event ORDER BY id_competencia DESC";
 
 $result = mysqli_query($connection, $stmt);
 
 if (!$result) {
-    die("Error en la consulta SQL: " . $stmt);
+    die("Error: " . $stmt);
 }
 
 while ($competition = $result->fetch_assoc()) {

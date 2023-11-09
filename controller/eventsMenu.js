@@ -1,4 +1,4 @@
-const competitionMenu = document.querySelector(".competition__menu");
+const eventMenu = document.querySelector(".competition__menu");
 
 const controls = () => {
 
@@ -9,9 +9,8 @@ const controls = () => {
         button.addEventListener('click', () => {
             let formData = new FormData();
             formData.set('id', button.getAttribute('data-id'));
-            formData.set('action', button.getAttribute('data-action'));
 
-            fetch("/kata-score/model/competitionsControls.php", {
+            fetch("/kata-score/model/eventsControls.php", {
                 method: "POST",
                 body: formData
             })
@@ -38,37 +37,36 @@ const controls = () => {
 };
 
 const links = () => {
-    const competitions = document.querySelectorAll(".competition__info");
+    const events = document.querySelectorAll(".competition__info");
 
-    competitions.forEach(competition => {
+    events.forEach(event => {
 
-        competition.addEventListener('click', () => {
+        event.addEventListener('click', () => {
 
             formData = new FormData();
 
-            formData.set("competition", competition.getAttribute("value"));
+            formData.set("event", event.getAttribute("value"));
 
-            fetch("/kata-score/model/setCurrentCompetition.php", {
+            fetch("/kata-score/model/setCurrentEvent.php", {
                 method: "POST",
                 body: formData
             })
                 .catch(error => console.log(error));
 
-            window.location.href = "./controlPanel.html";
+            window.location.href = "./competitionMenu.html";
         });
 
     });
 
 }
 
-fetch("/kata-score/model/competitionMenu.php")
+fetch("/kata-score/model/eventsMenu.php")
     .then(response => response.text())
     .then(data => {
-        competitionMenu.innerHTML += data;
+        eventMenu.innerHTML += data;
         controls();
         links();
     })
     .catch(error => {
         console.log(error);
     });
-

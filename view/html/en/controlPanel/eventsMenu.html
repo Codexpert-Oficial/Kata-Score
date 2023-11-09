@@ -4,31 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Competencia</title>
-    <link rel="shortcut icon" href="../../../imgs/katascore-isologotipo.ico" type="image/x-icon">
+    <title>Events</title>
     <link rel="stylesheet" href="../../../css/estilo.css">
-    <link rel="stylesheet" href="../../../css/main.css">
+    <link rel="stylesheet" href="../../../css/competitions.css">
+    <link rel="shortcut icon" href="../../../imgs/katascore-isologotipo.ico" type="image/x-icon">
 </head>
 
 <body>
+
     <main>
-        <article>
-            <form class="form">
-                <input type="text" name="name" class="input" placeholder="Name (optional)">
-                <div class="enter__competition__selects__container">
-                    <select name="ageRange" class="select">
-                        <option value="12-13" class="firstOption">12-13</option>
-                        <option value="14-15">14-15</option>
-                        <option value="16-17">16-17</option>
-                        <option value="mayor">Adults</option>
-                    </select>
-                    <select name="gender" required class="select">
-                        <option value="masculino" class="firstOption">Male</option>
-                        <option value="femenino">Female</option>
-                    </select>
-                </div>
-                <input type="submit" value="Submit" class="button">
-            </form>
+        <h1 class="competition__title">Events</h1>
+        <article class="competition__menu">
+            <a href="enterEvent.html" class="competition__element competition__element-add">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor"
+                    class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                </svg>
+                Add Event
+            </a>
         </article>
 
         <article class="msg msg__hidden">
@@ -49,6 +43,8 @@
                 </div>
             </section>
         </article>
+
+
     </main>
 
     <footer>
@@ -56,9 +52,8 @@
         <p>Developed by Codexpert</p>
     </footer>
 
+    <script src="../../../../controller/eventsMenu.js"></script>
     <script src="../../../../controller/messages.js"></script>
-    <script src="../../../../controller/verifyData.js"></script>
-    <script src="../../../../controller/enterCompetition.js"></script>
 </body>
 
 </html>

@@ -5,10 +5,7 @@
 
         error_reporting(0);
 
-        define('SERVER', '127.0.0.1');
-        define('USER', 'root');
-        define('PASS', 'root');
-        define('DB', 'kata_score');
+        include_once "./Objects/DataBase.php";
 
         if (isset($_COOKIE['lang'])) {
             $lang = $_COOKIE['lang'];
@@ -36,7 +33,7 @@
 
             $competitionInfo = $response->fetch_assoc();
 
-            $competition = new Competition($competitionInfo['estado'], $competitionInfo['fecha'], $competitionInfo['tipo_equipos'], $competitionInfo['nombre'], $competitionInfo['rango_etario'], $competitionInfo['sexo']);
+            $competition = new Competition($competitionInfo['estado'], $competitionInfo['fecha'], $competitionInfo['nombre'], $competitionInfo['rango_etario'], $competitionInfo['sexo'], $competitionInfo['id_evento']);
             $competition->setId($competitionID);
 
             $numRound = $competition->getLastRound();

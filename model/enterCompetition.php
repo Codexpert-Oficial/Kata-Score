@@ -1,11 +1,10 @@
 <?php
 
+session_start();
+
 error_reporting(0);
 
-define('SERVER', '127.0.0.1');
-define('USER', 'root');
-define('PASS', 'root');
-define('DB', 'kata_score');
+include_once "./Objects/DataBase.php";
 
 if (isset($_COOKIE['lang'])) {
     $lang = $_COOKIE['lang'];
@@ -16,15 +15,15 @@ if (isset($_COOKIE['lang'])) {
 include_once './Objects/Competition.php';
 include_once './Objects/Round.php';
 
-if (isset($_POST["name"]) && isset($_POST["teamType"]) && isset($_POST["ageRange"]) && isset($_POST["gender"])) {
+if (isset($_POST["name"]) && isset($_POST["ageRange"]) && isset($_POST["gender"]) && isset($_SESSION['event'])) {
     $name = $_POST["name"];
-    $teamType = $_POST["teamType"];
     $ageRange = $_POST["ageRange"];
     $gender = $_POST["gender"];
+    $eventID = $_SESSION['event'];
 
     $date = date('Y-m-d');
 
-    $competition = new Competition('activa', $date, $teamType, $name, $ageRange, $gender);
+    $competition = new Competition('activa', $date, $name, $ageRange, $gender, $eventID);
     echo $competition->enterCompetition();
 
     $round = new Round(1, $competition->getId());

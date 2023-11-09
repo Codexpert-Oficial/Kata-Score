@@ -7,19 +7,16 @@ include_once "./Objects/DataBase.php";
 if (isset($_COOKIE['lang'])) {
     $lang = $_COOKIE['lang'];
 } else {
-    $lang = 'es';
+    $lang = "es";
 }
 
-include_once './Objects/Judge.php';
+include_once './Objects/Event.php';
 
-if (isset($_POST["name"]) && isset($_POST["lastName"]) && isset($_POST["user"]) && isset($_POST["password"])) {
+if (isset($_POST["name"])) {
     $name = $_POST["name"];
-    $lastName = $_POST["lastName"];
-    $user = $_POST["user"];
-    $password = $_POST["password"];
 
-    $judge = new Judge($name, $lastName, $user, $password);
-    echo $judge->enterJudge();
+    $competition = new Event($name);
+    echo $competition->enterCompetition();
 } else {
     http_response_code(400);
     if ($lang == "es") {
