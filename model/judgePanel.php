@@ -159,12 +159,7 @@ if (isset($_SESSION["judgeUser"]) && isset($_SESSION["judgeCompetition"])) {
                 </section>
             </article>
     
-            </main>
-    
-            <footer>
-                <div class='footer__line'></div>
-                <p>Developed by Codexpert</p>
-            </footer>";
+            </main>";
         }
     }
 } else {

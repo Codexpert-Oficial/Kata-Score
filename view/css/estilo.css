@@ -414,3 +414,29 @@ th {
 .select__enter__competition {
   width: 550px;
 }
+
+.goBack {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: #292929;
+  font-family: system-ui;
+  display: flex;
+  align-items: center;
+  font-size: 22px;
+  background-color: rgb(245, 249, 251);
+  border-radius: 15px;
+  box-shadow: 5px 5px 20px 1px #072f4a2c, -5px -5px 20px 1px #eaf6ff97,
+    inset 7px 7px 20px 1px #072f4a05;
+  margin: 20px;
+  padding: 10px 14px 10px 10px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+.goBack:hover {
+  box-shadow: 5px 5px 20px 1px #072f4a1a, -5px -5px 20px 1px #eaf6ff58;
+  transform: translateY(-1px);
+  background-color: rgb(255, 255, 255);
+}

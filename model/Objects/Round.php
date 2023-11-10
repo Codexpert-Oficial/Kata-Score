@@ -201,8 +201,37 @@ class Round
         }
     }
 
+    public function removePools()
+    {
+
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        $stmt = $connection->prepare("DELETE FROM pertenece WHERE id_competencia = ? AND num_ronda = ?");
+
+        $stmt->bind_param("ii", $this->_competitionID, $this->_number);
+
+        $stmt->execute();
+
+        $stmt->close();
+
+        $stmt = $connection->prepare("DELETE FROM pool WHERE id_competencia = ? AND num_ronda = ?");
+
+        $stmt->bind_param("ii", $this->_competitionID, $this->_number);
+
+        $stmt->execute();
+
+        $stmt->close();
+    }
+
     public function createPools()
     {
+        $this->removePools();
+
         $participants = $this->getParticipants();
 
         $participantsCount = $participants->num_rows;
