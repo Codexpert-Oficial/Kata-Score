@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-error_reporting(0);
+/* error_reporting(0); */
 
 include_once "./Objects/DataBase.php";
 
@@ -14,14 +14,17 @@ if (isset($_COOKIE['lang'])) {
 include_once './Objects/Participant.php';
 include_once './Objects/Competes.php';
 
-if (isset($_POST["ci"]) && isset($_POST["name"]) && isset($_POST["lastName"]) && isset($_SESSION['competition'])) {
+if (isset($_POST["ci"]) && isset($_POST["name"]) && isset($_POST["lastName"]) && isset($_POST['school']) && isset($_SESSION['competition'])) {
     $ci = $_POST["ci"];
     $name = $_POST["name"];
     $lastName = $_POST["lastName"];
     $competition = $_SESSION['competition'];
+    $school = $_POST['school'];
 
     $participant = new Participant($ci, $name, $lastName);
     $participant->enterParticipant();
+
+    $participant->setSchool($school);
 
     $competes = new Competes($ci, $competition, 1);
     echo $competes->enterCompetes();

@@ -24,14 +24,16 @@
             <form class="form">
                 <input type="text" name="name" class="input" placeholder="Nombre (opcional)">
                 <div class="enter__competition__selects__container">
-                    <select name="ageRange" class="select">
-                        <option value="12-13" class="firstOption">12-13</option>
+                    <select name="ageRange" required class="select">
+                        <option value="" disabled selected>Edad</option>
+                        <option value="12-13">12-13</option>
                         <option value="14-15">14-15</option>
                         <option value="16-17">16-17</option>
                         <option value="mayor">Mayor</option>
                     </select>
                     <select name="gender" required class="select">
-                        <option value="masculino" class="firstOption">Masculino</option>
+                        <option value="" disabled selected>Genero</option>
+                        <option value="masculino">Masculino</option>
                         <option value="femenino">Femenino</option>
                     </select>
                 </div>

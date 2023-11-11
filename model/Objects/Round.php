@@ -275,23 +275,18 @@ class Round
                 } else {
                     $pools[$i] = new Pool($i, 'AKA', $this->_competitionID, $this->_number);
                 }
-                if (!$pools[$i]->exists()) {
-                    $pools[$i]->enterPool();
-                }
+                $pools[$i]->enterPool();
             }
 
             $cont = 1;
 
             foreach ($participantsCi as $key => $participantCi) {
                 if ($key < $finalPosition) {
-                    $pools[$cont]->removeParticipant($participantCi);
                     $pools[$cont]->addParticipant($participantCi);
                 } else if ($key < ($participantsCount / $poolsCant) * $cont) {
-                    $pools[$cont]->removeParticipant($participantCi);
                     $pools[$cont]->addParticipant($participantCi);
                 } else {
                     $cont++;
-                    $pools[$cont]->removeParticipant($participantCi);
                     $pools[$cont]->addParticipant($participantCi);
                 }
             }

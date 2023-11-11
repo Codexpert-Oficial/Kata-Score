@@ -10,13 +10,17 @@ if (isset($_COOKIE['lang'])) {
     $lang = "es";
 }
 
-include_once './Objects/Event.php';
+include_once './Objects/School.php';
 
-if (isset($_POST["name"])) {
+if (isset($_POST["name"]) && isset($_POST['technique'])) {
     $name = $_POST["name"];
+    $technique = $_POST["technique"];
 
-    $competition = new Event($name);
-    echo $competition->enterEvent();
+    $competition = new School($name, $technique);
+    echo $competition->enterSchool();
+
+    $round = new Round(1, $competition->getId());
+    $round->enterRound();
 } else {
     http_response_code(400);
     if ($lang == "es") {

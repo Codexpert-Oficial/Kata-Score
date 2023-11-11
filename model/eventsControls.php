@@ -34,7 +34,7 @@ if (isset($_POST['id'])) {
 
         $competitionID = $competition['id_competencia'];
 
-        $stmt = $connection->prepare("DELETE FROM realiza WHERE id_evento = ?");
+        $stmt = $connection->prepare("DELETE FROM realiza WHERE id_competencia = ?");
         $stmt->bind_param("i", $competitionID);
         $response = $stmt->execute();
         if (!$response) {
@@ -116,7 +116,7 @@ if (isset($_POST['id'])) {
     $stmt = $connection->prepare("DELETE FROM evento WHERE id_evento = ?");
 
     if ($lang == "es") {
-        $message = "Evento eliminada con exito";
+        $message = "Evento eliminado con exito";
     } else {
         $message = "Event removed successfully";
     }

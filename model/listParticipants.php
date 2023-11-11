@@ -5,6 +5,7 @@
 
         include_once './Objects/Competition.php';
         include_once './Objects/Round.php';
+        include_once './Objects/Participant.php';
 
         error_reporting(0);
 
@@ -19,9 +20,9 @@
         echo "<section class='table__container'>
         <table class='table'>";
         if ($lang == "es") {
-            echo "<tr><th>C.I.</th><th>Nombre</th><th>Apellido</th><th colspan=2>Kata</th><th>Pool</th></tr>";
+            echo "<tr><th>C.I.</th><th>Nombre</th><th>Apellido</th><th colspan=2>Kata</th><th>Escuela</th><th>Pool</th></tr>";
         } else {
-            echo "<tr><th>C.I.</th><th>Name</th><th>last Name</th><th colspan=2>Kata</th><th>Pool</th></tr>";
+            echo "<tr><th>C.I.</th><th>Name</th><th>last Name</th><th colspan=2>Kata</th><th>School</th><th>Pool</th></tr>";
         }
 
 
@@ -67,6 +68,8 @@
                     <td>" . $participant['nombre_competidor'] . "</td>
                     <td>" . $participant['apellido_competidor'] . "</td>";
 
+                    $participantO = new Participant($participant['ci'], $participant['nombre_competidor'], $participant['apellido_competidor']);
+
                     $stmt = "SELECT * FROM realiza JOIN kata on realiza.id_kata = kata.id_kata WHERE ci = " . $participant['ci'] . " AND id_competencia = $competitionID AND num_ronda = $numRound";
 
                     $response = mysqli_query($connection, $stmt);
@@ -82,6 +85,18 @@
                         $kata = $response->fetch_assoc();
                         echo "<td>" . $kata['id_kata'] . "</td>
                         <td>" . $kata['nombre_kata'] . "</td>";
+                    }
+
+                    $school = $participantO->getSchool();
+
+                    if (!$school) {
+                        if ($lang == "es") {
+                            echo "<td>Sin Escuela</td>";
+                        } else {
+                            echo "<td>No School</td>";
+                        }
+                    } else {
+                        echo "<td>" . $school['nombre'] . "</td>";
                     }
 
                     if ($participant['id_pool'] == "") {

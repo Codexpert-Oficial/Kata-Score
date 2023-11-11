@@ -30,7 +30,7 @@ class Event
         $this->_id = $id;
     }
 
-    public function enterCompetition()
+    public function enterEvent()
     {
         $connection = mysqli_connect(SERVER, USER, PASS, DB);
 

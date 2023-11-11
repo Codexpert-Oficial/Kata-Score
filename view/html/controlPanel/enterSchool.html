@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Participants</title>
-    <link rel="stylesheet" href="../../../css/estilo.css">
-    <link rel="stylesheet" href="../../../css/enterParticipant.css">
-    <link rel="shortcut icon" href="../../../imgs/katascore-isologotipo.ico" type="image/x-icon">
+    <title>Ingresar Escuela</title>
+    <link rel="stylesheet" href="../../css/estilo.css">
+    <link rel="stylesheet" href="../../css/enterParticipant.css">
+    <link rel="shortcut icon" href="../../imgs/katascore-isologotipo.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -18,26 +18,21 @@
             <path
                 d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z" />
         </svg>
-        Back
+        Volver
     </a>
 
     <main>
 
         <article class="enterParticipant">
 
-            <h1 class="title">Enter Participants</h1>
+            <h1 class="title">Ingresar Escuela</h1>
 
             <section class="enterParticipant__container">
 
-                <form class="form" action="../../../../model/enterParticipant.php" method="post">
-                    <input type="number" placeholder="C.I." name="ci" required class="input input__ci" max="99999999"
-                        min="10000000">
-                    <input type="text" placeholder="Name" name="name" required class="input">
-                    <input type="text" placeholder="Last Name" name="lastName" required class="input">
-                    <select name='school' class="select select__fullWitdh">
-                        <option value="" disabled selected>School</option>
-                    </select>
-                    <input type="submit" value="Submit" class="button">
+                <form class="form" action="../../../model/enterSchool.php" method="post">
+                    <input type="text" placeholder="Nombre" name="name" required class="input">
+                    <input type="text" placeholder="Tecnica" name="technique" required class="input">
+                    <input type="submit" value="Ingresar" class="button">
                 </form>
 
             </section>
@@ -57,8 +52,8 @@
                     </button>
                 </div>
                 <div class="msg__content">
-                    <img src="../../../imgs/icons/error.svg" class="msg__icon">
-                    <p class="msg__text msg__text-error">You shouldn't be seeing this message</p>
+                    <img src="../../imgs/icons/error.svg" class="msg__icon">
+                    <p class="msg__text msg__text-error">No deberias de estar viendo este mensaje</p>
                 </div>
             </section>
         </article>
@@ -66,13 +61,13 @@
 
     <footer>
         <div class="footer__line"></div>
-        <p>Developed by Codexpert</p>
+        <p>Desarrollado por Codexpert</p>
     </footer>
 
-    <script src="../../../controller/participantSchool.js"></script>
-    <script src="../../../../controller/messages.js"></script>
-    <script src="../../../../controller/verifyData.js"></script>
-    <script src="../../../../controller/formFetch.js"></script>
+    <script src="../../../controller/messages.js"></script>
+    <script src="../../../controller/verifyData.js"></script>
+    <script src="../../../controller/formFetch.js"></script>
+
 </body>
 
 </html>

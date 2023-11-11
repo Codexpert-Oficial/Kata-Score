@@ -54,7 +54,8 @@ if (isset($_SESSION["competition"])) {
             echo '<a href="enterParticipantMenu.html" class="button">Ingresar Participantes</a>';
         }
 
-        echo '<a href="kataAssign.html" class="button">Asignar kata a participante</a>
+        echo '<a href="enterSchool.html" class="button">Ingresar Escuela</a>
+        <a href="kataAssign.html" class="button">Asignar kata a participante</a>
                 <a href="listParticipants.html" class="button">Listar Participantes</a>
                 <a href="currentParticipantMenu.html" class="button">Cambiar participante
                     actual</a>';
@@ -137,7 +138,8 @@ if (isset($_SESSION["competition"])) {
             echo "<a href='enterParticipantMenu.html' class='button'>Enter Participants</a>";
         }
 
-        echo "<a href='kataAssign.html' class='button'>Assign kata to a participant</a>
+        echo "<a href='enterSchool.html' class='button'>Enter School</a>
+        <a href='kataAssign.html' class='button'>Assign kata to a participant</a>
                 <a href='listParticipants.html' class='button'>List Participants</a>
                 <a href='currentParticipantMenu.html' class='button'>Change current participant</a>";
         if ($numRound > 1) {
