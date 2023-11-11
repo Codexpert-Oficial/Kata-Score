@@ -173,4 +173,25 @@ class Participant
 
         return $response->fetch_assoc();
     }
+
+    public function setExtraScore($score)
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        $stmt = $connection->prepare("UPDATE competidor SET puntaje_extra = ? WHERE ci = ?");
+
+        $stmt->bind_param("id", $score, $this->_ci);
+
+        if (!$stmt->execute()) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt->error));
+        }
+
+        $stmt->close();
+    }
 }

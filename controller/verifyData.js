@@ -29,7 +29,7 @@ const isCompleted = (formData) => {
             }
         }
 
-        if (index == 'pool' || index == 'ci' || index == 'number' || index == 'score' || index == 'kata') {
+        if (index == 'pool' || index == 'ci' || index == 'number' || index == 'score' || index == 'kata' || index == 'extraScore') {
             if (isNaN(data)) {
                 if (lang = "es") {
                     changeMsg("Ingrese un " + index + " valido");
@@ -53,14 +53,6 @@ const isCompleted = (formData) => {
             }
         }
 
-        if (index == 'teamType') {
-            if (data != 'individual' && data != 'grupo') {
-                changeMsg("Ingrese un tipo de equipos valido");
-                openMsgError();
-                response = false;
-            }
-        }
-
         if (index == 'gender') {
             if (data != 'masculino' && data != 'femenino') {
                 if (lang = "es") {
@@ -74,8 +66,46 @@ const isCompleted = (formData) => {
             }
         }
 
+        if (index == 'modality') {
+            if (data != 'karate' && data != 'paraKarate') {
+                if (lang = "es") {
+                    changeMsg("Ingrese una modalidad valida");
+                } else {
+                    changeMsg("Enter a valid modality");
+                }
+                openMsgError();
+                response = false;
+
+            }
+        }
+
+        if (index == 'category') {
+            if (data != 'k10' && data != 'k21' && data != 'k22' && data != 'k30') {
+                if (lang = "es") {
+                    changeMsg("Ingrese una categoria valida");
+                } else {
+                    changeMsg("Enter a valid category");
+                }
+                openMsgError();
+                response = false;
+
+            }
+        }
+
         if (index == 'score') {
             if (data < 5 || data > 10) {
+                if (lang = "es") {
+                    changeMsg("Ingrese un puntaje valido");
+                } else {
+                    changeMsg("Enter a valid score");
+                }
+                openMsgError();
+                response = false;
+            }
+        }
+
+        if (index == 'extraScore') {
+            if (data < 0 || data > 3) {
                 if (lang = "es") {
                     changeMsg("Ingrese un puntaje valido");
                 } else {

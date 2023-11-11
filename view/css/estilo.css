@@ -195,6 +195,10 @@ footer {
   width: 100%;
 }
 
+.select-hidden {
+  display: none;
+}
+
 .footer__line {
   width: 100%;
   height: 1px;

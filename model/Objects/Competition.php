@@ -283,4 +283,27 @@ class Competition
 
         return true;
     }
+
+    public function setModality($modality, $category)
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        if ($modality == "karate") {
+            $stmt = $connection->prepare("INSERT INTO karate (id_competencia) VALUES (?)");
+            $stmt->bind_param("i", $this->_id);
+        } else {
+            $stmt = $connection->prepare("INSERT INTO `para-karate` (id_competencia,categoria) VALUES (?, ?)");
+            $stmt->bind_param("is", $this->_id, $category);
+        }
+
+        if (!$stmt->execute()) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt->error));
+        }
+    }
 }

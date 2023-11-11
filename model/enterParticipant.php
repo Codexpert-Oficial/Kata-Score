@@ -24,6 +24,11 @@ if (isset($_POST["ci"]) && isset($_POST["name"]) && isset($_POST["lastName"]) &&
     $participant = new Participant($ci, $name, $lastName);
     $participant->enterParticipant();
 
+    if (isset($_POST['extraScore'])) {
+        $score = $_POST['extraScore'];
+        $participant->setExtraScore($score);
+    }
+
     $participant->setSchool($school);
 
     $competes = new Competes($ci, $competition, 1);

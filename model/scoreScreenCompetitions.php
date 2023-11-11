@@ -28,7 +28,7 @@ if (isset($_SESSION['event'])) {
     }
 }
 
-$stmt = "SELECT * FROM competencia WHERE estado = 'activa' AND id_evento = $event";
+$stmt = "SELECT * FROM competencia WHERE estado = 'activa' AND id_evento = $event ORDER BY id_competencia DESC";
 
 $response = mysqli_query($connection, $stmt);
 

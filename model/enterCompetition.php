@@ -15,16 +15,19 @@ if (isset($_COOKIE['lang'])) {
 include_once './Objects/Competition.php';
 include_once './Objects/Round.php';
 
-if (isset($_POST["name"]) && isset($_POST["ageRange"]) && isset($_POST["gender"]) && isset($_SESSION['event'])) {
+if (isset($_POST["name"]) && isset($_POST["ageRange"]) && isset($_POST["gender"]) && isset($_POST['modality']) && isset($_POST['category']) && isset($_SESSION['event'])) {
     $name = $_POST["name"];
     $ageRange = $_POST["ageRange"];
     $gender = $_POST["gender"];
     $eventID = $_SESSION['event'];
+    $modality = $_POST['modality'];
+    $category = $_POST['category'];
 
     $date = date('Y-m-d');
 
     $competition = new Competition('activa', $date, $name, $ageRange, $gender, $eventID);
     echo $competition->enterCompetition();
+    $competition->setModality($modality, $category);
 
     $round = new Round(1, $competition->getId());
     $round->enterRound();

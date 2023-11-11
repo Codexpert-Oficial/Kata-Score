@@ -33,7 +33,7 @@ if (isset($_SESSION['judgeUser'])) {
         echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
     }
 
-    $stmt = "SELECT * FROM competencia JOIN participa ON competencia.id_competencia = participa.id_competencia WHERE usuario_juez = '$user' AND estado = 'activa' AND id_evento = $event";
+    $stmt = "SELECT * FROM competencia JOIN participa ON competencia.id_competencia = participa.id_competencia WHERE usuario_juez = '$user' AND estado = 'activa' AND id_evento = $event ORDER BY competencia.id_competencia DESC";
 
     $response = mysqli_query($connection, $stmt);
 

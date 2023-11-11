@@ -34,6 +34,24 @@ if (isset($_POST['id'])) {
 
         $competitionID = $competition['id_competencia'];
 
+        $stmt = $connection->prepare("DELETE FROM karate WHERE id_competencia = ?");
+        $stmt->bind_param("i", $competitionID);
+        $response = $stmt->execute();
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt->error));
+        }
+        $stmt->close();
+
+        $stmt = $connection->prepare("DELETE FROM `para-karate` WHERE id_competencia = ?");
+        $stmt->bind_param("i", $competitionID);
+        $response = $stmt->execute();
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt->error));
+        }
+        $stmt->close();
+
         $stmt = $connection->prepare("DELETE FROM realiza WHERE id_competencia = ?");
         $stmt->bind_param("i", $competitionID);
         $response = $stmt->execute();

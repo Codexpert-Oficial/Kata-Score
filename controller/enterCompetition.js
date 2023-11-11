@@ -33,3 +33,14 @@ form.addEventListener('submit', (e) => {
             });
     }
 });
+
+const modalitySelect = document.querySelector('.modality-select');
+const categorySelect = document.querySelector('.category-select');
+
+modalitySelect.addEventListener("change", () => {
+    if (modalitySelect.value == "paraKarate") {
+        categorySelect.classList.remove("select-hidden");
+    } else {
+        categorySelect.classList.add("select-hidden");
+    }
+})

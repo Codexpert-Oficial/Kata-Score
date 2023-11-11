@@ -3,7 +3,7 @@
 
     session_start();
 
-    error_reporting(0);
+    /* error_reporting(0); */
 
     include_once "./Objects/DataBase.php";
 
@@ -112,7 +112,7 @@
                 if (isset($_SESSION['poolDisplay'])) {
                     $pool = $_SESSION['poolDisplay'];
 
-                    $stmt = "SELECT nombre_competidor,apellido_competidor,SUM(puntua.puntaje) - MAX(puntua.puntaje) - MIN(puntua.puntaje) AS puntaje_final
+                    $stmt = "SELECT nombre_competidor,apellido_competidor,SUM(puntua.puntaje) - MAX(puntua.puntaje) - MIN(puntua.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final
                     FROM competidor
                     JOIN puntua ON competidor.ci = puntua.ci
                     JOIN pertenece ON competidor.ci = pertenece.ci

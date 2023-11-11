@@ -79,7 +79,7 @@ class Score
 
             $stmt = $connection->prepare("INSERT INTO puntua (ci, id_competencia, num_ronda, puntaje, usuario_juez) VALUES (?,?,?,?,?)");
 
-            $stmt->bind_param("iiiis", $this->_ci, $this->_competitionID, $this->_round, $this->_scoreValue, $this->_judge);
+            $stmt->bind_param("iiids", $this->_ci, $this->_competitionID, $this->_round, $this->_scoreValue, $this->_judge);
 
             if ($stmt->execute()) {
                 if ($_COOKIE['lang'] == "es") {

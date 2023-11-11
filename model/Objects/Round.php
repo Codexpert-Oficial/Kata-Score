@@ -384,7 +384,7 @@ class Round
             return false;
         }
 
-        if ($response->num_rows === 0) {
+        if ($response->num_rows <= 0) {
             return false;
         }
 
@@ -411,7 +411,7 @@ class Round
             echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
-        $stmt = "SELECT * FROM puntua WHERE ci = $ci AND id_competencia = $this->_competitionID AND num_ronda = $this->_number ORDER BY puntaje DESC";
+        $stmt = "SELECT * FROM competidor JOIN puntua ON competidor.ci = puntua.ci WHERE competidor.ci = $ci AND puntua.id_competencia = $this->_competitionID AND puntua.num_ronda = $this->_number ORDER BY puntua.puntaje DESC";
 
         $response = mysqli_query($connection, $stmt);
 
@@ -433,9 +433,10 @@ class Round
             while ($score = $response->fetch_assoc()) {
                 $scores[] = $score['puntaje'];
                 $total += $score['puntaje'];
+                $extraScore = $score['puntaje_extra'];
             }
 
-            $total = $total - $scores[4] - $scores[0];
+            $total = $total - $scores[4] - $scores[0] + $extraScore;
 
             return $total;
         }
@@ -455,13 +456,14 @@ class Round
 
             $idPool = $pool['id_pool'];
 
-            $stmt = "SELECT puntua.ci ,SUM(puntaje) - MAX(puntaje) - MIN(puntaje) AS puntaje_final
+            $stmt = "SELECT puntua.ci ,SUM(puntaje) - MAX(puntaje) - MIN(puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final
                     FROM puntua
                     JOIN pertenece ON pertenece.ci = puntua.ci AND pertenece.id_competencia = puntua.id_competencia AND pertenece.num_ronda = puntua.num_ronda
+                    JOIN competidor ON puntua.ci = competidor.ci
                     WHERE pertenece.id_pool = $idPool
                     AND puntua.id_competencia = $this->_competitionID
                     AND puntua.num_ronda = $this->_number
-                    GROUP BY ci
+                    GROUP BY puntua.ci
                     ORDER BY puntaje_final DESC";
 
             $participants = mysqli_query($connection, $stmt);

@@ -28,7 +28,7 @@ if (isset($_SESSION['judgeUser'])) {
     }
 }
 
-$stmt = "SELECT e.id_evento, e.nombre FROM evento e JOIN competencia c ON e.id_evento = c.id_evento JOIN participa p ON c.id_competencia = p.id_competencia WHERE p.usuario_juez = '$user' ORDER BY e.id_evento DESC";
+$stmt = "SELECT e.id_evento, e.nombre FROM evento e JOIN competencia c ON e.id_evento = c.id_evento JOIN participa p ON c.id_competencia = p.id_competencia WHERE p.usuario_juez = '$user' GROUP BY e.id_evento ORDER BY e.id_evento DESC";
 
 $response = mysqli_query($connection, $stmt);
 
