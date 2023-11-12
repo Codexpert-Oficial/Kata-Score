@@ -24,11 +24,19 @@ const setCookie = (name, value, days) => {
 }
 
 let enURL = "/kata-score/view/html/en/index.html";
-let esURL = "/kata-score/index.html";
+let esURL = "/kata-score/";
 
 let lang = getCookie("lang");
 
-if (lang == "") {
+let i = window.location.href.indexOf("/kata-score");
+let url = window.location.href.substring(i);
+console.log(url);
+
+if (lang == "es" && url == enURL) {
+    window.location.href = esURL;
+} else if (lang == "en" && url == esURL) {
+    window.location.href = enURL;
+} else if (lang == "") {
     setCookie("lang", "es", 10);
 }
 

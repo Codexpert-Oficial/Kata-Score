@@ -110,9 +110,11 @@
             }
         } else if ($state == "mostrando_clasificados") {
 
-            $pool = $round->getShowingPool();
 
-            $stmt = "SELECT nombre_competidor,apellido_competidor,SUM(puntua.puntaje) - MAX(puntua.puntaje) - MIN(puntua.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final
+            if (!$competition->isLastRound()) {
+                $pool = $round->getShowingPool();
+
+                $stmt = "SELECT nombre_competidor,apellido_competidor,SUM(puntua.puntaje) - MAX(puntua.puntaje) - MIN(puntua.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final
                 FROM competidor
                 JOIN puntua ON competidor.ci = puntua.ci
                 JOIN pertenece ON competidor.ci = pertenece.ci
@@ -123,7 +125,16 @@
                 ORDER BY puntaje_final DESC
                 LIMIT 3";
 
-            $response = mysqli_query($connection, $stmt);
+                $response = mysqli_query($connection, $stmt);
+            } else {
+                $stmt = "SELECT COALESCE(puesto,0) puesto, nombre_competidor, apellido_competidor, SUM(puntaje) - MAX(puntaje) - MIN(puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final
+                FROM compite c JOIN puntua p ON c.id_competencia = p.id_competencia AND c.num_ronda = p.num_ronda AND c.ci = p.ci
+                JOIN competidor ON c.ci = competidor.ci
+                WHERE c.id_competencia = $competitionID AND c.num_ronda = $numRound GROUP BY c.ci ORDER BY puesto";
+
+                $response = mysqli_query($connection, $stmt);
+            }
+
 
             echo "<main> <article class='classified'>";
 
@@ -142,11 +153,21 @@
                 echo "<tr><th>Position</th><th>Name</th><th>Last name</th><th>Score</th></tr>";
             }
 
-            $cont = 1;
-            while ($participant = $response->fetch_assoc()) {
-                echo "<tr><td>" . $cont . "</td><td>" . $participant['nombre_competidor'] . "</td><td>" . $participant['apellido_competidor'] . "</td><td>" . $participant['puntaje_final'] . "</td></tr>";
-                $cont++;
+            if (!$competition->isLastRound()) {
+                $cont = 1;
+                while ($participant = $response->fetch_assoc()) {
+                    echo "<tr><td>" . $cont . "</td><td>" . $participant['nombre_competidor'] . "</td><td>" . $participant['apellido_competidor'] . "</td><td>" . $participant['puntaje_final'] . "</td></tr>";
+                    $cont++;
+                }
+            } else {
+                while ($participant = $response->fetch_assoc()) {
+                    if ($participant['puesto'] != 0) {
+                        echo "<tr><td>" . $participant['puesto'] . "</td><td>" . $participant['nombre_competidor'] . "</td><td>" . $participant['apellido_competidor'] . "</td><td>" . $participant['puntaje_final'] . "</td></tr>";
+                    }
+                }
             }
+
+
             echo "</table>
                 </section>
                 </article>

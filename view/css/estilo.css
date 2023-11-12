@@ -31,6 +31,24 @@ footer {
   font-family: "Courier New";
 }
 
+th,
+td {
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 7px;
+  box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.033);
+  color: #292929;
+}
+
+td {
+  background-color: rgb(239, 246, 254);
+}
+
+th {
+  font-weight: 600;
+  background-color: rgb(219, 235, 255);
+}
+
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -227,24 +245,6 @@ footer {
   border-radius: 10px;
   font-size: 35px;
   border-spacing: 10px;
-}
-
-th,
-td {
-  text-align: center;
-  padding: 10px 20px;
-  border-radius: 7px;
-  box-shadow: 0px 0px 15px 1px rgba(0, 0, 0, 0.033);
-  color: #292929;
-}
-
-td {
-  background-color: rgb(239, 246, 254);
-}
-
-th {
-  font-weight: 600;
-  background-color: rgb(219, 235, 255);
 }
 
 .red {

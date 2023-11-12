@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Participants</title>
+    <title>Remove Judge</title>
     <link rel="stylesheet" href="../../../css/estilo.css">
-    <link rel="stylesheet" href="../../../css/enterParticipant.css">
+    <link rel="stylesheet" href="../../../css/main.css">
     <link rel="shortcut icon" href="../../../imgs/katascore-isologotipo.ico" type="image/x-icon">
 </head>
 
@@ -23,29 +23,10 @@
 
     <main>
 
-        <article class="enterParticipant">
-
-            <h1 class="title">Enter Participants</h1>
-
-            <section class="enterParticipant__container">
-
-                <form class="form" action="../../../../model/enterParticipant.php" method="post">
-                    <input type="number" placeholder="C.I." name="ci" required class="input input__ci" max="99999999"
-                        min="10000000">
-                    <input type="text" placeholder="Name" name="name" required class="input">
-                    <input type="text" placeholder="Last Name" name="lastName" required class="input">
-                    <select name='school' class="select select__fullWitdh">
-                        <option value="" disabled selected>School</option>
-                    </select>
-                    <div class="extraScore__container">
-
-                    </div>
-                    <input type="submit" value="Submit" class="button">
-                </form>
-
-            </section>
-
-        </article>
+        <form action="../../../../model/removeJudge.php" method="post" class="form">
+            <input type="text" placeholder="User" name="user" class="input" required>
+            <input type="submit" value="Remove" class="button remove__button">
+        </form>
 
         <article class="msg msg__hidden">
             <section class="msg__info">
@@ -65,6 +46,7 @@
                 </div>
             </section>
         </article>
+
     </main>
 
     <footer>
@@ -72,11 +54,10 @@
         <p>Developed by Codexpert</p>
     </footer>
 
-    <script src="../../../../controller/participantSchool.js"></script>
-    <script src="../../../../controller/participantExtraScore.js"></script>
     <script src="../../../../controller/messages.js"></script>
     <script src="../../../../controller/verifyData.js"></script>
     <script src="../../../../controller/formFetch.js"></script>
+
 </body>
 
 </html>

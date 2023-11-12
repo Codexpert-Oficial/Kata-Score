@@ -306,4 +306,214 @@ class Competition
             echo json_encode(array("error" => "Error: " . $stmt->error));
         }
     }
+
+    public function isLastRound()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        $numRound = $this->getLastRound();
+
+        $round = new Round(1, $this->_id);
+
+        $participants = $round->getParticipants();
+        $cantParticipants = $participants->num_rows;
+
+        if ($cantParticipants <= 3 && $numRound == 1) {
+            return true;
+        } else if ($cantParticipants <= 10 && $numRound == 2) {
+            return true;
+        } else if ($cantParticipants <= 24 && $numRound == 3) {
+            return true;
+        } else if ($cantParticipants <= 48 && $numRound == 4) {
+            return true;
+        } else if ($cantParticipants <= 96 && $numRound == 5) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getLastRoundClassifieds()
+    {
+
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        $numRound = $this->getLastRound();
+
+        $round = new Round(1, $this->_id);
+
+        $participants = $round->getParticipants();
+        $cantParticipants = $participants->num_rows;
+
+        if ($cantParticipants <= 3) {
+
+            $round = new Round($numRound, $this->_id);
+
+            $round->setPositions();
+
+            return true;
+        } else if ($cantParticipants <= 4) {
+
+            $prevRound = $numRound - 1;
+
+            $stmt = "SELECT *, SUM(p.puntaje) - MAX(p.puntaje) - MIN(p.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final from compite c 
+            join puntua p on c.id_competencia = p.id_competencia and c.ci = p.ci 
+            join competidor on c.ci = competidor.ci 
+            where c.id_competencia = $this->_id and c.num_ronda = $prevRound and p.num_ronda = $numRound and puesto = 1 
+            group by c.ci order by puntaje_final desc";
+
+            $response = mysqli_query($connection, $stmt);
+
+            $cont = 0;
+            while ($participant = $response->fetch_assoc()) {
+                $cont++;
+                $competes = new Competes($participant['ci'], $this->_id, $numRound);
+                $competes->setPosition($cont);
+
+                if (!$competes->enterPosition()) {
+                    return false;
+                }
+            }
+
+            $stmt = "SELECT *, SUM(p.puntaje) - MAX(p.puntaje) - MIN(p.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final from compite c 
+            join puntua p on c.id_competencia = p.id_competencia and c.ci = p.ci 
+            join competidor on c.ci = competidor.ci 
+            where c.id_competencia = $this->_id and c.num_ronda = $prevRound and p.num_ronda = $numRound and puesto = 2 
+            group by c.ci order by puntaje_final desc";
+
+            $response = mysqli_query($connection, $stmt);
+
+            while ($participant = $response->fetch_assoc()) {
+                $competes = new Competes($participant['ci'], $this->_id, $numRound);
+                $competes->setPosition(3);
+
+                if (!$competes->enterPosition()) {
+                    return false;
+                }
+            }
+
+            return true;
+        } else if ($cantParticipants <= 5) {
+
+            $prevRound = $numRound - 1;
+
+            $stmt = "SELECT *, SUM(p.puntaje) - MAX(p.puntaje) - MIN(p.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final from compite c 
+            join puntua p on c.id_competencia = p.id_competencia and c.ci = p.ci 
+            join competidor on c.ci = competidor.ci 
+            where c.id_competencia = $this->_id and c.num_ronda = $prevRound and p.num_ronda = $numRound and puesto = 1 
+            group by c.ci order by puntaje_final desc";
+
+            $response = mysqli_query($connection, $stmt);
+
+            $cont = 0;
+            while ($participant = $response->fetch_assoc()) {
+                $cont++;
+                $competes = new Competes($participant['ci'], $this->_id, $numRound);
+                $competes->setPosition($cont);
+
+                if (!$competes->enterPosition()) {
+                    return false;
+                }
+            }
+
+            $stmt = "SELECT *, SUM(p.puntaje) - MAX(p.puntaje) - MIN(p.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final from compite c 
+            join puntua p on c.id_competencia = p.id_competencia and c.ci = p.ci 
+            join competidor on c.ci = competidor.ci 
+            where c.id_competencia = $this->_id and c.num_ronda = $prevRound and p.num_ronda = $numRound and puesto = 2 
+            group by c.ci order by puntaje_final desc";
+
+            $response = mysqli_query($connection, $stmt);
+
+            $participant = $response->fetch_assoc();
+            $competes = new Competes($participant['ci'], $this->_id, $numRound);
+            $competes->setPosition(2);
+
+            if (!$competes->enterPosition()) {
+                return false;
+            }
+
+            $stmt = "SELECT *, SUM(p.puntaje) - MAX(p.puntaje) - MIN(p.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final from compite c 
+            join puntua p on c.id_competencia = p.id_competencia and c.ci = p.ci 
+            join competidor on c.ci = competidor.ci 
+            join pertenece on c.ci = pertenece.ci and c.id_competencia = pertenece.id_competencia and c.num_ronda = pertenece.num_ronda
+            where (c.id_competencia = $this->_id and c.num_ronda = $prevRound and p.num_ronda = $numRound) and ((puesto = 2 and  id_pool = 2) or (puesto = 3 and  id_pool = 1))
+            group by c.ci order by puntaje_final desc";
+
+            $response = mysqli_query($connection, $stmt);
+            $response->fetch_assoc();
+            $competes = new Competes($participant['ci'], $this->_id, $numRound);
+            $competes->setPosition(3);
+
+            if (!$competes->enterPosition()) {
+                return false;
+            }
+
+
+            return true;
+        } else if ($cantParticipants <= 96) {
+
+            $prevRound = $numRound - 1;
+
+            $stmt = "SELECT *, SUM(p.puntaje) - MAX(p.puntaje) - MIN(p.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final from compite c 
+            join puntua p on c.id_competencia = p.id_competencia and c.ci = p.ci 
+            join competidor on c.ci = competidor.ci 
+            where c.id_competencia = $this->_id and c.num_ronda = $prevRound and p.num_ronda = $numRound and puesto = 1 
+            group by c.ci order by puntaje_final desc";
+
+            $response = mysqli_query($connection, $stmt);
+
+            $cont = 0;
+            while ($participant = $response->fetch_assoc()) {
+                $cont++;
+                $competes = new Competes($participant['ci'], $this->_id, $numRound);
+                $competes->setPosition($cont);
+
+                if (!$competes->enterPosition()) {
+                    return false;
+                }
+            }
+
+            $stmt = "SELECT *, SUM(p.puntaje) - MAX(p.puntaje) - MIN(p.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final from compite c 
+            join puntua p on c.id_competencia = p.id_competencia and c.ci = p.ci 
+            join competidor on c.ci = competidor.ci 
+            join pertenece on c.ci = pertenece.ci and c.id_competencia = pertenece.id_competencia and c.num_ronda = pertenece.num_ronda
+            where (c.id_competencia = $this->_id and c.num_ronda = $prevRound and p.num_ronda = $numRound) and ((puesto = 2 and  id_pool = 1) or (puesto = 3 and  id_pool = 2))
+            group by c.ci order by puntaje_final desc";
+
+            $responses[] = mysqli_query($connection, $stmt);
+
+            $stmt = "SELECT *, SUM(p.puntaje) - MAX(p.puntaje) - MIN(p.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final from compite c 
+            join puntua p on c.id_competencia = p.id_competencia and c.ci = p.ci 
+            join competidor on c.ci = competidor.ci 
+            join pertenece on c.ci = pertenece.ci and c.id_competencia = pertenece.id_competencia and c.num_ronda = pertenece.num_ronda
+            where (c.id_competencia = $this->_id and c.num_ronda = $prevRound and p.num_ronda = $numRound) and ((puesto = 2 and  id_pool = 2) or (puesto = 3 and  id_pool = 1))
+            group by c.ci order by puntaje_final desc";
+
+            $responses[] = mysqli_query($connection, $stmt);
+
+            for ($i = 0; $i < 2; $i++) {
+
+                $participant = $responses[$i]->fetch_assoc();
+                $competes = new Competes($participant['ci'], $this->_id, $numRound);
+                $competes->setPosition(3);
+
+                if (!$competes->enterPosition()) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -83,15 +83,29 @@ if (isset($_SESSION["competition"])) {
                     de
                     participante actual</a>
                 <a href="" class="button nextRound">Pasar a siguiente ronda</a>
+                <a href="savePositions.html" class="button">Guardar puestos</a>
                 <a href="classifiedParticipantsMenu.html" class="button">Mostrar clasificados</a>
 
             </section>
 
             <section class="controlPanel__container">
                 <h2 class="controlPanel__container__title">Controles de jueces</h2>
-                <a href="enterJudge.html" class="button">Registrar juez</a>
-                <a href="addJudgeMenu.html" class="button">Añadir juez a la competencia</a>
-            </section>
+                <a href="enterJudge.html" class="button">Registrar juez</a>';
+        if ($numRound > 1) {
+            echo "<div class='button__container'><div class='button-disabled'>Añadir juez a la competencia</div>
+                            <span class='button-disabled__message'>Esta funcion no esta disponible en esta ronda</span></div>";
+        } else {
+            echo '<a href="addJudgeMenu.html" class="button">Añadir juez a la competencia</a>';
+        }
+
+        if ($numRound > 1) {
+            echo "<div class='button__container'><div class='button-disabled'>Quitar Juez</div>
+                    <span class='button-disabled__message'>Esta funcion no esta disponible en esta ronda</span></div>";
+        } else {
+            echo '<a href="removeJudge.html" class="button remove__button">Quitar juez</a>';
+        }
+
+        echo '</section>
 
         </article>
 
@@ -163,15 +177,29 @@ if (isset($_SESSION["competition"])) {
                     participant</a>
                     <a href='' class='button scoreScreenControl' data-option='mostrando_puntaje'>Show current participant score</a>
                 <a href='' class='button nextRound'>Pass to the next round</a>
+                <a href='savePositions.html' class='button'>Save positions</a>
                 <a href='classifiedParticipantsMenu.html' class='button'>Show classifieds</a>
 
             </section>
 
             <section class='controlPanel__container'>
                 <h2 class='controlPanel__container__title'>Judges controls</h2>
-                <a href='enterJudge.html' class='button'>Register judge</a>
-                <a href='addJudgeMenu.html' class='button'>Add judge to a competition</a>
-            </section>
+                <a href='enterJudge.html' class='button'>Register judge</a>";
+        if ($numRound > 1) {
+            echo "<div class='button__container'><div class='button-disabled'>Add judge to the competition</div>
+            <span class='button-disabled__message'>This function isn't available in this round</span></div>";
+        } else {
+            echo "<a href='addJudgeMenu.html' class='button'>Add judge to the competition</a>";
+        }
+
+        if ($numRound > 1) {
+            echo "<div class='button__container'><div class='button-disabled'>Remove judge</div>
+            <span class='button-disabled__message'>This function isn't available in this round</span></div>";
+        } else {
+            echo "<a href='removeJudge.html' class='button remove__button'>Remove judge</a>";
+        }
+
+        echo  "</section>
 
         </article>
 
