@@ -83,7 +83,7 @@ class Participates
             echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
         }
 
-        $stmt = "SELECT * FROM participa WHERE id_competencia = '$this->_competitionId' AND num_juez = '$this->_number'";
+        $stmt = "SELECT * FROM participa WHERE id_competencia = $this->_competitionId AND num_juez = $this->_number";
 
         $response = mysqli_query($connection, $stmt);
 
@@ -91,9 +91,7 @@ class Participates
             http_response_code(500);
             echo json_encode(array("error" => "Error: " . $stmt));
         } else {
-            if ($response->num_rows <= 0) {
-                return false;
-            } else {
+            if ($response->num_rows > 0) {
                 http_response_code(400);
                 if ($_COOKIE['lang'] == "es") {
                     echo json_encode(array("error" => "Numero de juez ya asignado"));
@@ -101,6 +99,26 @@ class Participates
                     echo json_encode(array("error" => "Already assigned judge number"));
                 }
                 return true;
+            } else {
+
+                $stmt = "SELECT * FROM participa WHERE id_competencia = $this->_competitionId AND usuario_juez = '$this->_judgeUser'";
+
+                $response = mysqli_query($connection, $stmt);
+
+                if (!$response) {
+                    http_response_code(500);
+                    echo json_encode(array("error" => "Error: " . $stmt));
+                } else {
+                    if ($response->num_rows > 0) {
+                        http_response_code(400);
+                        if ($_COOKIE['lang'] == "es") {
+                            echo json_encode(array("error" => "Juez ya asignado"));
+                        } else {
+                            echo json_encode(array("error" => "Already assigned Judge"));
+                        }
+                        return true;
+                    }
+                }
             }
         }
     }

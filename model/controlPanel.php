@@ -74,14 +74,15 @@ if (isset($_SESSION["competition"])) {
 
                 <h2 class="controlPanel__container__title">Controles del tanteador</h2>
 
-                <a href="../../../model/callCurrentParticipant.php" class="button callCurrentParticipant">Llamar a
+                <a href="" class="button scoreScreenControl" data-option="mostrando_competencia">Mostrar competencia</a>
+                <a href="" class="button scoreScreenControl" data-option="mostrando_participante">Llamar a
                     participante
                     actual</a>
-                <a href="../../../model/scoreCurrentParticipant.php" class="button scoreCurrentParticipant">Mostrar
+                <a href="" class="button scoreScreenControl" data-option="mostrando_puntaje">Mostrar
                     puntaje
                     de
                     participante actual</a>
-                <a href="../../../model/nextRound.php" class="button nextRound">Pasar a siguiente ronda</a>
+                <a href="" class="button nextRound">Pasar a siguiente ronda</a>
                 <a href="classifiedParticipantsMenu.html" class="button">Mostrar clasificados</a>
 
             </section>
@@ -156,13 +157,12 @@ if (isset($_SESSION["competition"])) {
 
                 <h2 class='controlPanel__container__title'>Score screen controls</h2>
 
-                <a href='../../../../model/callCurrentParticipant.php' class='button callCurrentParticipant'>Call
+                <a href='' class='button scoreScreenControl' data-option='mostrando_competencia'>Show competition</a>
+                <a href='' class='button scoreScreenControl' data-option='mostrando_participante'>Call
                     current
                     participant</a>
-                <a href='../../../../model/scoreCurrentParticipant.php' class='button scoreCurrentParticipant'>Show
-                    current
-                    participant's score</a>
-                <a href='../../../../model/nextRound.php' class='button nextRound'>Pass to the next round</a>
+                    <a href='' class='button scoreScreenControl' data-option='mostrando_puntaje'>Show current participant score</a>
+                <a href='' class='button nextRound'>Pass to the next round</a>
                 <a href='classifiedParticipantsMenu.html' class='button'>Show classifieds</a>
 
             </section>

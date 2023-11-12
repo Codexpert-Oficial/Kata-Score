@@ -14,6 +14,7 @@
         }
 
         include_once './Objects/Pool.php';
+        include_once './Objects/Round.php';
         include_once './Objects/Competition.php';
 
         if (isset($_POST["pool"]) && isset($_SESSION['competition'])) {
@@ -38,16 +39,19 @@
 
             $numRound = $competition->getLastRound();
 
+            $round = new Round($numRound, $competitionID);
+
             $pool = new Pool($_POST['pool'], null, $competitionID, $numRound);
 
             if ($pool->allScored()) {
-                $_SESSION["poolDisplay"] = $_POST["pool"];
-                $_SESSION["displayClassified"] = true;
-                $_SESSION["displayParticipant"] = false;
-                if ($lang == "es") {
-                    echo "Acción realizada con éxito";
-                } else {
-                    echo "Action done successfully";
+                $round->setShowingPool($_POST['pool']);
+
+                if ($round->setState("mostrando_clasificados")) {
+                    if ($lang == "es") {
+                        echo "Accion realizada con exito";
+                    } else {
+                        echo "Action done successfully";
+                    }
                 }
             } else {
                 http_response_code(400);

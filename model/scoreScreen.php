@@ -18,8 +18,6 @@
 
     if (isset($_SESSION['scoreCompetition'])) {
 
-        $showCompetition = true;
-
         $competitionID = $_SESSION['scoreCompetition'];
 
         $connection = mysqli_connect(SERVER, USER, PASS, DB);
@@ -40,122 +38,63 @@
         $numRound = $competition->getLastRound();
         $round = new Round($numRound, $competitionID);
 
-        if (isset($_SESSION["displayParticipant"])) {
+        $state = $round->getState();
 
-            if ($_SESSION["displayParticipant"]) {
+        if ($state == "mostrando_participante" || $state == "mostrando_puntaje") {
 
-                $showCompetition = false;
+            $participant = $round->getActiveParticipant();
 
-                $participant = $round->getActiveParticipant();
+            $stmt = "SELECT * FROM pertenece WHERE ci = " . $participant['ci'];
+            $response = mysqli_query($connection, $stmt);
 
-                $stmt = "SELECT * FROM pertenece WHERE ci = " . $participant['ci'];
-                $response = mysqli_query($connection, $stmt);
-
-                echo "<header> <section class='header__container'>";
-                if ($lang == "es") {
-                    echo "<p> Categoría: " . $competition->getAgeRange() . " - " . $competition->getGender() . "</p>
+            echo "<header> <section class='header__container'>";
+            if ($lang == "es") {
+                echo "<p> Categoría: " . $competition->getAgeRange() . " - " . $competition->getGender() . "</p>
                     <p> Ronda: " . $numRound . "</p><p> Pool: ";
-                } else {
-                    if ($competition->getGender() == "masculino") {
-                        echo "<p> Category: " . $competition->getAgeRange() . " - Male</p>
+            } else {
+                if ($competition->getGender() == "masculino") {
+                    echo "<p> Category: " . $competition->getAgeRange() . " - Male</p>
                         <p> Round: " . $numRound . "</p><p> Pool: ";
-                    } else {
-                        echo "<p> Category: " . $competition->getAgeRange() . " - Female</p>
+                } else {
+                    echo "<p> Category: " . $competition->getAgeRange() . " - Female</p>
                         <p> Round: " . $numRound . "</p><p> Pool: ";
-                    }
-                }
-
-                if ($response->num_rows <= 0) {
-                    echo "Sin Pool </p></section></header><main><article class='scoreScreen'>";
-                } else {
-                    $pool = $response->fetch_assoc();
-                    echo $pool['id_pool'] . "</p></section></header><main><article class='scoreScreen'>";
-
-                    if ($pool['id_pool'] % 2 == 0) {
-                        echo "<div class='blueBox'>";
-                    } else {
-                        echo "<div class='redBox'>";
-                    }
-
-                    if (isset($_SESSION["displayParticipantScore"])) {
-                        if ($_SESSION["displayParticipantScore"]) {
-                            echo "<p>" . $round->totalScore($participant['ci']) . "</p>";
-                        }
-                    }
-
-                    echo "</div>";
-                }
-
-                echo "<div class='scoreScreen__content'>";
-
-                echo "<p>" . $participant['apellido_competidor'] . ", " . $participant['nombre_competidor'] . "</p>";
-
-                $stmt = "SELECT * FROM realiza JOIN kata ON realiza.id_kata = kata.id_kata WHERE ci = " . $participant['ci'] . " AND id_competencia = $competitionID AND num_ronda = $numRound";
-
-                $response = mysqli_query($connection, $stmt);
-
-                if ($response->num_rows <= 0) {
-                    echo "<p>Sin kata</p> </div>";
-                } else {
-                    $kata = $response->fetch_assoc();
-                    echo "<p>" . $kata['nombre_kata'] . "</p> </div>";
                 }
             }
-        }
 
-        if (isset($_SESSION["displayClassified"])) {
+            if ($response->num_rows <= 0) {
+                echo "Sin Pool </p></section></header><main><article class='scoreScreen'>";
+            } else {
+                $pool = $response->fetch_assoc();
+                echo $pool['id_pool'] . "</p></section></header><main><article class='scoreScreen'>";
 
-            if ($_SESSION["displayClassified"]) {
-
-                $showCompetition = false;
-
-                if (isset($_SESSION['poolDisplay'])) {
-                    $pool = $_SESSION['poolDisplay'];
-
-                    $stmt = "SELECT nombre_competidor,apellido_competidor,SUM(puntua.puntaje) - MAX(puntua.puntaje) - MIN(puntua.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final
-                    FROM competidor
-                    JOIN puntua ON competidor.ci = puntua.ci
-                    JOIN pertenece ON competidor.ci = pertenece.ci
-                    WHERE pertenece.id_pool = $pool
-                    AND pertenece.id_competencia = $competitionID
-                    AND pertenece.num_ronda = $numRound
-                    GROUP BY competidor.ci
-                    ORDER BY puntaje_final DESC
-                    LIMIT 3";
-
-                    $response = mysqli_query($connection, $stmt);
-
-                    echo "<main> <article class='classified'>";
-
-                    if ($lang == "es") {
-                        echo "<h1 class='title'> Clasificados </h1>";
-                    } else {
-                        echo "<h1 class='title'> Clasifieds </h1>";
-                    }
-
-                    echo "<section class='table__container'>
-                    <table class='table'>";
-
-                    if ($lang == "es") {
-                        echo "<tr><th>Posición</th><th>Nombre</th><th>Apellido</th><th>Puntaje</th></tr>";
-                    } else {
-                        echo "<tr><th>Position</th><th>Name</th><th>Last name</th><th>Score</th></tr>";
-                    }
-
-                    $cont = 1;
-                    while ($participant = $response->fetch_assoc()) {
-                        echo "<tr><td>" . $cont . "</td><td>" . $participant['nombre_competidor'] . "</td><td>" . $participant['apellido_competidor'] . "</td><td>" . $participant['puntaje_final'] . "</td></tr>";
-                        $cont++;
-                    }
-                    echo "</table>
-                    </section>
-                    </article>
-                    </main>";
+                if ($pool['id_pool'] % 2 == 0) {
+                    echo "<div class='blueBox'>";
+                } else {
+                    echo "<div class='redBox'>";
                 }
-            }
-        }
 
-        if ($showCompetition) {
+                if ($state == "mostrando_puntaje") {
+                    echo "<p>" . $round->totalScore($participant['ci']) . "</p>";
+                }
+
+                echo "</div>";
+            }
+
+            echo "<div class='scoreScreen__content'>";
+
+            echo "<p>" . $participant['apellido_competidor'] . ", " . $participant['nombre_competidor'] . "</p>";
+
+            $stmt = "SELECT * FROM realiza JOIN kata ON realiza.id_kata = kata.id_kata WHERE ci = " . $participant['ci'] . " AND id_competencia = $competitionID AND num_ronda = $numRound";
+
+            $response = mysqli_query($connection, $stmt);
+
+            if ($response->num_rows <= 0) {
+                echo "<p>Sin kata</p> </div>";
+            } else {
+                $kata = $response->fetch_assoc();
+                echo "<p>" . $kata['nombre_kata'] . "</p> </div>";
+            }
+        } else if ($state == "mostrando_competencia") {
 
             echo "<main> <article class='scoreScreen__competition'>
             <h1>" . $competition->getName() . "</h1>
@@ -169,6 +108,50 @@
                     echo "<section> <p>" . $competition->getAgeRange() . " years old - Female</p> </section></article> </main>";
                 }
             }
+        } else if ($state == "mostrando_clasificados") {
+
+            $pool = $round->getShowingPool();
+
+            $stmt = "SELECT nombre_competidor,apellido_competidor,SUM(puntua.puntaje) - MAX(puntua.puntaje) - MIN(puntua.puntaje) + COALESCE(puntaje_extra, 0) AS puntaje_final
+                FROM competidor
+                JOIN puntua ON competidor.ci = puntua.ci
+                JOIN pertenece ON competidor.ci = pertenece.ci
+                WHERE pertenece.id_pool = $pool
+                AND pertenece.id_competencia = $competitionID
+                AND pertenece.num_ronda = $numRound
+                GROUP BY competidor.ci
+                ORDER BY puntaje_final DESC
+                LIMIT 3";
+
+            $response = mysqli_query($connection, $stmt);
+
+            echo "<main> <article class='classified'>";
+
+            if ($lang == "es") {
+                echo "<h1 class='title'> Clasificados </h1>";
+            } else {
+                echo "<h1 class='title'> Clasifieds </h1>";
+            }
+
+            echo "<section class='table__container'>
+                <table class='table'>";
+
+            if ($lang == "es") {
+                echo "<tr><th>Posición</th><th>Nombre</th><th>Apellido</th><th>Puntaje</th></tr>";
+            } else {
+                echo "<tr><th>Position</th><th>Name</th><th>Last name</th><th>Score</th></tr>";
+            }
+
+            $cont = 1;
+            while ($participant = $response->fetch_assoc()) {
+                echo "<tr><td>" . $cont . "</td><td>" . $participant['nombre_competidor'] . "</td><td>" . $participant['apellido_competidor'] . "</td><td>" . $participant['puntaje_final'] . "</td></tr>";
+                $cont++;
+            }
+            echo "</table>
+                </section>
+                </article>
+                </main>";
         }
     }
+
     ?>

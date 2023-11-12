@@ -352,7 +352,6 @@ class Round
         $response = mysqli_query($connection, $stmt);
 
         if (!$response) {
-
             http_response_code(500);
             echo json_encode(array("error" => "Error: " . $stmt));
         } else if ($response->num_rows < 5) {
@@ -485,5 +484,105 @@ class Round
             }
         }
         return true;
+    }
+
+    public function setState($state)
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        $stmt = $connection->prepare("UPDATE ronda SET estado = ? WHERE num_ronda = ? AND id_competencia = ?");
+
+        $stmt->bind_param("sii", $state, $this->_number, $this->_competitionID);
+
+        if (!$stmt->execute()) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt->error));
+        } else {
+            return true;
+        }
+
+        $stmt->close();
+    }
+
+    public function getState()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT estado FROM ronda WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID";
+
+        $response = mysqli_query($connection, $stmt);
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt));
+            return false;
+        } else {
+            $state = $response->fetch_assoc();
+            return $state['estado'];
+        }
+    }
+
+    public function getShowingPool()
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        $stmt = "SELECT id_pool FROM pool WHERE num_ronda = $this->_number AND id_competencia = $this->_competitionID AND mostrando = true";
+
+        $response = mysqli_query($connection, $stmt);
+
+        if (!$response) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt));
+            return false;
+        } else {
+            $pool = $response->fetch_assoc();
+            return $pool['id_pool'];
+        }
+    }
+
+    public function setShowingPool($pool)
+    {
+        $connection = mysqli_connect(SERVER, USER, PASS, DB);
+
+        if (!$connection) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+        }
+
+        $stmt = $connection->prepare("UPDATE pool SET mostrando = false WHERE num_ronda = ? AND id_competencia = ?");
+
+        $stmt->bind_param("ii", $this->_number, $this->_competitionID);
+
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $connection->prepare("UPDATE pool SET mostrando = true WHERE num_ronda = ? AND id_competencia = ? AND id_pool = ?");
+
+        $stmt->bind_param("iii", $this->_number, $this->_competitionID, $pool);
+
+        if (!$stmt->execute()) {
+            http_response_code(500);
+            echo json_encode(array("error" => "Error: " . $stmt));
+            return false;
+        } else {
+            return true;
+        }
+
+        $stmt->close();
     }
 }

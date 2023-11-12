@@ -40,7 +40,7 @@ if (isset($_SESSION['competition'])) {
 
     if ($result['idPKarate'] != "") {
 
-        if ($lang = "es") {
+        if ($lang == "es") {
             echo "<input type='number' min=0 max=3 step=0.1 name='extraScore' class='input' required placeholder='Puntaje Extra'>";
         } else {
             echo "<input type='number' min=0 max=3 step=0.1 name='extraScore' class='input' required placeholder='Extra Score'>";
