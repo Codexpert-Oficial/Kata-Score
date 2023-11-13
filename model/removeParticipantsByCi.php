@@ -1,5 +1,4 @@
-<?php
-session_start();
+<?php session_start();
 
 error_reporting(0);
 
@@ -31,7 +30,14 @@ if (isset($_POST["ci"]) && isset($_SESSION['competition'])) {
 
     $competitionInfo = $response->fetch_assoc();
 
-    $competition = new Competition($competitionInfo['estado'], $competitionInfo['fecha'], $competitionInfo['nombre'], $competitionInfo['rango_etario'], $competitionInfo['sexo'], $competitionInfo['id_evento']);
+    $competition = new Competition(
+        $competitionInfo['estado'],
+        $competitionInfo['fecha'],
+        $competitionInfo['nombre'],
+        $competitionInfo['rango_etario'],
+        $competitionInfo['sexo'],
+        $competitionInfo['id_evento']
+    );
 
     $competition->setId($competitionID);
     $numRound = $competition->getLastRound();

@@ -1,81 +1,75 @@
+<?php session_start();
 
-            <?php
+include_once './Objects/Round.php';
+include_once './Objects/Competition.php';
 
-            session_start();
+include_once "./Objects/DataBase.php";
 
-            include_once './Objects/Round.php';
-            include_once './Objects/Competition.php';
+if (isset($_COOKIE['lang'])) {
+    $lang = $_COOKIE['lang'];
+} else {
+    $lang = 'es';
+}
 
-            include_once "./Objects/DataBase.php";
+if (isset($_SESSION['competition'])) {
+    $competitionID = $_SESSION['competition'];
 
-            if (isset($_COOKIE['lang'])) {
-                $lang = $_COOKIE['lang'];
-            } else {
-                $lang = 'es';
-            }
+    $connection = mysqli_connect(SERVER, USER, PASS, DB);
 
-            if (isset($_SESSION['competition'])) {
-                $competitionID = $_SESSION['competition'];
+    if (!$connection) {
+        http_response_code(500);
+        echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
+    }
 
-                $connection = mysqli_connect(SERVER, USER, PASS, DB);
+    $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
 
-                if (!$connection) {
-                    http_response_code(500);
-                    echo json_encode(array("error" => "Error: " . mysqli_connect_error()));
-                }
+    $response = mysqli_query($connection, $stmt);
 
-                $stmt = "SELECT * FROM competencia WHERE id_competencia = $competitionID";
+    $competitionInfo = $response->fetch_assoc();
 
-                $response = mysqli_query($connection, $stmt);
+    $competition = new Competition($competitionInfo['estado'], $competitionInfo['fecha'], $competitionInfo['nombre'], $competitionInfo['rango_etario'], $competitionInfo['sexo'], $competitionInfo['id_evento']);
+    $competition->setId($competitionID);
+    $numRound = $competition->getLastRound();
 
-                $competitionInfo = $response->fetch_assoc();
+    $round = new Round($numRound, $competitionID);
+    $participants = $round->getParticipants();
 
-                $competition = new Competition($competitionInfo['estado'], $competitionInfo['fecha'], $competitionInfo['nombre'], $competitionInfo['rango_etario'], $competitionInfo['sexo'], $competitionInfo['id_evento']);
-                $competition->setId($competitionID);
-                $numRound = $competition->getLastRound();
+    echo "<tbody>";
 
-                $round = new Round($numRound, $competitionID);
-                $participants = $round->getParticipants();
-
-                echo "<tbody>";
-
-                if ($participants->num_rows <= 0) {
-                    if ($lang == "es") {
-                        echo "<tr>
+    if ($participants->num_rows <= 0) {
+        if ($lang == "es") {
+            echo "<tr>
                         <td colspan=3> No hay participantes registrados </td>
                         </tr>";
-                    } else {
-                        echo "<tr>
+        } else {
+            echo "<tr>
                         <td colspan=3> No participants registered </td>
                         </tr>";
-                    }
-                } else {
+        }
+    } else {
 
-                    $round->createPools();
+        $round->createPools();
 
-                    $participants = $round->getParticipantsPools();
+        $participants = $round->getParticipantsPools();
 
-                    while ($participant = $participants->fetch_assoc()) {
-                        echo "<tr>
+        while ($participant = $participants->fetch_assoc()) {
+            echo "<tr>
                         <td>" . $participant['nombre_competidor'] . "</td>
                         <td>" . $participant['apellido_competidor'] . "</td>";
-                        if ($participant['id_pool'] % 2 == 0) {
-                            echo "<td class='blue'>" . $participant['id_pool'] . "</td></tr>";
-                        } else {
-                            echo "<td class='red'>" . $participant['id_pool'] . "</td></tr>";
-                        }
-                    }
-                }
-
-
-                echo "</tbody>";
+            if ($participant['id_pool'] % 2 == 0) {
+                echo "<td class='blue'>" . $participant['id_pool'] . "</td></tr>";
             } else {
-                if ($lang == "es") {
-                    echo "Seleccione una competencia";
-                } else {
-                    echo "Select a competition";
-                }
+                echo "<td class='red'>" . $participant['id_pool'] . "</td></tr>";
             }
+        }
+    }
 
 
-            ?>
+    echo "</tbody>";
+} else {
+    if ($lang == "es") {
+        echo "Seleccione una competencia";
+    } else {
+        echo "Select a competition";
+    }
+}

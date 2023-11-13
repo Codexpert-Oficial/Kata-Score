@@ -1,7 +1,4 @@
-
-<?php
-
-session_start();
+<?php session_start();
 
 include_once "./Objects/DataBase.php";
 
@@ -72,5 +69,3 @@ if (!$response) {
         </section>";
     }
 }
-
-?>

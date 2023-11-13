@@ -1,7 +1,6 @@
-<?php
-session_start();
+<?php session_start();
 
-/* error_reporting(0); */
+error_reporting(0);
 
 include_once "./Objects/DataBase.php";
 
