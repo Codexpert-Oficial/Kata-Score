@@ -26,3 +26,23 @@ header {
   margin: 0 20px;
   text-transform: capitalize;
 }
+
+.jugePanel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
+@media (max-width: 670px) {
+
+  header {
+    gap: 10px;
+    flex-direction: column;
+  }
+
+  .header__container {
+    flex-direction: column;
+  }
+
+}

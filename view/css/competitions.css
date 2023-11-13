@@ -22,7 +22,8 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 700px;
+  width: 90%;
+  max-width: 700px;
   gap: 30px;
   padding: 40px;
   border-radius: 20px;
@@ -34,6 +35,7 @@ main {
   );
   box-shadow: 10px 10px 25px 2px rgba(0, 0, 0, 0.107);
   margin: 50px 0px;
+  box-sizing: border-box;
 }
 
 .competition__element {
@@ -85,6 +87,7 @@ main {
   font-size: 25px;
   gap: 20px;
   border: solid 4px rgb(119, 192, 237);
+  text-align: center;
 }
 
 .competition__element-add:hover {
@@ -225,4 +228,87 @@ main {
 .competition__element__icon-can:hover {
   background-color: rgb(255, 97, 97);
   color: white;
+}
+
+@media (max-width: 820px) {
+
+  
+
+  .competition__element-active, .competition__element-closed {
+    height: 170px;
+    flex-direction: column;
+  }
+
+  .competition__info__container {
+    width: 100%;
+  }
+
+  .competition__info {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .competition__name {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .competition__date {
+    width: 100%;
+  }
+
+  .competition__icons__container {
+    width: 100%;
+  }
+
+  .competition__element__icon {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 670px) {
+
+  .competition__title {
+    font-size: 50px;
+    margin: 0;
+  }
+
+  .competition__menu {
+    padding: 15px;
+    gap: 15px;
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .competition__element-active, .competition__element-closed {
+    height: 260px;
+  }
+
+  .competition__info {
+    flex-direction: column;
+    gap: 5px;
+    height: 170px;
+  }
+
+  .competition__icons__container {
+    height: 85px;
+  }
+
+}
+ 
+@media (max-width: 420px) {
+
+  .competition__element-add {
+    gap: 0;
+    padding: 0 15px;
+  }
+
+  .competition__title {
+    font-size: 35px;
+  }
+
 }
